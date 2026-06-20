@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Familia Medika — Sahabat Sehat Keluarga di Rumah</title>
+<meta name="description" content="Layanan kesehatan keluarga yang hadir langsung ke rumah Anda. Home visit dokter, home care, wound care, elderly care, dan medical team event di Yogyakarta.">
+<link rel="icon" href="assets/logo-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#173a78;
+    --navy2:#1c4a93;
+    --navy-deep:#0f2a59;
+    --blue:#2f74bd;
+    --teal:#1f9fc0;
+    --teal2:#3fb6d4;
+    --teal-soft:#d6eef6;
+    --sky:#eaf4fb;
+    --bg:#f2f8fc;
+    --paper:#ffffff;
+    --ink:#14294d;
+    --ink-soft:#5a6b86;
+    --line:#dce8f2;
+    --wa:#25d366;
+    --shadow:0 20px 50px -24px rgba(23,58,120,.4);
+    --shadow-sm:0 10px 28px -16px rgba(23,58,120,.45);
+    --r:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:88px}
+  body{
+    font-family:"Plus Jakarta Sans",system-ui,sans-serif;
+    background:var(--bg);color:var(--ink);
+    line-height:1.62;-webkit-font-smoothing:antialiased;
+    overflow-x:hidden;position:relative;
+  }
+  .atmos{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55}
+  .blob.b1{width:520px;height:520px;background:radial-gradient(circle,#bfe4f1,transparent 70%);top:-180px;right:-120px}
+  .blob.b2{width:440px;height:440px;background:radial-gradient(circle,#cfe0f5,transparent 70%);top:44%;left:-200px}
+  .blob.b3{width:420px;height:420px;background:radial-gradient(circle,#c9ecf3,transparent 70%);bottom:-180px;right:-120px}
+  .leaf{position:absolute;opacity:.07;color:var(--teal)}
+  .leaf.l1{top:380px;left:-30px;width:160px;transform:rotate(20deg)}
+  .leaf.l2{top:1200px;right:-20px;width:180px;transform:scaleX(-1) rotate(15deg)}
+  .wrap{position:relative;z-index:2}
+  .container{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  a{color:inherit;text-decoration:none}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:.72rem;font-weight:700;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--teal)}
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--teal);border-radius:2px}
+  h1,h2,h3,h4,h5{font-family:"Poppins",sans-serif;line-height:1.12;letter-spacing:-.01em;color:var(--navy)}
+  .display{font-size:clamp(2.3rem,5.6vw,3.9rem);font-weight:700;line-height:1.08}
+  .display span{color:var(--teal)}
+  .sec-title{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;margin:.4rem 0 .7rem}
+
+  .btn{display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:.95rem;
+    padding:14px 24px;border-radius:100px;border:2px solid transparent;cursor:pointer;
+    transition:.25s ease;font-family:inherit}
+  .btn svg{width:18px;height:18px}
+  .btn-wa{background:var(--wa);color:#fff;box-shadow:0 12px 26px -12px rgba(37,211,102,.7)}
+  .btn-wa:hover{background:#1fbe5b;transform:translateY(-2px)}
+  .btn-navy{background:var(--navy);color:#fff;box-shadow:var(--shadow-sm)}
+  .btn-navy:hover{background:var(--navy2);transform:translateY(-2px)}
+  .btn-ghost{background:transparent;color:var(--navy);border-color:var(--teal)}
+  .btn-ghost:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+  /* logo */
+  .logo img{height:46px;width:auto;display:block}
+  header.nav .logo img{height:42px}
+
+  /* nav */
+  header.nav{position:sticky;top:0;z-index:50;transition:.3s}
+  header.nav .bar{display:flex;align-items:center;justify-content:space-between;padding:14px 0;transition:.3s}
+  header.nav.scrolled{background:rgba(242,248,252,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  header.nav.scrolled .bar{padding:9px 0}
+  .nav-links{display:flex;align-items:center;gap:30px}
+  .nav-links a.link{font-weight:600;font-size:.93rem;color:var(--ink-soft);position:relative;transition:.2s}
+  .nav-links a.link::after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:0;background:var(--teal);border-radius:2px;transition:.25s}
+  .nav-links a.link:hover{color:var(--navy)}
+  .nav-links a.link:hover::after{width:100%}
+  .nav-cta{display:flex;align-items:center;gap:12px}
+  .menu-btn{display:none;background:none;border:none;cursor:pointer;color:var(--navy);padding:6px}
+  .menu-btn svg{width:28px;height:28px}
+
+  /* hero */
+  .hero{padding:54px 0 64px}
+  .hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:50px;align-items:center}
+  .hero p.lead{font-size:1.1rem;color:var(--ink-soft);max-width:31em;margin:20px 0 28px}
+  .hero-cta{display:flex;gap:13px;flex-wrap:wrap}
+  .hero-chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+  .chip{display:inline-flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);
+    border-radius:100px;padding:8px 15px;font-size:.85rem;font-weight:600;color:var(--navy);box-shadow:var(--shadow-sm)}
+  .chip svg{width:16px;height:16px;color:var(--teal)}
+
+  .hero-visual{position:relative;height:440px;display:grid;place-items:center}
+  .hv-panel{position:relative;width:100%;height:100%;border-radius:28px;overflow:hidden;
+    background:linear-gradient(150deg,var(--navy) 0%,var(--teal) 130%);box-shadow:var(--shadow)}
+  .hv-panel .ring{position:absolute;border:1.5px solid rgba(255,255,255,.14);border-radius:50%}
+  .hv-panel .ring.r1{width:300px;height:300px;top:-100px;right:-80px}
+  .hv-panel .ring.r2{width:180px;height:180px;bottom:-50px;left:-40px}
+  .logo-card{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    background:#fff;border-radius:22px;padding:34px 40px;box-shadow:0 24px 50px -20px rgba(0,0,0,.4);width:78%}
+  .logo-card img{width:100%;height:auto;display:block}
+  .float-card{position:absolute;background:#fff;border-radius:15px;padding:12px 15px;
+    box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:11px;z-index:3}
+  .float-card .ic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;flex:none;
+    background:var(--teal-soft);color:var(--teal)}
+  .float-card .ic svg{width:21px;height:21px}
+  .float-card b{font-size:.92rem;display:block;line-height:1.2;color:var(--navy)}
+  .float-card small{color:var(--ink-soft);font-size:.73rem}
+  .fc1{top:18px;right:-12px;animation:bob 5s ease-in-out infinite}
+  .fc2{bottom:24px;left:-18px;animation:bob 6s ease-in-out infinite .6s}
+  @keyframes bob{50%{transform:translateY(-12px)}}
+
+  /* ribbon */
+  .ribbon{background:var(--navy-deep);color:#fff;padding:15px 0;overflow:hidden;white-space:nowrap}
+  .ribbon .track{display:inline-flex;animation:scrollx 28s linear infinite}
+  .ribbon span{font-family:"Poppins",sans-serif;font-weight:600;font-size:1.02rem;opacity:.95;
+    display:inline-flex;align-items:center;padding:0 26px}
+  .ribbon span::after{content:"✚";color:var(--teal2);margin-left:26px;font-size:.85rem}
+  @keyframes scrollx{to{transform:translateX(-50%)}}
+
+  section{padding:78px 0;position:relative}
+  .sec-head{max-width:660px;margin-bottom:44px}
+  .sec-head.center{margin:0 auto 46px;text-align:center}
+  .sec-head p{color:var(--ink-soft);font-size:1.04rem;margin-top:4px}
+
+  /* services */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:30px 26px;
+    transition:.3s ease;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;left:0;top:0;height:3px;width:0;
+    background:linear-gradient(90deg,var(--navy),var(--teal));transition:.35s}
+  .card:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:transparent}
+  .card:hover::before{width:100%}
+  .card .ic{width:56px;height:56px;border-radius:16px;background:var(--teal-soft);color:var(--navy);
+    display:grid;place-items:center;margin-bottom:18px;transition:.3s}
+  .card:hover .ic{background:var(--navy);color:#fff}
+  .card .ic svg{width:28px;height:28px}
+  .card h3{font-size:1.22rem;font-weight:600;margin-bottom:8px}
+  .card p{color:var(--ink-soft);font-size:.93rem}
+
+  /* why */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center}
+  .feat-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+  .feat{display:flex;gap:15px;padding:17px;border-radius:15px;transition:.25s}
+  .feat:hover{background:var(--paper);box-shadow:var(--shadow-sm)}
+  .feat .ck{width:42px;height:42px;border-radius:12px;background:var(--teal);color:#fff;flex:none;display:grid;place-items:center}
+  .feat .ck svg{width:21px;height:21px}
+  .feat h4{font-size:1.06rem;font-weight:600;margin-bottom:2px}
+  .feat p{color:var(--ink-soft);font-size:.9rem}
+  .why-art{background:linear-gradient(155deg,var(--sky),#dff0f8);border-radius:28px;padding:38px;
+    position:relative;overflow:hidden;min-height:400px;display:flex;flex-direction:column;justify-content:center;gap:18px}
+  .why-art .badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border-radius:100px;
+    padding:9px 17px;font-size:.85rem;font-weight:700;color:var(--navy);box-shadow:var(--shadow-sm);width:fit-content}
+  .why-art .badge svg{width:17px;height:17px;color:var(--teal)}
+  .why-art .quote{font-family:"Poppins",sans-serif;font-style:italic;font-weight:500;font-size:1.4rem;line-height:1.35;color:var(--navy)}
+  .why-art .home-illo{position:absolute;right:-30px;bottom:-30px;width:200px;opacity:.16;color:var(--navy)}
+  .mini-feats{display:flex;gap:10px;flex-wrap:wrap}
+  .mini-feats .mf{background:#fff;border-radius:13px;padding:12px 15px;box-shadow:var(--shadow-sm);flex:1;min-width:120px}
+  .mini-feats .mf b{display:block;font-size:.92rem;color:var(--navy)}
+  .mini-feats .mf small{color:var(--ink-soft);font-size:.78rem}
+
+  /* event feature */
+  .event{background:var(--navy);border-radius:30px;padding:48px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  .event::after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;
+    background:radial-gradient(circle,rgba(63,182,212,.4),transparent 70%);top:-120px;right:-100px}
+  .event .ev-head{position:relative;z-index:2;max-width:640px;margin-bottom:32px}
+  .event .ev-head .eyebrow{color:var(--teal2)}
+  .event .ev-head .eyebrow::before{background:var(--teal2)}
+  .event .ev-head h2{color:#fff;font-size:clamp(1.8rem,3.6vw,2.5rem);margin:.4rem 0 .6rem}
+  .event .ev-head p{color:#cfe0f0;font-size:1.02rem}
+  .ev-grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .ev-box{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:26px}
+  .ev-box h4{color:#fff;font-size:1.1rem;margin-bottom:16px;display:flex;align-items:center;gap:9px}
+  .ev-box h4 svg{width:20px;height:20px;color:var(--teal2)}
+  .ev-list{display:grid;grid-template-columns:1fr 1fr;gap:11px 16px}
+  .ev-list.single{grid-template-columns:1fr}
+  .ev-item{display:flex;align-items:flex-start;gap:9px;font-size:.92rem;color:#e4eef8}
+  .ev-item svg{width:17px;height:17px;color:var(--teal2);flex:none;margin-top:3px}
+  .ev-cta{position:relative;z-index:2;margin-top:30px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+    padding-top:28px;border-top:1px solid rgba(255,255,255,.12)}
+  .ev-cta .num{font-family:"Poppins",sans-serif;font-weight:700;font-size:1.6rem;letter-spacing:.5px}
+  .ev-cta small{color:#cfe0f0;display:block;font-size:.82rem;font-weight:400}
+
+  /* doctor */
+  .doc-wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:46px;align-items:center}
+  .doc-photo{position:relative}
+  .doc-photo .frame{border-radius:26px;overflow:hidden;box-shadow:var(--shadow);border:6px solid #fff;background:#fff}
+  .doc-photo .frame img{width:100%;display:block}
+  .doc-photo .blob-bg{position:absolute;inset:-18px -18px auto auto;width:200px;height:200px;
+    background:linear-gradient(150deg,var(--teal),var(--navy));border-radius:50%;filter:blur(40px);opacity:.3;z-index:-1}
+  .doc-photo .tag-logo{position:absolute;bottom:-18px;left:-18px;background:#fff;border-radius:16px;
+    padding:12px 14px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:10px}
+  .doc-photo .tag-logo img{height:36px}
+  .doc-info .name{font-family:"Poppins",sans-serif;font-weight:700;font-size:1.9rem;color:var(--navy);margin-top:6px}
+  .doc-info .role{color:var(--teal);font-weight:700;font-size:.95rem;margin:4px 0 16px}
+  .doc-info p{color:var(--ink-soft);max-width:34em;margin-bottom:18px}
+  .doc-tags{display:flex;gap:9px;flex-wrap:wrap}
+  .doc-tags span{background:var(--teal-soft);color:var(--navy);border-radius:100px;padding:7px 15px;font-size:.84rem;font-weight:600}
+
+  /* notes */
+  .notes{background:linear-gradient(135deg,#fff,var(--sky));border:1px solid var(--line);border-radius:26px;padding:40px}
+  .notes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:22px}
+  .note{display:flex;gap:14px;align-items:flex-start}
+  .note .ic{width:46px;height:46px;border-radius:13px;flex:none;display:grid;place-items:center;background:var(--navy);color:#fff}
+  .note .ic.warn{background:#e0552c}
+  .note .ic svg{width:22px;height:22px}
+  .note b{display:block;color:var(--navy);font-weight:600;margin-bottom:3px;font-size:1rem}
+  .note p{color:var(--ink-soft);font-size:.9rem;margin:0}
+
+  /* contact */
+  .contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:42px;align-items:start}
+  .info-card{display:flex;gap:15px;padding:20px;background:var(--paper);border:1px solid var(--line);
+    border-radius:17px;margin-bottom:14px;transition:.25s}
+  .info-card:hover{box-shadow:var(--shadow-sm);transform:translateX(4px)}
+  .info-card .ic{width:48px;height:48px;border-radius:13px;background:var(--teal-soft);color:var(--navy);display:grid;place-items:center;flex:none}
+  .info-card .ic svg{width:23px;height:23px}
+  .info-card b{display:block;font-size:.76rem;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-soft)}
+  .info-card span{font-weight:700;font-size:1.05rem;color:var(--navy)}
+  .wa-panel{background:linear-gradient(135deg,var(--teal),#16a34a);border-radius:20px;padding:26px 28px;color:#fff;margin-top:6px;display:flex;align-items:center;gap:18px}
+  .wa-panel .wic{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;flex:none}
+  .wa-panel .wic svg{width:30px;height:30px;color:#fff}
+  .wa-panel .num{font-family:"Poppins",sans-serif;font-weight:700;font-size:1.5rem}
+  .wa-panel small{display:block;opacity:.9;font-size:.84rem}
+
+  .booking{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:34px;box-shadow:var(--shadow-sm)}
+  .booking h3{font-size:1.45rem;font-weight:600;margin-bottom:6px}
+  .booking>p{color:var(--ink-soft);font-size:.95rem;margin-bottom:22px}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:.82rem;font-weight:700;margin-bottom:7px;color:var(--navy)}
+  .field input,.field select,.field textarea{width:100%;padding:13px 15px;border:1.5px solid var(--line);border-radius:12px;
+    font-family:inherit;font-size:.95rem;background:var(--bg);color:var(--ink);transition:.2s;resize:vertical}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--teal);background:#fff}
+
+  /* footer */
+  footer{background:var(--navy-deep);color:#c2d2e8;padding:60px 0 24px;margin-top:24px}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.1fr;gap:38px;margin-bottom:42px}
+  .foot-logo{display:flex;align-items:center;gap:13px;margin-bottom:14px}
+  .foot-logo .badge{background:#fff;border-radius:13px;padding:8px;display:grid;place-items:center}
+  .foot-logo .badge img{height:38px;display:block}
+  .foot-logo .txt{font-family:"Poppins",sans-serif;font-weight:700;font-size:1.2rem;color:#fff;line-height:1}
+  .foot-logo .txt span{color:var(--teal2)}
+  .foot-logo .txt small{display:block;font-size:.62rem;font-weight:500;letter-spacing:.06em;color:#8fb0d0;margin-top:4px}
+  footer .desc{font-size:.92rem;margin-bottom:16px;max-width:25em;color:#9fb6d2}
+  .socials{display:flex;gap:10px}
+  .socials a{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.08);display:grid;place-items:center;transition:.25s}
+  .socials a:hover{background:var(--teal);transform:translateY(-3px)}
+  .socials svg{width:18px;height:18px;color:#fff}
+  footer .fcol h5{color:#fff;font-size:.8rem;text-transform:uppercase;letter-spacing:.11em;margin-bottom:15px;font-weight:700}
+  footer .fcol a,footer .fcol p{display:block;color:#9fb6d2;font-size:.92rem;margin-bottom:10px;transition:.2s}
+  footer .fcol a:hover{color:var(--teal2);transform:translateX(3px)}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.85rem;color:#7e9bbd}
+
+  .wa-float{position:fixed;bottom:24px;right:24px;z-index:60;width:60px;height:60px;border-radius:50%;
+    background:var(--wa);display:grid;place-items:center;box-shadow:0 10px 30px -8px rgba(37,211,102,.7);transition:.25s;animation:pulse 2.4s infinite}
+  .wa-float:hover{transform:scale(1.08)}
+  .wa-float svg{width:30px;height:30px;color:#fff}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.5)}70%{box-shadow:0 0 0 16px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .hero .reveal{transition-delay:var(--d,0s)}
+
+  @media(max-width:920px){
+    .hero-grid,.split,.contact-grid,.doc-wrap{grid-template-columns:1fr}
+    .hero-visual{height:380px;order:-1}
+    .doc-photo{max-width:360px}
+    .cards,.notes-grid{grid-template-columns:1fr 1fr}
+    .ev-grid{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    .event{padding:34px}
+  }
+  @media(max-width:640px){
+    .nav-links{display:none}
+    .nav-links.open{display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:16px;background:var(--paper);padding:22px;border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+    .nav-links.open .btn{width:100%;justify-content:center}
+    .menu-btn{display:block}
+    .nav-cta .btn:not(.menu-btn){display:none}
+    header.nav .bar{position:relative}
+    .cards,.notes-grid,.ev-list,.foot-grid{grid-template-columns:1fr}
+    section{padding:58px 0}
+    .doc-info .name{font-size:1.55rem}
+  }
+</style>
+</head>
+<body>
+
+<div class="atmos">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <svg class="leaf l1" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3C9 3 3 11 3 21c8 0 16-6 18-18zM7 17c2-6 6-10 10-12"/></svg>
+  <svg class="leaf l2" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3C9 3 3 11 3 21c8 0 16-6 18-18zM7 17c2-6 6-10 10-12"/></svg>
+</div>
+
+<div class="wrap">
+
+<!-- NAV -->
+<header class="nav" id="top">
+  <div class="container">
+    <div class="bar">
+      <a class="logo" href="#top" aria-label="Familia Medika beranda"><img src="assets/logo.png" alt="Familia Medika"></a>
+      <nav class="nav-links" id="navlinks">
+        <a class="link" href="#layanan">Layanan</a>
+        <a class="link" href="#keunggulan">Keunggulan</a>
+        <a class="link" href="#event">Medical Event</a>
+        <a class="link" href="#tim">Tim</a>
+        <a class="link" href="#kontak">Kontak</a>
+        <a class="btn btn-wa" href="https://wa.me/6282147267448" target="_blank" rel="noopener">WhatsApp</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="btn btn-wa" href="https://wa.me/6282147267448" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2zm5.5 12.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5L9 7.5c-.2-.5-.4-.4-.5-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>
+          Hubungi Kami
+        </a>
+        <button class="menu-btn" id="menuBtn" aria-label="Buka menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="beranda">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow reveal" style="--d:0s">Sahabat Sehat Keluarga di Rumah</span>
+      <h1 class="display reveal" style="--d:.08s">Layanan kesehatan keluarga yang hadir <span>langsung ke rumah</span> Anda.</h1>
+      <p class="lead reveal" style="--d:.16s">Familia Medika menghadirkan tenaga kesehatan profesional ke rumah Anda — pemeriksaan, perawatan, dan pemantauan kesehatan untuk seluruh keluarga, dengan pendekatan yang aman dan personal.</p>
+      <div class="hero-cta reveal" style="--d:.24s">
+        <a class="btn btn-wa" href="https://wa.me/6282147267448" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2zm5.5 12.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5L9 7.5c-.2-.5-.4-.4-.5-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>
+          Konsultasi via WhatsApp
+        </a>
+        <a class="btn btn-ghost" href="#layanan">Lihat Layanan</a>
+      </div>
+      <div class="hero-chips reveal" style="--d:.32s">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg> Profesional</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Jadwal fleksibel</span>
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4.5 8-11a8 8 0 10-16 0c0 6.5 8 11 8 11z"/><path d="M9 12l2 2 4-4"/></svg> Aman & terpercaya</span>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal" style="--d:.2s">
+      <div class="hv-panel">
+        <div class="ring r1"></div><div class="ring r2"></div>
+      </div>
+      <div class="logo-card"><img src="assets/logo.png" alt="Logo Familia Medika"></div>
+      <div class="float-card fc1">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10l9-7 9 7v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M12 11v4M10 13h4"/></svg></div>
+        <div><b>Home Visit</b><small>Dokter ke rumah</small></div>
+      </div>
+      <div class="float-card fc2">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <div><b>Siap Melayani</b><small>Sesuai jadwal Anda</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RIBBON -->
+<div class="ribbon" aria-hidden="true">
+  <div class="track">
+    <span>Home Visit Dokter</span><span>Home Care Keluarga</span><span>Wound Care</span><span>Elderly Care &amp; Monitoring</span><span>Medical Team Event</span><span>Telekonsultasi</span>
+    <span>Home Visit Dokter</span><span>Home Care Keluarga</span><span>Wound Care</span><span>Elderly Care &amp; Monitoring</span><span>Medical Team Event</span><span>Telekonsultasi</span>
+  </div>
+</div>
+
+<!-- LAYANAN -->
+<section id="layanan">
+  <div class="container">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">Layanan Utama</span>
+      <h2 class="sec-title">Perawatan lengkap, langsung di rumah Anda</h2>
+      <p>Dari pemeriksaan dokter hingga perawatan luka dan pemantauan lansia — semua hadir ke rumah, sesuai kebutuhan keluarga Anda.</p>
+    </div>
+    <div class="cards">
+      <article class="card reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 10l9-7 9 7v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M12 11v5M9.5 13.5h5"/></svg></div>
+        <h3>Home Visit Dokter</h3>
+        <p>Pemeriksaan dan konsultasi medis langsung di rumah oleh tenaga kesehatan profesional.</p>
+      </article>
+      <article class="card reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 10l9-7 9 7v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M12 17s-3-1.8-3-4a2 2 0 013-1.7A2 2 0 0115 13c0 2.2-3 4-3 4z"/></svg></div>
+        <h3>Home Care Keluarga</h3>
+        <p>Pendampingan pasien dan pemantauan kondisi kesehatan secara berkala di rumah.</p>
+      </article>
+      <article class="card reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="8" width="18" height="8" rx="4" transform="rotate(45 12 12)"/><path d="M12 10v4M10 12h4"/></svg></div>
+        <h3>Wound Care</h3>
+        <p>Perawatan luka akut, luka pasca-operasi, dan luka kronis dengan teknik yang tepat.</p>
+      </article>
+      <article class="card reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="9" cy="5" r="2"/><path d="M9 9v5l-2 6M9 12l3 1 2 4"/><path d="M16 8l2 2 1-1"/></svg></div>
+        <h3>Elderly Care &amp; Monitoring</h3>
+        <p>Pemantauan lansia: tekanan darah, gula darah, saturasi, hingga edukasi untuk keluarga.</p>
+      </article>
+      <article class="card reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0112 0"/><path d="M18 7v4M16 9h4"/></svg></div>
+        <h3>Medical Team Event</h3>
+        <p>Dukungan tim medis untuk kegiatan olahraga, sekolah, komunitas, dan acara keluarga.</p>
+      </article>
+      <article class="card reveal" style="background:linear-gradient(150deg,var(--navy),var(--teal));border:none;color:#fff">
+        <div class="ic" style="background:rgba(255,255,255,.18);color:#fff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+        <h3 style="color:#fff">Butuh layanan lain?</h3>
+        <p style="color:#dbe8f5">Konsultasikan kebutuhan kesehatan keluarga Anda. Kami bantu carikan solusi terbaik.</p>
+        <a class="btn btn-wa" href="https://wa.me/6282147267448" target="_blank" rel="noopener" style="margin-top:16px">Chat Sekarang</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- KEUNGGULAN -->
+<section id="keunggulan">
+  <div class="container split">
+    <div class="reveal">
+      <span class="eyebrow">Mengapa Familia Medika</span>
+      <h2 class="sec-title">Perawatan yang hangat, aman, dan personal</h2>
+      <div class="feat-list">
+        <div class="feat">
+          <div class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div><h4>Ramah keluarga</h4><p>Pelayanan yang nyaman dan penuh empati untuk seluruh anggota keluarga, di segala usia.</p></div>
+        </div>
+        <div class="feat">
+          <div class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div><h4>Tenaga kesehatan profesional</h4><p>Ditangani oleh tenaga kesehatan berpengalaman dengan standar pelayanan yang terjaga.</p></div>
+        </div>
+        <div class="feat">
+          <div class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div><h4>Jadwal fleksibel</h4><p>Kunjungan menyesuaikan waktu dan kebutuhan Anda — tanpa perlu repot keluar rumah.</p></div>
+        </div>
+        <div class="feat">
+          <div class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div><h4>Pendekatan aman dan personal</h4><p>Setiap layanan diberikan sesuai prosedur dan disesuaikan dengan kondisi tiap pasien.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="why-art reveal">
+      <span class="badge"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4L12 17l-6.3 4.4L8 14 2 9.4h7.6z"/></svg> Sahabat sehat keluarga</span>
+      <p class="quote">"Kesehatan keluarga seharusnya mudah dijangkau — maka kami yang datang menghampiri Anda."</p>
+      <div class="mini-feats">
+        <div class="mf"><b>Profesional</b><small>Tim berpengalaman</small></div>
+        <div class="mf"><b>Siap melayani</b><small>Sebelum & sesudah</small></div>
+        <div class="mf"><b>Terpercaya</b><small>Sesuai prosedur</small></div>
+      </div>
+      <svg class="home-illo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 10l9-7 9 7v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 21v-6h6v6"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- MEDICAL TEAM EVENT -->
+<section id="event">
+  <div class="container">
+    <div class="event reveal">
+      <div class="ev-head">
+        <span class="eyebrow">Medical Team Event</span>
+        <h2>Tim medis untuk acara Anda</h2>
+        <p>Familia Medika siap mendukung kegiatan komunitas, olahraga, sekolah, dan event keluarga — dengan tim medis yang siaga sebelum, selama, dan sesudah acara.</p>
+      </div>
+      <div class="ev-grid">
+        <div class="ev-box">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg> Layanan yang dapat dibantu</h4>
+          <div class="ev-list">
+            <div class="ev-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Tim medis standby</div>
+            <div class="ev-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Pemeriksaan awal</div>
+            <div class="ev-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Pertolongan pertama</div>
+            <div class="ev-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Penanganan cedera ringan</div>
+            <div class="ev-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Monitoring peserta</div>
+            <div class="ev-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Edukasi &amp; rujukan bila perlu</div>
+          </div>
+        </div>
+        <div class="ev-box">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.9M16 3.1a4 4 0 010 7.8"/></svg> Cocok untuk</h4>
+          <div class="ev-list">
+            <div class="ev-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Event olahraga</div>
+            <div class="ev-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Turnamen</div>
+            <div class="ev-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Fun walk / fun run</div>
+            <div class="ev-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Acara sekolah</div>
+            <div class="ev-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Gathering kantor</div>
+            <div class="ev-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Kegiatan komunitas</div>
+            <div class="ev-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg> Pengajian / acara keluarga</div>
+          </div>
+        </div>
+      </div>
+      <div class="ev-cta">
+        <a class="btn btn-wa" href="https://wa.me/6282147267448?text=Halo%20Familia%20Medika%2C%20saya%20ingin%20menanyakan%20Medical%20Team%20Event." target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2zm5.5 12.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5L9 7.5c-.2-.5-.4-.4-.5-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>
+          Butuh tim medis untuk event?
+        </a>
+        <div><div class="num">0821-4726-7448</div><small>Hubungi kami via WhatsApp · Mangunan, Yogyakarta</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIM / DOKTER -->
+<section id="tim">
+  <div class="container">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">Tim Profesional Kami</span>
+      <h2 class="sec-title">Ditangani oleh tangan yang berpengalaman</h2>
+    </div>
+    <div class="doc-wrap">
+      <div class="doc-photo reveal">
+        <div class="blob-bg"></div>
+        <div class="frame"><img src="assets/dokter.jpg" alt="Penanggung jawab layanan Familia Medika"></div>
+        <div class="tag-logo"><img src="assets/logo-icon.png" alt="Familia Medika"></div>
+      </div>
+      <div class="doc-info reveal">
+        <span class="eyebrow">Penanggung Jawab Layanan</span>
+        <div class="name">dr. [Nama Lengkap]</div>
+        <div class="role">Dokter &amp; Penanggung Jawab Layanan Medis · Familia Medika</div>
+        <p>Memimpin tim Familia Medika dalam memberikan layanan kesehatan ke rumah dengan pendekatan yang aman, profesional, dan personal. Setiap layanan diberikan berdasarkan asesmen medis dan disesuaikan dengan kondisi tiap pasien.</p>
+        <div class="doc-tags">
+          <span>Home Visit</span><span>Home Care</span><span>Wound Care</span><span>Elderly Care</span><span>Pendekatan personal</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATATAN PENTING -->
+<section style="padding-top:0">
+  <div class="container">
+    <div class="notes reveal">
+      <span class="eyebrow">Catatan Penting</span>
+      <h2 class="sec-title" style="font-size:clamp(1.5rem,3vw,2rem)">Hal yang perlu Anda ketahui</h2>
+      <div class="notes-grid">
+        <div class="note">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+          <div><b>Berdasarkan asesmen medis</b><p>Setiap layanan diberikan sesuai hasil pemeriksaan dan penilaian kondisi pasien.</p></div>
+        </div>
+        <div class="note">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+          <div><b>Telekonsultasi bersifat konsultatif</b><p>Konsultasi jarak jauh bersifat membantu dan tidak menggantikan pemeriksaan langsung.</p></div>
+        </div>
+        <div class="note">
+          <div class="ic warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></div>
+          <div><b>Kondisi gawat darurat</b><p>Untuk keadaan darurat, segera menuju IGD rumah sakit terdekat.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAK -->
+<section id="kontak">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Hubungi Kami</span>
+      <h2 class="sec-title">Konsultasi &amp; penjadwalan layanan</h2>
+      <p>Hubungi kami via WhatsApp untuk konsultasi atau penjadwalan kunjungan ke rumah Anda.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="info-card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2zm5.5 12.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5L9 7.5c-.2-.5-.4-.4-.5-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg></div>
+          <div><b>WhatsApp</b><span>0821-4726-7448</span></div>
+        </div>
+        <div class="info-card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><b>Area Layanan</b><span>Mangunan, Yogyakarta</span></div>
+        </div>
+        <div class="info-card">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+          <div><b>Jadwal</b><span>Fleksibel sesuai kebutuhan</span></div>
+        </div>
+        <div class="wa-panel">
+          <div class="wic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2zm5.5 12.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5L9 7.5c-.2-.5-.4-.4-.5-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg></div>
+          <div><small>Untuk konsultasi & penjadwalan</small><div class="num">0821-4726-7448</div></div>
+        </div>
+      </div>
+
+      <div class="booking reveal">
+        <h3>Ajukan Permintaan Layanan</h3>
+        <p>Isi data singkat berikut, lalu kirim — pesan akan otomatis terbuka di WhatsApp kami.</p>
+        <div class="field">
+          <label for="nm">Nama Lengkap</label>
+          <input id="nm" type="text" placeholder="Masukkan nama Anda">
+        </div>
+        <div class="field">
+          <label for="sv">Kebutuhan Layanan</label>
+          <select id="sv">
+            <option>Home Visit Dokter</option>
+            <option>Home Care Keluarga</option>
+            <option>Wound Care</option>
+            <option>Elderly Care &amp; Monitoring</option>
+            <option>Medical Team Event</option>
+            <option>Telekonsultasi</option>
+            <option>Lainnya</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="ms">Pesan / Keluhan Singkat (opsional)</label>
+          <textarea id="ms" rows="3" placeholder="Ceritakan singkat kebutuhan Anda..."></textarea>
+        </div>
+        <button class="btn btn-wa" id="bookBtn" style="width:100%;justify-content:center">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2zm5.5 12.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5L9 7.5c-.2-.5-.4-.4-.5-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>
+          Kirim via WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo">
+          <span class="badge"><img src="assets/logo-icon.png" alt="Familia Medika"></span>
+          <span class="txt">Familia <span>Medika</span><small>Sahabat Sehat Keluarga di Rumah</small></span>
+        </div>
+        <p class="desc">Layanan kesehatan keluarga yang hadir langsung ke rumah Anda di area Yogyakarta — dengan pendekatan yang aman, profesional, dan personal.</p>
+        <div class="socials">
+          <a href="https://wa.me/6282147267448" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2zm5.5 12.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5L9 7.5c-.2-.5-.4-.4-.5-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3a4 4 0 00-4 4v2H7v3h3v6h3v-6h3l1-3h-4v-2a1 1 0 011-1z"/></svg></a>
+        </div>
+      </div>
+      <div class="fcol">
+        <h5>Layanan</h5>
+        <a href="#layanan">Home Visit Dokter</a>
+        <a href="#layanan">Home Care Keluarga</a>
+        <a href="#layanan">Wound Care</a>
+        <a href="#layanan">Elderly Care</a>
+        <a href="#event">Medical Team Event</a>
+      </div>
+      <div class="fcol">
+        <h5>Familia Medika</h5>
+        <a href="#keunggulan">Keunggulan</a>
+        <a href="#event">Medical Event</a>
+        <a href="#tim">Tim Kami</a>
+        <a href="#kontak">Kontak</a>
+      </div>
+      <div class="fcol">
+        <h5>Kontak</h5>
+        <p>WhatsApp</p>
+        <a href="https://wa.me/6282147267448" target="_blank" rel="noopener" style="font-weight:700;color:#fff">0821-4726-7448</a>
+        <p>Mangunan, Yogyakarta</p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Familia Medika. Seluruh hak cipta dilindungi.</span>
+      <span>Sahabat Sehat Keluarga di Rumah 🏠</span>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /wrap -->
+
+<a class="wa-float" href="https://wa.me/6282147267448" target="_blank" rel="noopener" aria-label="Chat WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2zm5.5 12.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5L9 7.5c-.2-.5-.4-.4-.5-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>
+</a>
+
+<script>
+  const nav=document.getElementById('top');
+  const onScroll=()=>nav.classList.toggle('scrolled',window.scrollY>20);
+  window.addEventListener('scroll',onScroll);onScroll();
+
+  const menuBtn=document.getElementById('menuBtn');
+  const navlinks=document.getElementById('navlinks');
+  menuBtn.addEventListener('click',()=>navlinks.classList.toggle('open'));
+  navlinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navlinks.classList.remove('open')));
+
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.14});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  document.getElementById('bookBtn').addEventListener('click',()=>{
+    const nm=document.getElementById('nm').value.trim();
+    const sv=document.getElementById('sv').value;
+    const ms=document.getElementById('ms').value.trim();
+    let t='Halo Familia Medika, saya '+(nm||'(nama)')+' ingin menanyakan layanan: '+sv+'.';
+    if(ms) t+=' Keluhan/catatan: '+ms;
+    window.open('https://wa.me/6282147267448?text='+encodeURIComponent(t),'_blank');
+  });
+</script>
+</body>
+</html>
