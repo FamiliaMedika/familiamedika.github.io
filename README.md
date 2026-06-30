@@ -48,7 +48,7 @@ Lalu aktifkan **Settings → Pages** seperti langkah 4–6 di atas.
 
 Semua mudah diedit langsung di `index.html`:
 
-- **Nama dokter** — cari teks `dr. [Nama Lengkap]` dan ganti dengan nama asli.
+- **Nama dokter** — cari teks `dr. Nurul Khafidz Subekti, AIFO-K` bila ingin mengubahnya.
 - **Foto dokter** — timpa file `assets/dokter.jpg` (gunakan nama file yang sama).
 - **Logo** — timpa `assets/logo.png` dan `assets/logo-icon.png`.
 - **Nomor WhatsApp** — cari `6282147267448` (format internasional, dari `0821-4726-7448`) dan ganti bila perlu. Cari juga teks tampilan `0821-4726-7448`.
