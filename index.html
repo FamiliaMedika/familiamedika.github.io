@@ -327,6 +327,12 @@
   .wa-panel .wic svg{width:30px;height:30px;color:#fff}
   .wa-panel .num{font-family:"Poppins",sans-serif;font-weight:700;font-size:1.5rem}
   .wa-panel small{display:block;opacity:.9;font-size:.84rem}
+  .qr-card{margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:18px;
+    padding:20px;display:flex;align-items:center;gap:18px;transition:.25s}
+  .qr-card:hover{box-shadow:var(--shadow-sm);transform:translateY(-2px)}
+  .qr-img{width:100px;height:100px;border-radius:12px;border:2px solid var(--line);flex:none;display:block}
+  .qr-info b{display:block;font-size:.95rem;color:var(--navy);margin-bottom:3px}
+  .qr-info small{color:var(--ink-soft);font-size:.82rem}
 
   .booking{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:34px;box-shadow:var(--shadow-sm)}
   .booking h3{font-size:1.45rem;font-weight:600;margin-bottom:6px}
@@ -715,6 +721,13 @@
         <div class="wa-panel">
           <div class="wic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2zm5.5 12.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5L9 7.5c-.2-.5-.4-.4-.5-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg></div>
           <div><small>Untuk konsultasi & penjadwalan</small><div class="num">0821-4726-7448</div></div>
+        </div>
+        <div class="qr-card">
+          <img src="assets/qr-wa.png" alt="Scan QR untuk WhatsApp Familia Medika" class="qr-img">
+          <div class="qr-info">
+            <b>Scan untuk langsung chat</b>
+            <small>Arahkan kamera HP ke QR code di atas untuk terhubung via WhatsApp</small>
+          </div>
         </div>
       </div>
 
