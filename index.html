@@ -334,6 +334,20 @@
   .qr-info b{display:block;font-size:.95rem;color:var(--navy);margin-bottom:3px}
   .qr-info small{color:var(--ink-soft);font-size:.82rem}
 
+  /* kotak saran */
+  .saran-wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:44px;align-items:start}
+  .saran-left p{color:var(--ink-soft);font-size:1rem;margin-bottom:20px;max-width:32em}
+  .saran-features{display:flex;flex-direction:column;gap:10px}
+  .sf{display:flex;align-items:center;gap:10px;font-size:.93rem;font-weight:600;color:var(--navy)}
+  .sf svg{width:22px;height:22px;color:var(--teal);flex:none}
+  .saran-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:32px;box-shadow:var(--shadow-sm)}
+  .saran-card h3{font-size:1.4rem;font-weight:600;margin-bottom:18px}
+  .saran-msg{display:none;border-radius:14px;padding:14px 18px;margin-bottom:16px;font-size:.92rem;font-weight:500}
+  .saran-msg.show{display:block;animation:pop .3s ease}
+  .saran-msg.ok{background:#e6f1ea;border:1px solid #bcdcc9;color:#0e3a2a}
+  .saran-msg.err{background:#fdeae4;border:1px solid #f6c9b9;color:#d9532f}
+  .saran-msg.loading{background:var(--teal-soft);border:1px solid var(--teal);color:var(--navy)}
+
   .booking{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:34px;box-shadow:var(--shadow-sm)}
   .booking h3{font-size:1.45rem;font-weight:600;margin-bottom:6px}
   .booking>p{color:var(--ink-soft);font-size:.95rem;margin-bottom:22px}
@@ -373,7 +387,7 @@
   .hero .reveal{transition-delay:var(--d,0s)}
 
   @media(max-width:920px){
-    .hero-grid,.split,.contact-grid,.doc-wrap,.team-grid,.about-wrap{grid-template-columns:1fr}
+    .hero-grid,.split,.contact-grid,.doc-wrap,.team-grid,.about-wrap,.saran-wrap{grid-template-columns:1fr}
     .about-side{position:static}
     .team-grid{max-width:460px}
     .hero-visual{height:380px;order:-1}
@@ -763,6 +777,61 @@
   </div>
 </section>
 
+<!-- KOTAK SARAN -->
+<section id="saran">
+  <div class="container">
+    <div class="saran-wrap reveal">
+      <div class="saran-left">
+        <span class="eyebrow">Kotak Saran &amp; Masukan</span>
+        <h2 class="sec-title">Bantu kami menjadi lebih baik</h2>
+        <p>Kami sangat menghargai setiap masukan dari Anda. Saran, kritik, maupun apresiasi — semuanya kami tampung untuk meningkatkan kualitas layanan Familia Medika.</p>
+        <div class="saran-features">
+          <div class="sf">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            <span>Bisa anonim</span>
+          </div>
+          <div class="sf">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4.5 8-11a8 8 0 10-16 0c0 6.5 8 11 8 11z"/><path d="M12 11v.01"/></svg>
+            <span>Privasi terjaga</span>
+          </div>
+          <div class="sf">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            <span>Dibaca langsung tim kami</span>
+          </div>
+        </div>
+      </div>
+      <div class="saran-form">
+        <div class="saran-card">
+          <h3>Kirim Saran Anda</h3>
+          <div class="saran-msg" id="saranMsg"></div>
+          <div class="field">
+            <label for="saranNama">Nama <small style="font-weight:400;color:var(--ink-soft)">(opsional)</small></label>
+            <input id="saranNama" type="text" placeholder="Kosongkan jika ingin anonim">
+          </div>
+          <div class="field">
+            <label for="saranKat">Kategori</label>
+            <select id="saranKat">
+              <option>Saran</option>
+              <option>Masukan</option>
+              <option>Kritik</option>
+              <option>Apresiasi</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="saranPesan">Pesan Anda</label>
+            <textarea id="saranPesan" rows="4" placeholder="Tuliskan saran, masukan, atau kritik Anda di sini..."></textarea>
+          </div>
+          <button class="btn btn-navy" id="saranBtn" style="width:100%;justify-content:center">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4z"/></svg>
+            Kirim Saran
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="container">
@@ -795,6 +864,7 @@
         <a href="#event">Medical Event</a>
         <a href="#tim">Tim Kami</a>
         <a href="#kontak">Kontak</a>
+        <a href="#saran">Kotak Saran</a>
       </div>
       <div class="fcol">
         <h5>Kontak</h5>
@@ -836,6 +906,45 @@
     let t='Halo Familia Medika, saya '+(nm||'(nama)')+' ingin menanyakan layanan: '+sv+'.';
     if(ms) t+=' Keluhan/catatan: '+ms;
     window.open('https://wa.me/6282147267448?text='+encodeURIComponent(t),'_blank');
+  });
+
+  // kotak saran → Google Sheets
+  const SCRIPT_URL = 'PASTE_APPS_SCRIPT_URL_DISINI';
+  document.getElementById('saranBtn').addEventListener('click', async ()=>{
+    const nama = document.getElementById('saranNama').value.trim();
+    const kategori = document.getElementById('saranKat').value;
+    const pesan = document.getElementById('saranPesan').value.trim();
+    const msg = document.getElementById('saranMsg');
+    const btn = document.getElementById('saranBtn');
+
+    if(!pesan){
+      msg.textContent = 'Mohon isi pesan saran Anda terlebih dahulu.';
+      msg.className = 'saran-msg show err'; return;
+    }
+    if(SCRIPT_URL === 'PASTE_APPS_SCRIPT_URL_DISINI'){
+      msg.textContent = 'Terima kasih atas saran Anda! (Demo mode — hubungkan Google Sheets untuk menyimpan data.)';
+      msg.className = 'saran-msg show ok';
+      document.getElementById('saranNama').value='';
+      document.getElementById('saranPesan').value=''; return;
+    }
+    btn.disabled = true; btn.style.opacity='.6';
+    msg.textContent = 'Mengirim saran Anda...';
+    msg.className = 'saran-msg show loading';
+    try{
+      await fetch(SCRIPT_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({nama, kategori, pesan})
+      });
+      msg.textContent = 'Terima kasih! Saran Anda telah kami terima dan akan kami tindaklanjuti. 🙏';
+      msg.className = 'saran-msg show ok';
+      document.getElementById('saranNama').value='';
+      document.getElementById('saranPesan').value='';
+    }catch(err){
+      msg.textContent = 'Maaf, terjadi kesalahan. Silakan coba lagi atau hubungi kami via WhatsApp.';
+      msg.className = 'saran-msg show err';
+    }
+    btn.disabled = false; btn.style.opacity='1';
   });
 </script>
 </body>
