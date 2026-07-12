@@ -426,13 +426,9 @@
   footer .fcol a:hover{color:var(--teal2);transform:translateX(3px)}
   .foot-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.85rem;color:#7e9bbd}
 
-  .wa-float{position:fixed;bottom:24px;right:24px;z-index:60;width:60px;height:60px;border-radius:50%;
-    background:var(--wa);display:grid;place-items:center;box-shadow:0 10px 30px -8px rgba(37,211,102,.7);transition:.25s;animation:pulse 2.4s infinite}
-  .wa-float:hover{transform:scale(1.08)}
-  .wa-float svg{width:30px;height:30px;color:#fff}
 
   /* AI Chat */
-  .ai-toggle{position:fixed;bottom:96px;right:24px;z-index:60;width:60px;height:60px;border-radius:50%;
+  .ai-toggle{position:fixed;bottom:24px;right:24px;z-index:60;width:60px;height:60px;border-radius:50%;
     background:linear-gradient(135deg,var(--navy),var(--teal));display:grid;place-items:center;
     box-shadow:0 10px 30px -8px rgba(23,58,120,.6);transition:.3s;cursor:pointer;border:none}
   .ai-toggle:hover{transform:scale(1.08)}
@@ -472,11 +468,9 @@
   .ai-input-bar button:disabled{opacity:.5;cursor:not-allowed}
   .ai-input-bar button svg{width:20px;height:20px}
   @media(max-width:480px){
-    .ai-panel{width:calc(100vw - 20px);right:10px;bottom:86px;max-height:70vh}
-    .ai-toggle{bottom:86px;right:16px;width:54px;height:54px}
-    .wa-float{right:16px;width:54px;height:54px}
+    .ai-panel{width:calc(100vw - 20px);right:10px;bottom:82px;max-height:70vh}
+    .ai-toggle{bottom:18px;right:16px;width:54px;height:54px}
   }
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.5)}70%{box-shadow:0 0 0 16px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
 
   .reveal{opacity:0;transform:translateY(28px);transition:.7s cubic-bezier(.2,.7,.2,1)}
   .reveal.in{opacity:1;transform:none}
@@ -1092,9 +1086,6 @@
   </div>
 </div>
 
-<a class="wa-float" href="https://wa.me/6282147267448" target="_blank" rel="noopener" aria-label="Chat WhatsApp">
-  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2zm5.5 12.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5L9 7.5c-.2-.5-.4-.4-.5-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>
-</a>
 
 <script>
   const nav=document.getElementById('top');
