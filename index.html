@@ -347,6 +347,35 @@
   .saran-msg.ok{background:#e6f1ea;border:1px solid #bcdcc9;color:#0e3a2a}
   .saran-msg.err{background:#fdeae4;border:1px solid #f6c9b9;color:#d9532f}
   .saran-msg.loading{background:var(--teal-soft);border:1px solid var(--teal);color:var(--navy)}
+  /* star rating */
+  .star-rating{display:flex;gap:4px}
+  .star{font-size:1.8rem;color:var(--line);cursor:pointer;transition:.2s;line-height:1}
+  .star.active,.star:hover{color:#f5a623}
+  .star-rating:hover .star{color:var(--line)}
+  .star-rating:hover .star:hover,.star-rating:hover .star:hover~.star~.star,
+  .star-rating .star.active{color:#f5a623}
+  .star-rating:hover .star:hover~.star{color:var(--line)}
+  /* consent checkbox */
+  .consent-check{display:flex;align-items:flex-start;gap:10px;margin:18px 0 20px;cursor:pointer;font-size:.88rem;color:var(--ink-soft);line-height:1.4}
+  .consent-check input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--teal)}
+  .consent-check strong{color:var(--navy)}
+  /* testimoni */
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .testi-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:28px 24px;
+    position:relative;transition:.3s}
+  .testi-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .testi-card .quote-mark{font-size:3rem;line-height:1;color:var(--teal);opacity:.3;font-family:serif;position:absolute;top:16px;right:20px}
+  .testi-card .testi-stars{color:#f5a623;font-size:1rem;letter-spacing:2px;margin-bottom:10px}
+  .testi-card .testi-text{color:var(--ink-soft);font-size:.94rem;margin-bottom:16px;font-style:italic;line-height:1.5}
+  .testi-card .testi-author{display:flex;align-items:center;gap:10px}
+  .testi-card .testi-av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;
+    font-weight:700;color:#fff;font-size:.9rem;flex:none}
+  .testi-card .testi-name{font-weight:600;font-size:.92rem;color:var(--navy)}
+  .testi-card .testi-kat{font-size:.78rem;color:var(--ink-soft)}
+  .testi-loading{display:flex;align-items:center;gap:10px;justify-content:center;padding:40px 0;
+    color:var(--ink-soft);font-size:.92rem;grid-column:1/-1}
+  .testi-empty{text-align:center;padding:24px 0;color:var(--ink-soft);font-size:.95rem}
+  @keyframes spin{to{transform:rotate(360deg)}}
 
   .booking{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:34px;box-shadow:var(--shadow-sm)}
   .booking h3{font-size:1.45rem;font-weight:600;margin-bottom:6px}
@@ -404,7 +433,7 @@
     .menu-btn{display:block}
     .nav-cta .btn:not(.menu-btn){display:none}
     header.nav .bar{position:relative}
-    .cards,.notes-grid,.ev-list,.foot-grid{grid-template-columns:1fr}
+    .cards,.notes-grid,.ev-list,.foot-grid,.testi-grid{grid-template-columns:1fr}
     section{padding:58px 0}
     .doc-info .name{font-size:1.55rem}
     .lead-card{flex-direction:column;max-width:420px}
@@ -777,6 +806,26 @@
   </div>
 </section>
 
+<!-- TESTIMONI -->
+<section id="testimoni">
+  <div class="container">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">Testimoni Pasien</span>
+      <h2 class="sec-title">Apa kata mereka tentang kami</h2>
+      <p>Pendapat jujur dari pasien dan keluarga yang telah menggunakan layanan Familia Medika.</p>
+    </div>
+    <div class="testi-grid" id="testiGrid">
+      <div class="testi-loading" id="testiLoading">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:24px;height:24px;animation:spin 1s linear infinite"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="12"/></svg>
+        <span>Memuat testimoni...</span>
+      </div>
+    </div>
+    <div class="testi-empty" id="testiEmpty" style="display:none">
+      <p>Belum ada testimoni yang ditampilkan. Jadilah yang pertama memberikan ulasan melalui <a href="#saran" style="color:var(--teal);font-weight:600">Kotak Saran</a> di bawah.</p>
+    </div>
+  </div>
+</section>
+
 <!-- KOTAK SARAN -->
 <section id="saran">
   <div class="container">
@@ -822,6 +871,20 @@
             <label for="saranPesan">Pesan Anda</label>
             <textarea id="saranPesan" rows="4" placeholder="Tuliskan saran, masukan, atau kritik Anda di sini..."></textarea>
           </div>
+          <div class="field">
+            <label>Rating layanan kami</label>
+            <div class="star-rating" id="starRating">
+              <span class="star" data-v="1">★</span>
+              <span class="star" data-v="2">★</span>
+              <span class="star" data-v="3">★</span>
+              <span class="star" data-v="4">★</span>
+              <span class="star" data-v="5">★</span>
+            </div>
+          </div>
+          <label class="consent-check">
+            <input type="checkbox" id="saranIzin">
+            <span>Saya mengizinkan pesan ini ditampilkan sebagai <strong>testimoni</strong> di website Familia Medika</span>
+          </label>
           <button class="btn btn-navy" id="saranBtn" style="width:100%;justify-content:center">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4z"/></svg>
             Kirim Saran
@@ -908,24 +971,31 @@
     window.open('https://wa.me/6282147267448?text='+encodeURIComponent(t),'_blank');
   });
 
+  // star rating
+  let currentRating = 0;
+  document.querySelectorAll('.star').forEach(s=>{
+    s.addEventListener('click',()=>{
+      currentRating = parseInt(s.dataset.v);
+      document.querySelectorAll('.star').forEach((st,i)=>{
+        st.classList.toggle('active', i < currentRating);
+      });
+    });
+  });
+
   // kotak saran → Google Sheets
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfzANiQ41Uhk7w7Vid73xXk53PT75T8v3YQP3lXVo8mtq3uBtqjYgi6TlVgMKvh32Q0w/exec';
   document.getElementById('saranBtn').addEventListener('click', async ()=>{
     const nama = document.getElementById('saranNama').value.trim();
     const kategori = document.getElementById('saranKat').value;
     const pesan = document.getElementById('saranPesan').value.trim();
+    const rating = currentRating;
+    const izinTestimoni = document.getElementById('saranIzin').checked;
     const msg = document.getElementById('saranMsg');
     const btn = document.getElementById('saranBtn');
 
     if(!pesan){
       msg.textContent = 'Mohon isi pesan saran Anda terlebih dahulu.';
       msg.className = 'saran-msg show err'; return;
-    }
-    if(SCRIPT_URL === 'PASTE_APPS_SCRIPT_URL_DISINI'){
-      msg.textContent = 'Terima kasih atas saran Anda! (Demo mode — hubungkan Google Sheets untuk menyimpan data.)';
-      msg.className = 'saran-msg show ok';
-      document.getElementById('saranNama').value='';
-      document.getElementById('saranPesan').value=''; return;
     }
     btn.disabled = true; btn.style.opacity='.6';
     msg.textContent = 'Mengirim saran Anda...';
@@ -934,18 +1004,57 @@
       await fetch(SCRIPT_URL, {
         method: 'POST', mode: 'no-cors',
         headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({nama, kategori, pesan})
+        body: JSON.stringify({nama, kategori, pesan, rating, izinTestimoni})
       });
       msg.textContent = 'Terima kasih! Saran Anda telah kami terima dan akan kami tindaklanjuti. 🙏';
       msg.className = 'saran-msg show ok';
       document.getElementById('saranNama').value='';
       document.getElementById('saranPesan').value='';
+      document.getElementById('saranIzin').checked=false;
+      currentRating=0;
+      document.querySelectorAll('.star').forEach(st=>st.classList.remove('active'));
     }catch(err){
       msg.textContent = 'Maaf, terjadi kesalahan. Silakan coba lagi atau hubungi kami via WhatsApp.';
       msg.className = 'saran-msg show err';
     }
     btn.disabled = false; btn.style.opacity='1';
   });
+
+  // fetch & tampilkan testimoni yang sudah di-approve
+  const colors = ['#1f9fc0','#173a78','#16a34a','#e07a24','#8b5cf6'];
+  async function loadTestimoni(){
+    const grid = document.getElementById('testiGrid');
+    const loading = document.getElementById('testiLoading');
+    const empty = document.getElementById('testiEmpty');
+    try{
+      const res = await fetch(SCRIPT_URL + '?action=testimoni');
+      const data = await res.json();
+      loading.style.display='none';
+      if(!data.length){ empty.style.display='block'; return; }
+      data.forEach((t,i)=>{
+        const stars = '★'.repeat(t.rating||5) + '☆'.repeat(5-(t.rating||5));
+        const initial = (t.nama||'A').charAt(0).toUpperCase();
+        const bg = colors[i % colors.length];
+        const card = document.createElement('div');
+        card.className = 'testi-card reveal in';
+        card.innerHTML = '<div class="quote-mark">"</div>'
+          + '<div class="testi-stars">'+stars+'</div>'
+          + '<div class="testi-text">"'+t.pesan+'"</div>'
+          + '<div class="testi-author">'
+          + '<div class="testi-av" style="background:'+bg+'">'+initial+'</div>'
+          + '<div><div class="testi-name">'+t.nama+'</div>'
+          + '<div class="testi-kat">'+t.kategori+'</div></div></div>';
+        grid.appendChild(card);
+      });
+      // sesuaikan kolom grid
+      if(data.length === 1) grid.style.gridTemplateColumns='1fr';
+      else if(data.length === 2) grid.style.gridTemplateColumns='1fr 1fr';
+    }catch(e){
+      loading.style.display='none';
+      empty.style.display='block';
+    }
+  }
+  loadTestimoni();
 </script>
 </body>
 </html>
