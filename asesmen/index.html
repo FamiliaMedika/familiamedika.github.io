@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="index,follow">
+  <title>Asesmen Awal — Familia Medika</title>
+  <meta name="description" content="Form asesmen awal Familia Medika untuk mengumpulkan informasi sebelum ditinjau tenaga kesehatan.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="config-alert hidden" id="configAlert">Form belum terhubung ke backend. Administrator perlu mengisi <b>config.js</b>.</div>
+  <main class="intake-shell">
+    <article class="intake-card">
+      <header class="intake-head">
+        <div class="brand"><span class="brand-mark">FM</span><div><strong>Familia Medika</strong><small>Asisten Pra-Konsultasi</small></div></div>
+        <h1>Asesmen awal sebelum ditinjau tenaga kesehatan</h1>
+        <p>Form ini membantu mengumpulkan informasi awal. Form tidak menetapkan diagnosis, tidak memberikan resep, dan tidak menggantikan pemeriksaan langsung.</p>
+      </header>
+      <div class="progress"><span id="progressBar" style="width:20%"></span></div>
+      <div class="intake-body">
+        <form id="intakeForm" novalidate>
+          <section class="step active" data-step="1">
+            <span class="eyebrow">Langkah 1 dari 5</span><h2>Persetujuan dan keselamatan</h2>
+            <div class="check-list">
+              <label class="check-item"><input name="consent" type="checkbox"><span>Saya memahami bahwa hasil form merupakan <b>informasi awal</b> dan bukan diagnosis medis.</span></label>
+              <label class="check-item"><input name="dataConsent" type="checkbox"><span>Saya menyetujui pemrosesan informasi yang saya masukkan untuk kebutuhan pelayanan Familia Medika.</span></label>
+              <label class="check-item"><input name="emergencyUnderstanding" type="checkbox"><span>Saya memahami bahwa kondisi gawat darurat harus segera ditangani di IGD atau melalui PSC 119.</span></label>
+            </div>
+            <div class="warning-box" style="margin-top:16px"><b>Jangan gunakan form ini untuk keadaan darurat.</b><br>Sesak napas berat, nyeri dada berat, kejang, penurunan kesadaran, perdarahan hebat, gejala stroke, atau kondisi yang memburuk cepat memerlukan pertolongan segera.</div>
+            <p class="error" id="step1Error"></p><div class="modal-actions"><button class="btn btn-primary" type="button" data-next>Lanjutkan</button></div>
+          </section>
+
+          <section class="step" data-step="2">
+            <span class="eyebrow">Langkah 2 dari 5</span><h2>Identitas minimal</h2>
+            <div class="form-grid">
+              <label class="field"><span>Nama atau inisial</span><input name="patient_name" maxlength="120" required></label>
+              <label class="field"><span>Usia</span><input name="age" type="number" min="0" max="120" required></label>
+              <label class="field"><span>Jenis kelamin</span><select name="gender"><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option><option>Lainnya</option><option>Tidak diketahui</option></select></label>
+              <label class="field"><span>Status kehamilan</span><select name="pregnancy"><option>Tidak / tidak relevan</option><option>Hamil</option><option>Mungkin hamil</option><option>Tidak diketahui</option></select></label>
+              <label class="field"><span>Nomor WhatsApp</span><input name="phone" inputmode="tel" placeholder="08xxxxxxxxxx" required></label>
+              <label class="field"><span>Kabupaten/kecamatan</span><input name="area" placeholder="Contoh: Bantul"></label>
+            </div>
+            <label class="check-item hidden" id="guardianBox"><input name="guardian_confirmed" type="checkbox"><span>Saya adalah orang tua/wali atau mengisi form ini bersama orang tua/wali pasien.</span></label>
+            <p class="error" id="step2Error"></p><div class="modal-actions"><button class="btn btn-outline" type="button" data-prev>Kembali</button><button class="btn btn-primary" type="button" data-next>Lanjutkan</button></div>
+          </section>
+
+          <section class="step" data-step="3">
+            <span class="eyebrow">Langkah 3 dari 5</span><h2>Pemeriksaan tanda bahaya</h2>
+            <p class="muted">Pilih “Ya” hanya bila kondisi tersebut sedang terjadi.</p>
+            <div class="red-grid" id="redFlagGrid"></div>
+            <div class="emergency hidden" id="emergencyBox"><h3>Hentikan pengisian form</h3><p>Jawaban Anda menunjukkan kemungkinan kondisi gawat darurat. Segera menuju IGD rumah sakit terdekat atau hubungi PSC 119. Jangan menunggu respons dari website.</p></div>
+            <p class="error" id="step3Error"></p><div class="modal-actions"><button class="btn btn-outline" type="button" data-prev>Kembali</button><button class="btn btn-primary" type="button" id="redFlagNext" data-next>Lanjutkan</button></div>
+          </section>
+
+          <section class="step" data-step="4">
+            <span class="eyebrow">Langkah 4 dari 5</span><h2>Keluhan dan data awal</h2>
+            <label class="field"><span>Keluhan utama</span><textarea name="chief_complaint" rows="3" maxlength="1200" required placeholder="Contoh: demam dan batuk sejak 3 hari"></textarea></label>
+            <div class="form-grid">
+              <label class="field"><span>Sejak kapan</span><input name="onset"></label><label class="field"><span>Perjalanan keluhan</span><input name="course" placeholder="Membaik, menetap, atau memburuk"></label>
+              <label class="field span2"><span>Gejala penyerta</span><textarea name="associated_symptoms" rows="2"></textarea></label>
+              <label class="field"><span>Riwayat penyakit</span><textarea name="medical_history" rows="2"></textarea></label><label class="field"><span>Obat yang sedang digunakan</span><textarea name="current_medication" rows="2"></textarea></label>
+              <label class="field span2"><span>Alergi</span><input name="allergies" placeholder="Tuliskan bila diketahui"></label>
+              <label class="field"><span>Suhu (°C)</span><input name="temperature" inputmode="decimal" placeholder="Contoh: 38.1"></label><label class="field"><span>SpO₂ (%)</span><input name="spo2" inputmode="numeric"></label>
+              <label class="field"><span>Frekuensi napas/menit</span><input name="respiratory_rate" inputmode="numeric"></label><label class="field"><span>Tekanan darah</span><input name="blood_pressure" placeholder="Contoh: 120/80"></label>
+            </div>
+            <p class="error" id="step4Error"></p><div class="modal-actions"><button class="btn btn-outline" type="button" data-prev>Kembali</button><button class="btn btn-primary" type="button" data-next>Tinjau data</button></div>
+          </section>
+
+          <section class="step" data-step="5">
+            <span class="eyebrow">Langkah 5 dari 5</span><h2>Periksa sebelum dikirim</h2>
+            <div class="summary-list" id="summaryList"></div>
+            <div class="warning-box" style="margin-top:16px">Informasi ini akan masuk sebagai <b>data pasien yang belum diverifikasi</b>. Diagnosis dan pengobatan hanya ditetapkan oleh dokter setelah penilaian yang memadai.</div>
+            <p class="error" id="submitError"></p><div class="modal-actions"><button class="btn btn-outline" type="button" data-prev>Kembali</button><button class="btn btn-primary" type="submit" id="submitBtn">Kirim untuk ditinjau</button></div>
+          </section>
+        </form>
+
+        <section class="hidden" id="successBox">
+          <span class="eyebrow">Berhasil dikirim</span><h2>Asesmen telah masuk ke antrean</h2>
+          <div class="detail-box"><div class="kv"><span>Kode asesmen</span><b id="successCode">-</b><span>Status</span><b>Menunggu review tenaga kesehatan</b></div></div>
+          <p>Catat kode tersebut. Hasil klinis belum ditetapkan sampai dokter melakukan review.</p>
+          <div class="modal-actions"><a class="btn btn-outline" href="/">Kembali ke website</a><a class="btn btn-primary" href="https://wa.me/6282147267448" target="_blank" rel="noopener">Hubungi Familia Medika</a></div>
+        </section>
+      </div>
+    </article>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="intake.js"></script>
+</body>
+</html>
