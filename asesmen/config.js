@@ -1,6 +1,6 @@
 window.FM_CONFIG = {
-  SUPABASE_URL: "https://PROJECT_ID.supabase.co",
-  SUPABASE_ANON_KEY: "sb_publishable_REPLACE_ME",
+  SUPABASE_URL: "TEMPEL_PROJECT_URL_DI_SINI",
+  SUPABASE_ANON_KEY: "TEMPEL_PUBLISHABLE_KEY_DI_SINI",
   APP_NAME: "RME Familia Medika",
   PUBLIC_ASSESSMENT_URL: "https://www.familiamedika.id/asesmen/"
 };
