@@ -13,5 +13,40 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit}
 @media(max-width:900px){.login{grid-template-columns:1fr}.login-brand{display:none}.app{grid-template-columns:1fr}.sidebar{position:fixed;left:-270px;z-index:40;width:250px;transition:.25s}.sidebar.open{left:0}.menu-toggle{display:inline-flex}.metrics{grid-template-columns:1fr 1fr}.detail-grid,.grid-2{grid-template-columns:1fr}.topbar{padding:0 16px}.content{padding:18px}}
 @media(max-width:600px){.metrics{grid-template-columns:1fr}.hero-card,.toolbar,.panel-head{align-items:flex-start;flex-direction:column}.form-grid,.red-grid{grid-template-columns:1fr}.form-grid .span2{grid-column:auto}.summary-row,.kv{grid-template-columns:1fr}.intake-shell{padding:10px}.intake-body{padding:20px}.user div{display:none}}
 
+/* Familia Medika Health Assessment branding */
+.brand{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
 
-.brand-logo{width:56px;height:56px;object-fit:contain;border-radius:12px;}
+.brand-logo-wrap{
+  width:82px;
+  height:82px;
+  background:#ffffff;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+
+.brand-logo{
+  width:62px;
+  height:62px;
+  object-fit:contain;
+}
+
+.brand-title{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.brand-title strong{
+  line-height:1.1;
+}
+
+.brand-title small{
+  margin-top:6px;
+}
