@@ -137,7 +137,6 @@
   .nav-cta{display:flex;align-items:center;gap:12px}
   .menu-btn{display:none;background:none;border:none;cursor:pointer;color:var(--navy);padding:6px}
   .menu-btn svg{width:28px;height:28px}
-  .mobile-assessment{display:none}
 
   /* hero */
   .hero{padding:54px 0 64px}
@@ -494,7 +493,6 @@
     .nav-links.open .btn{width:100%;justify-content:center}
     .menu-btn{display:block}
     .nav-cta .btn:not(.menu-btn){display:none}
-    .mobile-assessment{display:flex;width:100%;justify-content:center;margin-top:10px}
     header.nav .bar{position:relative}
     .cards,.notes-grid,.ev-list,.foot-grid,.testi-grid{grid-template-columns:1fr}
     section{padding:58px 0}
@@ -506,7 +504,6 @@
     .about-highlights{grid-template-columns:1fr}
   }
 </style>
-<link rel="stylesheet" href="health-assistant.css">
 </head>
 <body>
 
@@ -529,9 +526,12 @@
         <a class="link" href="#event">Medical Event</a>
         <a class="link" href="#tim">Tim</a>
         <a class="link" href="#kontak">Kontak</a>
-        <a class="btn btn-wa mobile-assessment" href="/asesmen/" rel="noopener">🩺 Health Assessment</a>
       </nav>
     <div class="nav-cta">
+  <a class="btn btn-wa" href="/asesmen/" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2zm5.5 12.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2s-.8.9-1 1.1c-.2.2-.4.2-.7.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5L9 7.5c-.2-.5-.4-.4-.5-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg>
+          Health Assessment
+        </a>
         <button class="menu-btn" id="menuBtn" aria-label="Buka menu">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
@@ -1066,23 +1066,19 @@
 </div><!-- /wrap -->
 
 <!-- AI CHAT -->
-<button 
-class="ai-toggle health-assistant" 
-id="aiToggle"
-onclick="openHealthAssistant()"
-aria-label="Konsultasi AI">
+<button class="ai-toggle" id="aiToggle" aria-label="Konsultasi AI">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg>
-  <span class="badge">FM</span>
+  <span class="badge">AI</span>
 </button>
 <div class="ai-panel" id="aiPanel">
   <div class="ai-header">
     <div class="ai-av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4m0 4a4 4 0 100 8 4 4 0 000-8z"/><path d="M6 12H2m4 0a4 4 0 108 0"/><path d="M18 12h4"/><path d="M12 16v4"/></svg></div>
-    <div class="ai-info"><b>Health Assistant</b><small>Familia Medika · Digital Health Assistant</small></div>
+    <div class="ai-info"><b>Asisten Kesehatan AI</b><small>Familia Medika · Pra-Konsultasi</small></div>
     <button class="ai-close" id="aiClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
   </div>
   <div class="ai-messages" id="aiMessages">
     <div class="ai-msg disclaimer">⚠️ Asisten ini memberikan informasi kesehatan umum & diagnosis banding, bukan diagnosis pasti. Obat & pemeriksaan tetap oleh dokter.</div>
-
+    <div class="ai-msg bot">Halo! 👋 Saya asisten kesehatan Familia Medika. Saya bisa membantu memberikan informasi awal tentang keluhan Anda.<br><br>Silakan ceritakan keluhan yang Anda rasakan — misalnya: <em>"sudah 3 hari demam dan batuk"</em></div>
   </div>
   <div class="ai-input-bar">
     <input type="text" id="aiInput" placeholder="Ketik keluhan Anda..." autocomplete="off">
@@ -1207,9 +1203,7 @@ aria-label="Konsultasi AI">
   const aiSendBtn=document.getElementById('aiSend');
   let chatHistory=[];
 
-  aiToggle.addEventListener('click',()=>{
-  openHealthAssistant();
-});
+  aiToggle.addEventListener('click',()=>{aiPanel.classList.toggle('open');if(aiPanel.classList.contains('open'))aiInput.focus();});
   aiClose.addEventListener('click',()=>aiPanel.classList.remove('open'));
 
   function addMsg(text,role){
@@ -1254,6 +1248,5 @@ aria-label="Konsultasi AI">
   aiSendBtn.addEventListener('click',sendChat);
   aiInput.addEventListener('keydown',e=>{if(e.key==='Enter')sendChat();});
 </script>
-<script src="health-assistant.js"></script>
 </body>
 </html>
