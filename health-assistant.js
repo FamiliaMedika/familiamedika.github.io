@@ -383,3 +383,46 @@ document.addEventListener("DOMContentLoaded",()=>{
  }
 
 });
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+ const input=document.getElementById("aiInput");
+ const sendButton=document.getElementById("aiSend");
+
+
+ if(input){
+
+   input.addEventListener("keydown",(e)=>{
+
+     if(e.key==="Enter"){
+
+       e.preventDefault();
+
+       processHealthInput(input.value);
+
+       input.value="";
+
+     }
+
+   });
+
+ }
+
+
+ if(sendButton){
+
+   sendButton.addEventListener("click",()=>{
+
+     if(input.value.trim()){
+
+       processHealthInput(input.value);
+
+       input.value="";
+
+     }
+
+   });
+
+ }
+
+});
