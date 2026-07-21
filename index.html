@@ -504,6 +504,7 @@
     .about-highlights{grid-template-columns:1fr}
   }
 </style>
+<link rel="stylesheet" href="health-assistant.css">
 </head>
 <body>
 
@@ -1066,26 +1067,38 @@
 </div><!-- /wrap -->
 
 <!-- AI CHAT -->
-<button class="ai-toggle" id="aiToggle" aria-label="Konsultasi AI">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg>
+<button 
+class="ai-toggle health-assistant" 
+id="aiToggle"
+onclick="openHealthAssistant()"
+aria-label="Health Assistant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+  </svg>
   <span class="badge">FM</span>
 </button>
+
 <div class="ai-panel" id="aiPanel">
   <div class="ai-header">
-    <div class="ai-av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8V4m0 4a4 4 0 100 8 4 4 0 000-8z"/><path d="M6 12H2m4 0a4 4 0 108 0"/><path d="M18 12h4"/><path d="M12 16v4"/></svg></div>
-    <div class="ai-info"><b>Health Assistant</b><small>Familia Medika · Digital Health Assistant</small></div>
-    <button class="ai-close" id="aiClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    <div class="ai-av">🩺</div>
+    <div class="ai-info">
+      <b>Health Assistant</b>
+      <small>Familia Medika · Digital Health Assistant</small>
+    </div>
+    <button class="ai-close" id="aiClose">×</button>
   </div>
-  <div class="ai-messages" id="aiMessages">
-    <div class="ai-msg disclaimer">⚠️ Asisten ini memberikan informasi kesehatan umum & diagnosis banding, bukan diagnosis pasti. Obat & pemeriksaan tetap oleh dokter.</div>
 
+  <div class="ai-messages" id="aiMessages">
+    <div class="ai-msg disclaimer">
+    ⚠️ Health Assistant membantu penilaian awal kesehatan. Diagnosis dan terapi tetap dilakukan oleh tenaga kesehatan.
+    </div>
   </div>
+
   <div class="ai-input-bar">
-    <input type="text" id="aiInput" placeholder="Ketik keluhan Anda..." autocomplete="off">
-    <button id="aiSend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4z"/></svg></button>
+    <input id="aiInput" type="text" placeholder="Ketik jawaban Anda..." autocomplete="off">
+    <button id="aiSend">➤</button>
   </div>
 </div>
-
 
 <script>
   const nav=document.getElementById('top');
@@ -1194,15 +1207,8 @@
   }
   loadTestimoni();
 
-  // === HEALTH ASSISTANT HA-3 ===
-
-  const aiPanel=document.getElementById('aiPanel');
-  const aiClose=document.getElementById('aiClose');
-
-  aiClose.addEventListener('click',()=>{
-    aiPanel.classList.remove('open');
-  });
-
+  // Health Assistant HA-3 loaded externally
 </script>
+<script src="health-assistant.js"></script>
 </body>
 </html>
