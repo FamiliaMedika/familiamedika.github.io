@@ -1,0 +1,75 @@
+
+/* Familia Medika HA-3 UI Patch
+   Navbar cleanup + animated Clinical Intake buttons
+*/
+
+.mobile-assessment{
+  display:none !important;
+}
+
+/* Animated HA-3 choice buttons */
+.health-choice{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:15px;
+}
+
+.health-choice button{
+  position:relative;
+  overflow:hidden;
+  border:none;
+  padding:14px 18px;
+  border-radius:30px;
+  font-weight:700;
+  font-size:.85rem;
+  color:#fff;
+  cursor:pointer;
+  background:linear-gradient(135deg,#1f9fc0,#173a78);
+  box-shadow:0 8px 20px rgba(23,58,120,.25);
+  transition:.3s ease;
+  animation:fadeButton .4s ease both;
+}
+
+.health-choice button:first-child{
+  background:linear-gradient(135deg,#25d366,#16a34a);
+  animation:pulseHealth 2s infinite;
+}
+
+.health-choice button:hover{
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 12px 28px rgba(23,58,120,.35);
+}
+
+.health-choice button::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:50%;
+  height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+  transition:.5s;
+}
+
+.health-choice button:hover::before{
+  left:150%;
+}
+
+@keyframes pulseHealth{
+  0%{box-shadow:0 0 0 0 rgba(37,211,102,.5)}
+  70%{box-shadow:0 0 0 12px rgba(37,211,102,0)}
+  100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}
+}
+
+@keyframes fadeButton{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:none}
+}
+
+@media(max-width:640px){
+  .health-choice button{
+    padding:13px 15px;
+    font-size:.82rem;
+  }
+}
