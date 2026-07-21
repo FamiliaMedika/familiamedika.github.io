@@ -1,6 +1,8 @@
-/* =====================================
-   Familia Medika Health Assistant UI
-   ===================================== */
+
+/* =====================================================
+   Familia Medika Health Assistant - Compact UI Patch
+   Version: HA-2.1
+   ===================================================== */
 
 
 /* Floating Button */
@@ -10,15 +12,9 @@
   width:64px;
   height:64px;
 
-  background:
-  linear-gradient(135deg,#25d366,#1f9fc0);
+  background:linear-gradient(135deg,#25d366,#1f9fc0);
 
   border-radius:50%;
-
-  position:fixed;
-
-  display:grid;
-  place-items:center;
 
   box-shadow:
   0 15px 35px rgba(31,159,192,.35);
@@ -36,7 +32,7 @@
 
 
 
-/* Label kanan tombol */
+/* Label Health Assistant */
 
 .ai-toggle.health-assistant::after{
 
@@ -48,31 +44,24 @@
 
   bottom:10px;
 
-
   background:#173a78;
 
-  color:white;
+  color:#fff;
 
-
-  padding:8px 16px;
-
+  padding:8px 15px;
 
   border-radius:20px;
 
-
-  font-size:13px;
+  font-size:12px;
 
   font-weight:700;
 
-
   white-space:nowrap;
 
-
-  box-shadow:
-  0 8px 20px rgba(0,0,0,.15);
-
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
 
 }
+
 
 
 /* Badge */
@@ -87,74 +76,162 @@
 
 
 
-/* Quick Action dalam chat */
+/* =========================
+   CHAT PANEL COMPACT
+   ========================= */
 
-.health-choice{
 
-display:flex;
+.ai-panel{
 
-flex-direction:column;
+  width:340px;
 
-gap:12px;
+  max-height:520px;
 
-margin-top:18px;
+  border-radius:22px;
 
 }
 
+
+
+/* Header */
+
+.ai-header{
+
+  padding:14px 16px;
+
+}
+
+
+.ai-header .ai-av{
+
+  width:34px;
+
+  height:34px;
+
+}
+
+
+.ai-header .ai-info b{
+
+  font-size:.9rem;
+
+}
+
+
+.ai-header .ai-info small{
+
+  font-size:.7rem;
+
+}
+
+
+
+/* Messages */
+
+.ai-messages{
+
+  padding:14px;
+
+  gap:10px;
+
+}
+
+
+.ai-msg{
+
+  max-width:88%;
+
+  padding:10px 13px;
+
+  font-size:.84rem;
+
+  line-height:1.45;
+
+  border-radius:14px;
+
+}
+
+
+
+/* Disclaimer */
+
+.ai-msg.disclaimer{
+
+  font-size:.72rem;
+
+  padding:8px 12px;
+
+}
+
+
+
+/* Input */
+
+.ai-input-bar{
+
+  padding:10px 12px;
+
+}
+
+
+.ai-input-bar input{
+
+  font-size:.82rem;
+
+  padding:10px 14px;
+
+}
+
+
+.ai-input-bar button{
+
+  width:38px;
+
+  height:38px;
+
+}
+
+
+
+/* Quick Action */
+
+.health-choice{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:10px;
+
+  margin-top:14px;
+
+}
 
 
 .health-choice button{
 
-border:none;
+  border:none;
 
-padding:14px 18px;
+  padding:11px 14px;
 
+  border-radius:30px;
 
-border-radius:30px;
+  background:linear-gradient(135deg,#1f9fc0,#173a78);
 
+  color:#fff;
 
-background:
-linear-gradient(135deg,#1f9fc0,#173a78);
+  font-size:.82rem;
 
+  font-weight:700;
 
-color:white;
-
-
-font-size:.9rem;
-
-
-font-weight:700;
-
-
-cursor:pointer;
-
-
-transition:.25s;
-
-
-box-shadow:
-0 8px 20px rgba(23,58,120,.25);
+  cursor:pointer;
 
 }
 
-
-
-.health-choice button:hover{
-
-transform:translateY(-2px);
-
-background:#173a78;
-
-}
-
-
-
-/* Tombol assessment */
 
 .health-choice button:first-child{
 
-background:
-linear-gradient(135deg,#25d366,#16a34a);
+  background:linear-gradient(135deg,#25d366,#16a34a);
 
 }
 
@@ -165,15 +242,29 @@ linear-gradient(135deg,#25d366,#16a34a);
 @media(max-width:640px){
 
 
+.ai-panel{
+
+  width:calc(100vw - 40px);
+
+  right:20px;
+
+  bottom:85px;
+
+  max-height:65vh;
+
+}
+
+
+
 .ai-toggle.health-assistant{
 
-width:58px;
+  width:58px;
 
-height:58px;
+  height:58px;
 
-right:16px;
+  right:16px;
 
-bottom:18px;
+  bottom:18px;
 
 }
 
@@ -181,30 +272,24 @@ bottom:18px;
 
 .ai-toggle.health-assistant::after{
 
+  right:65px;
 
-right:65px;
+  bottom:8px;
 
+  font-size:11px;
 
-bottom:8px;
-
-
-font-size:11px;
-
-
-padding:7px 12px;
-
+  padding:7px 12px;
 
 }
 
 
 
-.health-choice button{
+.ai-msg{
 
-font-size:.85rem;
-
-padding:13px;
+  font-size:.82rem;
 
 }
+
 
 
 }
