@@ -423,3 +423,25 @@ document.addEventListener("DOMContentLoaded",()=>{
  }
 
 });
+
+// =====================================
+// Close Health Assistant Panel
+// =====================================
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+  const aiPanel = document.getElementById("aiPanel");
+  const aiClose = document.getElementById("aiClose");
+
+
+  if(aiClose && aiPanel){
+
+    aiClose.onclick = function(){
+
+      aiPanel.classList.remove("open");
+
+    };
+
+  }
+
+});
