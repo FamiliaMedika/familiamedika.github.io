@@ -1,98 +1,122 @@
 
 /* =====================================================
-   Familia Medika Health Assistant
-   HA-3 Clinical Intake Flow FINAL
-   9 Step Clinical Intake Engine
-   ===================================================== */
+ Familia Medika Health Assistant
+ HA-3 Human Conversation Edition
+ Natural typing + empathetic clinical intake
+ ===================================================== */
 
 let healthState = {
-  step: 1,
-  patient_relation: "",
-  age: "",
-  chief_complaint: "",
-  duration: "",
-  complaint_detail: "",
-  medical_history: "",
-  medication: "",
-  danger_sign: "",
-  risk_level: "",
-  recommended_service: []
+  step:1,
+  patient_relation:"",
+  age:"",
+  chief_complaint:"",
+  duration:"",
+  complaint_detail:"",
+  medical_history:"",
+  medication:"",
+  danger_sign:"",
+  risk_level:""
 };
 
 
 function openHealthAssistant(){
 
-  const panel=document.getElementById("aiPanel");
+ const panel=document.getElementById("aiPanel");
+ if(panel) panel.classList.add("open");
 
-  if(panel){
-    panel.classList.add("open");
-  }
+ const messages=document.getElementById("aiMessages");
 
-  const messages=document.getElementById("aiMessages");
+ if(messages && !document.getElementById("healthWelcome")){
 
-  if(messages && !document.getElementById("healthWelcome")){
+  const div=document.createElement("div");
+  div.id="healthWelcome";
+  div.className="ai-msg bot";
 
-    const div=document.createElement("div");
+  div.innerHTML=`
+  Halo 👋
 
-    div.id="healthWelcome";
-    div.className="ai-msg bot";
+  Saya <b>Health Assistant Familia Medika</b>.
 
-    div.innerHTML=`
-    Halo 👋
+  <br><br>
 
-    Saya <b>Health Assistant Familia Medika</b>.
+  Saya akan membantu memahami kondisi kesehatan Anda
+  melalui beberapa pertanyaan singkat.
 
-    <br><br>
+  <br><br>
 
-    Saya membantu melakukan penilaian awal kesehatan
-    untuk menentukan kebutuhan layanan yang sesuai.
+  Siapa yang membutuhkan bantuan kesehatan?
 
-    <br><br>
+  <div class="health-choice">
+    <button onclick="selectRelation('Saya sendiri')">👤 Saya sendiri</button>
+    <button onclick="selectRelation('Orang tua')">👴 Orang tua</button>
+    <button onclick="selectRelation('Anak')">👶 Anak</button>
+    <button onclick="selectRelation('Keluarga lain')">👨‍👩‍👧 Keluarga lain</button>
+  </div>
+  `;
 
-    <b>Siapa yang membutuhkan bantuan kesehatan?</b>
-
-    <div class="health-choice">
-
-      <button onclick="selectRelation('Saya sendiri')">
-      👤 Saya sendiri
-      </button>
-
-      <button onclick="selectRelation('Orang tua')">
-      👴 Orang tua
-      </button>
-
-      <button onclick="selectRelation('Anak')">
-      👶 Anak
-      </button>
-
-      <button onclick="selectRelation('Keluarga lain')">
-      👨‍👩‍👧 Keluarga lain
-      </button>
-
-    </div>
-    `;
-
-    messages.appendChild(div);
-    messages.scrollTop=messages.scrollHeight;
-
-  }
-
+  messages.appendChild(div);
+ }
 }
 
 
 function addHealthMessage(text,type="bot"){
 
-  const messages=document.getElementById("aiMessages");
+ const messages=document.getElementById("aiMessages");
+ const div=document.createElement("div");
 
-  const div=document.createElement("div");
+ div.className="ai-msg "+type;
+ div.innerHTML=text;
 
-  div.className="ai-msg "+type;
+ messages.appendChild(div);
+ messages.scrollTop=messages.scrollHeight;
 
-  div.innerHTML=text;
+}
 
-  messages.appendChild(div);
 
-  messages.scrollTop=messages.scrollHeight;
+function showTyping(){
+
+ const messages=document.getElementById("aiMessages");
+
+ if(document.getElementById("typingIndicator")) return;
+
+ const div=document.createElement("div");
+
+ div.id="typingIndicator";
+ div.className="ai-msg bot typing";
+
+ div.innerHTML=`
+ Health Assistant sedang mengetik
+ <span class="dots">
+ <span></span><span></span><span></span>
+ </span>
+ `;
+
+ messages.appendChild(div);
+ messages.scrollTop=messages.scrollHeight;
+}
+
+
+function hideTyping(){
+
+ const el=document.getElementById("typingIndicator");
+ if(el) el.remove();
+
+}
+
+
+function assistantReply(text,next,time=1200){
+
+ showTyping();
+
+ setTimeout(()=>{
+
+  hideTyping();
+
+  addHealthMessage(text);
+
+  if(next) next();
+
+ },time);
 
 }
 
@@ -100,23 +124,21 @@ function addHealthMessage(text,type="bot"){
 
 function selectRelation(value){
 
-  healthState.patient_relation=value;
+ healthState.patient_relation=value;
 
-  addHealthMessage(value,"user");
+ addHealthMessage(value,"user");
 
-  setTimeout(()=>{
+ assistantReply(`
+ Terima kasih sudah memberikan informasi.
 
-    addHealthMessage(`
-    Baik.
+ <br><br>
 
-    <br><br>
+ Saya bantu melakukan penilaian awal terlebih dahulu ya.
 
-    <b>Berapa usia pasien?</b>
-    `);
+ <br><br>
 
-    healthState.step=2;
-
-  },400);
+ Boleh tahu berapa usia pasien?
+ `,()=>healthState.step=2);
 
 }
 
@@ -124,375 +146,218 @@ function selectRelation(value){
 
 function processHealthInput(text){
 
-  if(!text.trim()) return;
+ if(!text.trim()) return;
 
-  addHealthMessage(text,"user");
-
-
-  switch(healthState.step){
-
-    case 2:
-      healthState.age=text;
-      askComplaint();
-      break;
+ addHealthMessage(text,"user");
 
 
-    case 3:
-      healthState.chief_complaint=text;
-      askDuration();
-      break;
+ switch(healthState.step){
+
+ case 2:
+  healthState.age=text;
+  assistantReply(`
+  Baik.
+
+  <br><br>
+
+  Apa keluhan utama pasien?
+
+  <br><br>
+
+  Contoh:
+  <br>
+  • Demam
+  <br>
+  • Luka sulit sembuh
+  <br>
+  • Sesak napas
+  <br>
+  • Gula darah tidak terkontrol
+  `,()=>healthState.step=3);
+ break;
 
 
-    case 4:
-      healthState.duration=text;
-      askComplaintDetail();
-      break;
+ case 3:
+  healthState.chief_complaint=text;
+  assistantReply(`
+  Terima kasih.
+
+  <br><br>
+
+  Sudah berapa lama keluhan tersebut terjadi?
+  `,()=>healthState.step=4);
+ break;
 
 
-    case 5:
-      healthState.complaint_detail=text;
-      askHistory();
-      break;
+ case 4:
+  healthState.duration=text;
+  assistantReply(`
+  Baik.
+
+  <br><br>
+
+  Sekarang, boleh ceritakan keluhan pasien secara lebih lengkap?
+
+  <br><br>
+
+  Misalnya:
+  <br>
+  "Luka kaki diabetes sejak 2 minggu, terasa nyeri dan keluar cairan"
+  `,()=>healthState.step=5);
+ break;
 
 
-    case 6:
-      healthState.medical_history=text;
-      askMedication();
-      break;
+ case 5:
+  healthState.complaint_detail=text;
+  assistantReply(`
+  Terima kasih sudah menjelaskan.
+
+  <br><br>
+
+  Untuk membantu memberikan arahan yang lebih sesuai,
+  apakah pasien memiliki riwayat penyakit sebelumnya?
+  `,()=>healthState.step=6);
+ break;
 
 
-    case 7:
-      healthState.medication=text;
-      askDanger();
-      break;
+ case 6:
+  healthState.medical_history=text;
+  assistantReply(`
+  Baik.
+
+  <br><br>
+
+  Apakah pasien sedang mengonsumsi obat rutin?
+  `,()=>healthState.step=7);
+ break;
 
 
-    case 8:
-      healthState.danger_sign=text;
-      generateRisk();
-      break;
+ case 7:
+  healthState.medication=text;
+  assistantReply(`
+  Terima kasih.
 
-  }
+  <br><br>
 
-}
+  Apakah terdapat tanda bahaya berikut?
 
+  <br><br>
 
+  🚨 Sesak napas berat
+  <br>
+  🚨 Nyeri dada
+  <br>
+  🚨 Penurunan kesadaran
+  <br>
+  🚨 Kejang
+  <br>
+  🚨 Perdarahan berat
+  <br>
+  🚨 Luka menghitam / bernanah banyak
 
-/* STEP 3 */
+  <br><br>
 
-function askComplaint(){
-
-setTimeout(()=>{
-
-addHealthMessage(`
-<b>Apa keluhan utama pasien?</b>
-
-<br><br>
-
-Contoh:
-<br>
-🌡 Demam
-<br>
-😷 Batuk / sesak napas
-<br>
-🩹 Luka sulit sembuh
-<br>
-🩸 Gula darah tinggi
-<br>
-❤️ Nyeri dada
-<br>
-🚶 Sulit berjalan
-
-`);
-
-healthState.step=3;
-
-},400);
-
-}
+  Jawab: <b>Ada</b> atau <b>Tidak ada</b>
+  `,()=>healthState.step=8);
+ break;
 
 
+ case 8:
+  healthState.danger_sign=text;
+  generateRisk();
+ break;
 
-/* STEP 4 */
-
-function askDuration(){
-
-setTimeout(()=>{
-
-addHealthMessage(`
-<b>Sudah berapa lama keluhan terjadi?</b>
-
-<br><br>
-
-Contoh:
-<br>
-• Hari ini
-<br>
-• 3 hari
-<br>
-• 2 minggu
-<br>
-• 1 bulan
-
-`);
-
-healthState.step=4;
-
-},400);
-
-}
-
-
-
-/* STEP 5 */
-
-function askComplaintDetail(){
-
-setTimeout(()=>{
-
-addHealthMessage(`
-<b>Ceritakan keluhan utama pasien</b>
-
-<br><br>
-
-Contoh:
-<br>
-"Luka kaki diabetes sejak 2 minggu,
-keluar cairan dan terasa nyeri"
-
-`);
-
-healthState.step=5;
-
-},400);
+ }
 
 }
 
 
-
-/* STEP 6 */
-
-function askHistory(){
-
-setTimeout(()=>{
-
-addHealthMessage(`
-<b>Apakah ada riwayat penyakit sebelumnya?</b>
-
-<br><br>
-
-Contoh:
-<br>
-✓ Diabetes
-<br>
-✓ Hipertensi
-<br>
-✓ Stroke
-<br>
-✓ Jantung
-<br>
-✓ Ginjal
-<br>
-✓ Tidak ada
-
-`);
-
-healthState.step=6;
-
-},400);
-
-}
-
-
-
-/* STEP 7 */
-
-function askMedication(){
-
-setTimeout(()=>{
-
-addHealthMessage(`
-<b>Apakah ada obat rutin yang sedang diminum?</b>
-
-<br><br>
-
-Contoh:
-<br>
-• Obat diabetes
-<br>
-• Obat tekanan darah
-<br>
-• Pengencer darah
-<br>
-• Tidak ada
-
-`);
-
-healthState.step=7;
-
-},400);
-
-}
-
-
-
-/* STEP 8 */
-
-function askDanger(){
-
-setTimeout(()=>{
-
-addHealthMessage(`
-<b>Apakah ada tanda bahaya?</b>
-
-<br><br>
-
-🚨 Sesak napas berat
-<br>
-🚨 Nyeri dada
-<br>
-🚨 Penurunan kesadaran
-<br>
-🚨 Kejang
-<br>
-🚨 Perdarahan berat
-<br>
-🚨 Demam tinggi menetap
-<br>
-🚨 Luka menghitam / bernanah banyak
-
-<br><br>
-
-Jawab:
-<b>Ada</b> atau <b>Tidak ada</b>
-
-`);
-
-healthState.step=8;
-
-},400);
-
-}
-
-
-
-/* STEP 9 */
 
 function generateRisk(){
 
-let complaint=(healthState.chief_complaint+
-" "+healthState.complaint_detail).toLowerCase();
+ showTyping();
 
-let history=(healthState.medical_history||"").toLowerCase();
+ setTimeout(()=>{
 
-let danger=(healthState.danger_sign||"").toLowerCase();
-
-
-let risk="LOW";
-let services=["Health Assessment","Wellness Program"];
+ hideTyping();
 
 
-if(danger.includes("ada")){
+ let complaint=(healthState.chief_complaint+" "+healthState.complaint_detail).toLowerCase();
+ let history=(healthState.medical_history||"").toLowerCase();
+ let danger=(healthState.danger_sign||"").toLowerCase();
 
-risk="HIGH";
-services=["Pemeriksaan segera","IGD"];
 
-}
+ let risk="LOW";
+ let recommendation="Health Assessment / Wellness Program";
 
-else if(
+
+ if(danger.includes("ada")){
+  risk="HIGH";
+  recommendation="Pemeriksaan segera / IGD";
+ }
+ else if(
  complaint.includes("luka") ||
  history.includes("diabetes") ||
  history.includes("stroke") ||
- parseInt(healthState.age)>=65
-){
-
-risk="MODERATE";
-services=[
-"Home Visit Dokter",
-"Home Care",
-"Wound Care"
-];
-
-}
+ Number(healthState.age)>=65
+ ){
+  risk="MODERATE";
+  recommendation="Home Visit Dokter / Home Care / Wound Care";
+ }
 
 
-healthState.risk_level=risk;
-healthState.recommended_service=services;
+ healthState.risk_level=risk;
 
 
-setTimeout(()=>{
+ addHealthMessage(`
 
-addHealthMessage(`
+ <b>📋 Ringkasan Awal Kesehatan</b>
 
-<b>📋 Ringkasan Awal Kesehatan</b>
+ <br><br>
 
-<br><br>
+ 👤 Pasien: ${healthState.patient_relation}
 
-👤 Pasien:
-${healthState.patient_relation}
+ <br>
+ 🎂 Usia: ${healthState.age}
 
-<br><br>
+ <br>
+ 🩺 Keluhan: ${healthState.chief_complaint}
 
-🎂 Usia:
-${healthState.age}
+ <br>
+ 📝 Detail: ${healthState.complaint_detail}
 
-<br><br>
+ <br>
+ 📌 Riwayat: ${healthState.medical_history}
 
-🩺 Keluhan:
-${healthState.chief_complaint}
+ <br>
+ 💊 Obat: ${healthState.medication}
 
-<br><br>
+ <br><br>
 
-📝 Detail:
-${healthState.complaint_detail}
+ <b>Risk Level:</b>
 
-<br><br>
+ <br>
 
-📌 Riwayat:
-${healthState.medical_history}
+ ${risk==="HIGH"?"🔴 HIGH RISK":risk==="MODERATE"?"🟡 MODERATE RISK":"🟢 LOW RISK"}
 
-<br><br>
+ <br><br>
 
-💊 Obat:
-${healthState.medication}
+ <b>Rekomendasi Familia Medika:</b>
 
-<br><br>
+ <br>
+ ${recommendation}
 
-<b>Risk Level:</b>
+ <br><br>
 
-<br>
+ <div class="health-choice">
+ <button onclick="location.href='/asesmen/'">
+ 🩺 Lanjutkan Health Assessment
+ </button>
+ </div>
 
-${
-risk==="HIGH" 
-?"🔴 HIGH RISK"
-:
-risk==="MODERATE"
-?"🟡 MODERATE RISK"
-:
-"🟢 LOW RISK"
-}
+ `);
 
-<br><br>
-
-<b>Rekomendasi Familia Medika:</b>
-
-<br>
-${services.join("<br>")}
-
-
-<br><br>
-
-<div class="health-choice">
-
-<button onclick="location.href='/asesmen/'">
-🩺 Lanjutkan Health Assessment
-</button>
-
-</div>
-
-`);
-
-},700);
+ },2000);
 
 }
 
@@ -500,22 +365,21 @@ ${services.join("<br>")}
 
 document.addEventListener("DOMContentLoaded",()=>{
 
-const input=document.getElementById("aiInput");
+ const input=document.getElementById("aiInput");
 
-if(input){
+ if(input){
 
-input.addEventListener("keydown",(e)=>{
+ input.addEventListener("keydown",(e)=>{
 
-if(e.key==="Enter"){
+  if(e.key==="Enter"){
 
-processHealthInput(input.value);
+   processHealthInput(input.value);
+   input.value="";
 
-input.value="";
+  }
 
-}
+ });
 
-});
-
-}
+ }
 
 });
