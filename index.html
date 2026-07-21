@@ -506,6 +506,7 @@
     .about-highlights{grid-template-columns:1fr}
   }
 </style>
+<link rel="stylesheet" href="health-assistant.css">
 </head>
 <body>
 
@@ -1069,7 +1070,10 @@
 </div><!-- /wrap -->
 
 <!-- AI CHAT -->
-<button class="ai-toggle" id="aiToggle" aria-label="Konsultasi AI">
+<button 
+class="ai-toggle health-assistant" 
+id="aiToggle"
+onclick="openHealthAssistant()"> aria-label="Konsultasi AI">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg>
   <span class="badge">AI</span>
 </button>
@@ -1251,5 +1255,6 @@
   aiSendBtn.addEventListener('click',sendChat);
   aiInput.addEventListener('keydown',e=>{if(e.key==='Enter')sendChat();});
 </script>
+<script src="health-assistant.js"></script>
 </body>
 </html>
