@@ -941,6 +941,62 @@ ${healthState.medication}
 }
 
 
+
+// =====================================
+// HA-4.0.3 Clinical Data Normalization Layer
+// =====================================
+
+function normalizeClinicalData(){
+
+// Relation
+if(extractedHealthData.patient_relation){
+healthState.patient_relation =
+extractedHealthData.patient_relation;
+}
+
+// Age
+if(extractedHealthData.age){
+healthState.age =
+Number(extractedHealthData.age);
+}
+
+// Complaint
+if(extractedHealthData.chief_complaint){
+healthState.chief_complaint =
+extractedHealthData.chief_complaint;
+}
+
+// Duration
+if(extractedHealthData.duration){
+healthState.duration =
+extractedHealthData.duration;
+}
+
+// Medical history array to string
+if(
+Array.isArray(extractedHealthData.medical_history)
+){
+
+healthState.medical_history =
+extractedHealthData.medical_history.join(", ");
+
+}
+
+// Medication
+if(
+Array.isArray(extractedHealthData.medication)
+){
+
+healthState.medication =
+extractedHealthData.medication.join(", ");
+
+}
+
+return healthState;
+
+}
+
+
 function confirmHealthData(value){
 
 if(value){
@@ -958,6 +1014,8 @@ Saya akan melakukan analisis awal berdasarkan informasi tersebut.
 Mohon tunggu sebentar...
 
 `,()=>{
+
+normalizeClinicalData();
 
 generateRisk();
 
@@ -1913,3 +1971,5 @@ sesuai kebutuhan pasien.
 window.generateClinicalNarrative=generateClinicalNarrative;
 window.showConversationalClinicalSummary=showConversationalClinicalSummary;
 
+
+window.normalizeClinicalData=normalizeClinicalData;
