@@ -18,6 +18,9 @@ medication:"",
 danger_sign:"",
 risk_level:"",
 
+confirmation:false,
+confirmationStep:"",
+
 conversation:{
  lastQuestion:"",
  expectedType:""
@@ -526,15 +529,13 @@ assistantReply(`
 
 Terima kasih.
 
-Saya sedang meninjau informasi kesehatan yang Anda berikan.
-
-Mohon tunggu sebentar...
+Saya akan merangkum informasi yang sudah diberikan terlebih dahulu.
 
 `,()=>{
 
-generateRisk();
+showConfirmationSummary();
 
-},1800);
+},1500);
 
 
 break;
@@ -542,6 +543,136 @@ break;
 }
 
 }
+
+
+
+// =====================================
+// HA-3.6 Confirmation Memory Layer
+// =====================================
+
+function showConfirmationSummary(){
+
+addHealthMessage(`
+
+<div class="assessment-summary-card">
+
+<b>📋 Ringkasan Informasi Kesehatan</b>
+
+<br><br>
+
+👤 Pasien:
+${healthState.patient_relation}
+
+<br>
+🎂 Usia:
+${healthState.age} tahun
+
+<br>
+🩺 Keluhan:
+${healthState.chief_complaint}
+
+<br>
+⏱ Durasi:
+${healthState.duration}
+
+<br>
+📝 Detail:
+${healthState.complaint_detail}
+
+<br>
+📌 Riwayat:
+${healthState.medical_history}
+
+<br>
+💊 Obat:
+${healthState.medication}
+
+<br><br>
+
+<b>Apakah informasi ini sudah benar?</b>
+
+<div class="health-choice">
+
+<button onclick="confirmHealthData(true)">
+✅ Ya, sudah benar
+</button>
+
+<button onclick="confirmHealthData(false)">
+✏️ Ada yang ingin diperbaiki
+</button>
+
+</div>
+
+</div>
+
+`);
+
+}
+
+
+function confirmHealthData(value){
+
+if(value){
+
+healthState.confirmation=true;
+
+assistantReply(`
+
+Terima kasih.
+
+Saya akan melakukan analisis awal berdasarkan informasi tersebut.
+
+Mohon tunggu sebentar...
+
+`,()=>{
+
+generateRisk();
+
+},1500);
+
+
+}
+else{
+
+assistantReply(`
+
+Baik, saya bantu perbaiki informasinya.
+
+Bagian mana yang ingin diperbaiki?
+
+<div class="health-choice">
+
+<button onclick="editHealthField('age')">
+🎂 Usia
+</button>
+
+<button onclick="editHealthField('chief_complaint')">
+🩺 Keluhan utama
+</button>
+
+<button onclick="editHealthField('duration')">
+⏱ Lama keluhan
+</button>
+
+<button onclick="editHealthField('medical_history')">
+📌 Riwayat penyakit
+</button>
+
+<button onclick="editHealthField('medication')">
+💊 Obat rutin
+</button>
+
+</div>
+
+`);
+
+}
+
+}
+
+
+window.confirmHealthData=confirmHealthData;
+window.showConfirmationSummary=showConfirmationSummary;
 
 
 
@@ -651,3 +782,28 @@ window.submitAssessment=window.submitAssessment || function(){};
 
 window.healthState=healthState;
 window.validateAnswer=validateAnswer;
+
+
+function editHealthField(field){
+
+assistantReply(`
+
+Baik, kita perbaiki bagian ${field}.
+
+Silakan masukkan informasi yang benar.
+
+`);
+
+healthState.step={
+age:2,
+chief_complaint:3,
+duration:4,
+medical_history:6,
+medication:7
+}[field] || 2;
+
+updateProgress(healthState.step);
+
+}
+
+window.editHealthField=editHealthField;
