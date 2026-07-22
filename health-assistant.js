@@ -5,18 +5,47 @@
  ===================================================== */
 
 let healthState = {
-  step:1,
-  patient_relation:"",
-  age:"",
-  chief_complaint:"",
-  duration:"",
-  complaint_detail:"",
-  medical_history:"",
-  medication:"",
-  danger_sign:"",
-  risk_level:""
-};
 
+step:1,
+
+patient_relation:"",
+age:"",
+chief_complaint:"",
+duration:"",
+complaint_detail:"",
+medical_history:"",
+medication:"",
+danger_sign:"",
+risk_level:"",
+
+conversation:{
+ lastQuestion:"",
+ expectedType:""
+}
+
+};
+const empathyMessages = [
+
+"Terima kasih sudah menjelaskan.",
+
+"Baik, saya catat informasinya.",
+
+"Saya bantu memahami kondisi pasien terlebih dahulu ya.",
+
+"Informasi ini membantu kami menentukan layanan yang sesuai."
+
+];
+
+
+function randomEmpathy(){
+
+return empathyMessages[
+Math.floor(
+Math.random()*empathyMessages.length
+)
+];
+
+}
 
 function updateProgress(step){
 
@@ -183,7 +212,56 @@ function selectRelation(value){
 
 }
 
+function validateAnswer(text,type){
 
+text=text.trim();
+
+
+if(type==="age"){
+
+let age=parseInt(text);
+
+if(
+isNaN(age) ||
+age<0 ||
+age>120
+){
+
+return false;
+
+}
+
+}
+
+
+if(type==="complaint"){
+
+if(
+text.length<3 ||
+/^\d+$/.test(text)
+){
+
+return false;
+
+}
+
+}
+
+
+if(type==="duration"){
+
+if(text.length<2){
+
+return false;
+
+}
+
+}
+
+
+return true;
+
+}
 
 function processHealthInput(text){
 
@@ -194,8 +272,47 @@ function processHealthInput(text){
 
  switch(healthState.step){
 
- case 2:
- healthState.age=text;
+case 2:
+
+
+if(!validateAnswer(text,"age")){
+
+
+assistantReply(`
+
+Maaf, saya belum mendapatkan usia pasien.
+
+Boleh masukkan usia pasien dalam tahun?
+
+Contoh:
+
+70 tahun
+
+`);
+
+return;
+
+}
+
+
+
+healthState.age=text;
+
+
+assistantReply(`
+
+Terima kasih.
+
+Pasien berusia ${text} tahun.
+
+<br><br>
+
+Sekarang, apa keluhan utama pasien?
+
+`,()=>setStep(3));
+
+
+break;
 
  assistantReply(`
  Baik.
@@ -208,16 +325,50 @@ function processHealthInput(text){
 
 
  case 3:
- healthState.chief_complaint=text;
 
- assistantReply(`
- Terima kasih.
 
- <br><br>
+if(!validateAnswer(text,"complaint")){
 
- Sudah berapa lama keluhan tersebut terjadi?
- `,()=>setStep(4));
- break;
+
+assistantReply(`
+
+Saya ingin memahami keluhan pasien terlebih dahulu.
+
+Boleh ceritakan keluhan utama pasien?
+
+Contoh:
+
+• Demam
+• Luka sulit sembuh
+• Sesak napas
+• Nyeri dada
+
+`);
+
+return;
+
+}
+
+
+healthState.chief_complaint=text;
+
+
+assistantReply(`
+
+Baik, saya catat.
+
+Keluhan utama:
+<b>${text}</b>
+
+
+<br><br>
+
+Sudah berapa lama keluhan tersebut terjadi?
+
+`,()=>setStep(4));
+
+
+break;
 
 
  case 4:
@@ -290,12 +441,27 @@ function processHealthInput(text){
  break;
 
 
- case 8:
- healthState.danger_sign=text;
- generateRisk();
- break;
+case 8:
 
- }
+healthState.danger_sign=text;
+
+
+assistantReply(`
+
+Terima kasih.
+
+Saya sedang meninjau informasi kesehatan yang Anda berikan.
+
+Mohon tunggu sebentar...
+
+`,()=>{
+
+generateRisk();
+
+},1800);
+
+
+break;
 
 }
 
