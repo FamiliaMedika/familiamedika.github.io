@@ -27,6 +27,237 @@ conversation:{
 }
 
 };
+
+// =====================================
+// HA-4.0 Conversation Manager
+// Natural Language Understanding Layer
+// =====================================
+
+let extractedHealthData = {
+ patient_relation:"",
+ age:null,
+ chief_complaint:"",
+ duration:"",
+ medical_history:[],
+ medication:[],
+ danger_sign:false,
+ confidence:0
+};
+
+
+const nlpDictionary = {
+
+diabetes:[
+"diabetes",
+"gula darah",
+"kencing manis"
+],
+
+hypertension:[
+"hipertensi",
+"darah tinggi"
+],
+
+stroke:[
+"stroke"
+],
+
+kidney:[
+"ginjal",
+"gagal ginjal"
+],
+
+wound:[
+"luka",
+"borok",
+"tidak sembuh",
+"nanah"
+],
+
+shortness:[
+"sesak",
+"susah napas",
+"napas berat"
+]
+
+};
+
+
+
+function extractAge(text){
+
+const match=text.match(/(\d+)\s*(tahun|thn)?/i);
+
+return match ? Number(match[1]) : null;
+
+}
+
+
+
+function extractRelation(text){
+
+text=text.toLowerCase();
+
+if(text.includes("ayah") || text.includes("bapak")){
+return "Ayah";
+}
+
+if(text.includes("ibu") || text.includes("mama")){
+return "Ibu";
+}
+
+if(text.includes("anak")){
+return "Anak";
+}
+
+return "";
+
+}
+
+
+
+function extractMedicalHistory(text){
+
+let result=[];
+
+for(const key in nlpDictionary){
+
+nlpDictionary[key].forEach(word=>{
+
+if(text.toLowerCase().includes(word)){
+
+if(
+key==="diabetes" &&
+!result.includes("Diabetes")
+) result.push("Diabetes");
+
+if(
+key==="hypertension" &&
+!result.includes("Hipertensi")
+) result.push("Hipertensi");
+
+if(
+key==="stroke" &&
+!result.includes("Stroke")
+) result.push("Stroke");
+
+if(
+key==="kidney" &&
+!result.includes("Ginjal")
+) result.push("Ginjal");
+
+}
+
+});
+
+}
+
+return result;
+
+}
+
+
+
+function extractDuration(text){
+
+const match=text.match(
+/(\d+)\s*(hari|minggu|bulan|tahun)/i
+);
+
+if(match){
+
+return match[0];
+
+}
+
+if(text.includes("seminggu"))
+return "1 minggu";
+
+return "";
+
+}
+
+
+
+function extractComplaint(text){
+
+let lower=text.toLowerCase();
+
+if(lower.includes("luka") || lower.includes("borok"))
+return "Luka";
+
+if(lower.includes("sesak"))
+return "Sesak napas";
+
+if(lower.includes("demam"))
+return "Demam";
+
+if(lower.includes("nyeri"))
+return "Nyeri";
+
+return "";
+
+}
+
+
+
+function understandFreeText(text){
+
+const age=extractAge(text);
+const relation=extractRelation(text);
+const history=extractMedicalHistory(text);
+const duration=extractDuration(text);
+const complaint=extractComplaint(text);
+
+
+let filled=0;
+
+if(age) filled++;
+if(relation) filled++;
+if(history.length) filled++;
+if(duration) filled++;
+if(complaint) filled++;
+
+
+extractedHealthData={
+patient_relation:relation,
+age:age,
+chief_complaint:complaint,
+duration:duration,
+medical_history:history,
+confidence: filled/5
+};
+
+
+return extractedHealthData;
+
+}
+
+
+
+function applyExtractedData(){
+
+const data=extractedHealthData;
+
+
+if(data.patient_relation)
+healthState.patient_relation=data.patient_relation;
+
+if(data.age)
+healthState.age=data.age;
+
+if(data.chief_complaint)
+healthState.chief_complaint=data.chief_complaint;
+
+if(data.duration)
+healthState.duration=data.duration;
+
+if(data.medical_history.length)
+healthState.medical_history=data.medical_history.join(", ");
+
+}
+
+
 const empathyMessages = [
 
 "Terima kasih sudah menjelaskan.",
@@ -337,6 +568,50 @@ function processHealthInput(text){
  if(!text || !text.trim()) return;
 
  addHealthMessage(text,"user");
+
+
+ // HA-4.0 free text understanding
+ if(text.length>25){
+
+  const extracted=understandFreeText(text);
+
+  if(extracted.confidence>=0.6){
+
+    applyExtractedData();
+
+    assistantReply(`
+
+    ${randomEmpathy()}
+
+    <br><br>
+
+    Saya memahami informasi awal berikut:
+
+    <br><br>
+
+    ${healthState.patient_relation ? "👤 Pasien: "+healthState.patient_relation+"<br>" : ""}
+
+    ${healthState.age ? "🎂 Usia: "+healthState.age+" tahun<br>" : ""}
+
+    ${healthState.chief_complaint ? "🩺 Keluhan: "+healthState.chief_complaint+"<br>" : ""}
+
+    ${healthState.duration ? "⏱ Durasi: "+healthState.duration+"<br>" : ""}
+
+    ${healthState.medical_history ? "📌 Riwayat: "+healthState.medical_history+"<br>" : ""}
+
+    <br>
+
+    Saya akan menanyakan beberapa hal tambahan untuk memastikan kebutuhan pelayanan.
+
+    `);
+
+    setStep(5);
+
+    return;
+
+  }
+
+ }
 
 
  switch(healthState.step){
@@ -676,6 +951,367 @@ window.showConfirmationSummary=showConfirmationSummary;
 
 
 
+
+
+// =====================================
+// HA-3.8 Clinical Recommendation Engine
+// =====================================
+
+let clinicalRecommendation = {
+ services:[],
+ priority:"",
+ reason:[],
+ nextAction:""
+};
+
+
+function generateClinicalRecommendation(){
+
+clinicalRecommendation={
+services:[],
+priority:"",
+reason:[],
+nextAction:""
+};
+
+
+let complaint=(
+healthState.chief_complaint+
+" "+
+healthState.complaint_detail
+).toLowerCase();
+
+
+let history=(
+healthState.medical_history || ""
+).toLowerCase();
+
+
+let risk =
+(typeof healthRisk !== "undefined")
+? healthRisk.level
+: healthState.risk_level;
+
+
+
+if(risk==="HIGH"){
+
+clinicalRecommendation.services=[
+"🚑 Pemeriksaan segera",
+"🏥 Rujukan IGD"
+];
+
+clinicalRecommendation.priority="Segera";
+clinicalRecommendation.reason.push(
+"Terdapat faktor risiko tinggi atau tanda bahaya"
+);
+
+clinicalRecommendation.nextAction=
+"Hubungi tenaga kesehatan segera";
+
+return clinicalRecommendation;
+
+}
+
+
+if(
+complaint.includes("luka") ||
+complaint.includes("borok") ||
+complaint.includes("tidak sembuh")
+){
+
+clinicalRecommendation.services.push(
+"🩹 Wound Care",
+"👨‍⚕️ Home Visit Dokter",
+"🏠 Home Care Monitoring"
+);
+
+clinicalRecommendation.priority="Dalam 1-3 hari";
+
+clinicalRecommendation.reason.push(
+"Keluhan luka membutuhkan evaluasi dan perawatan berkala"
+);
+
+}
+
+
+if(
+history.includes("diabetes") ||
+complaint.includes("gula")
+){
+
+clinicalRecommendation.services.push(
+"🩸 Diabetes Monitoring"
+);
+
+clinicalRecommendation.reason.push(
+"Memiliki faktor risiko diabetes"
+);
+
+}
+
+
+if(Number(healthState.age)>=65){
+
+clinicalRecommendation.services.push(
+"👴 Elderly Care & Monitoring"
+);
+
+clinicalRecommendation.reason.push(
+"Pasien termasuk kelompok usia lanjut"
+);
+
+}
+
+
+if(clinicalRecommendation.services.length===0){
+
+clinicalRecommendation.services=[
+"🩺 Health Assessment",
+"🌱 Wellness Program"
+];
+
+clinicalRecommendation.priority="Terjadwal";
+
+clinicalRecommendation.reason.push(
+"Kondisi membutuhkan evaluasi kesehatan umum"
+);
+
+}
+
+
+if(!clinicalRecommendation.priority){
+clinicalRecommendation.priority="Terjadwal";
+}
+
+clinicalRecommendation.nextAction=
+"Melanjutkan assessment Familia Medika";
+
+
+return clinicalRecommendation;
+
+}
+
+
+
+function showClinicalRecommendation(){
+
+let result=generateClinicalRecommendation();
+
+addHealthMessage(`
+
+<div class="assessment-summary-card">
+
+<b>🏥 Rekomendasi Familia Medika</b>
+
+<br><br>
+
+<b>Layanan yang disarankan:</b>
+
+<br>
+${result.services.join("<br>")}
+
+<br><br>
+
+<b>Alasan:</b>
+
+<br>
+${result.reason.map(x=>"✓ "+x).join("<br>")}
+
+<br><br>
+
+<b>Prioritas:</b>
+
+<br>
+${result.priority}
+
+<br><br>
+
+<b>Langkah berikutnya:</b>
+
+<br>
+${result.nextAction}
+
+</div>
+
+`);
+
+}
+
+
+
+// =====================================
+// HA-3.9 Patient Journey Routing
+// =====================================
+
+let patientJourney = {
+
+route:"",
+priority:"",
+steps:[],
+nextAction:""
+
+};
+
+
+function generatePatientJourney(){
+
+patientJourney={
+route:"",
+priority:"",
+steps:[],
+nextAction:""
+};
+
+
+let risk =
+(typeof healthRisk !== "undefined")
+? healthRisk.level
+: healthState.risk_level;
+
+
+let services =
+(typeof clinicalRecommendation !== "undefined")
+?
+clinicalRecommendation.services.join(" ").toLowerCase()
+:
+"";
+
+
+if(risk==="HIGH"){
+
+patientJourney.route="Emergency Pathway";
+patientJourney.priority="SEGERA";
+
+patientJourney.steps=[
+"Hubungi tenaga kesehatan",
+"Evaluasi kondisi pasien",
+"Rujukan bila diperlukan"
+];
+
+patientJourney.nextAction=
+"Segera mendapatkan pertolongan medis";
+
+return patientJourney;
+
+}
+
+
+if(
+services.includes("wound") ||
+services.includes("luka")
+){
+
+patientJourney.route="Wound Care Journey";
+patientJourney.priority="Dalam 1-3 hari";
+
+patientJourney.steps=[
+"Assessment dokter",
+"Home Visit",
+"Perawatan luka",
+"Monitoring berkala"
+];
+
+patientJourney.nextAction=
+"Menjadwalkan kunjungan Wound Care";
+
+return patientJourney;
+
+}
+
+
+if(
+services.includes("elderly") ||
+services.includes("lansia")
+){
+
+patientJourney.route="Elderly Care Journey";
+patientJourney.priority="Terjadwal";
+
+patientJourney.steps=[
+"Assessment lansia",
+"Monitoring rutin",
+"Edukasi keluarga"
+];
+
+patientJourney.nextAction=
+"Menjadwalkan monitoring lansia";
+
+return patientJourney;
+
+}
+
+
+patientJourney.route="Wellness Journey";
+patientJourney.priority="Terjadwal";
+
+patientJourney.steps=[
+"Health Assessment",
+"Edukasi kesehatan",
+"Wellness Monitoring"
+];
+
+patientJourney.nextAction=
+"Melanjutkan program kesehatan Familia Medika";
+
+return patientJourney;
+
+}
+
+
+
+function showPatientJourney(){
+
+let result=generatePatientJourney();
+
+addHealthMessage(`
+
+<div class="assessment-summary-card">
+
+<b>🧭 Jalur Pelayanan Familia Medika</b>
+
+<br><br>
+
+<b>Jalur Anda:</b>
+
+<br>
+
+${result.route}
+
+<br><br>
+
+<b>Prioritas:</b>
+
+<br>
+
+${result.priority}
+
+<br><br>
+
+<b>Tahapan:</b>
+
+<br>
+
+${result.steps.map(x=>"✓ "+x).join("<br>")}
+
+<br><br>
+
+<b>Langkah berikutnya:</b>
+
+<br>
+
+${result.nextAction}
+
+</div>
+
+`);
+
+}
+
+window.generatePatientJourney=generatePatientJourney;
+window.showPatientJourney=showPatientJourney;
+
+
 function generateRisk(){
 
  showTyping();
@@ -684,32 +1320,14 @@ function generateRisk(){
 
  hideTyping();
 
- let complaint=(healthState.chief_complaint+" "+healthState.complaint_detail).toLowerCase();
- let history=(healthState.medical_history||"").toLowerCase();
- let danger=(healthState.danger_sign||"").toLowerCase();
+ showIntelligentRisk();
 
- let risk="LOW";
- let recommendation="Health Assessment / Wellness Program";
+ setTimeout(()=>{
 
+ showAssessmentSummary();
 
- if(danger.includes("ada")){
-   risk="HIGH";
-   recommendation="Pemeriksaan segera / IGD";
- }
- else if(
-   complaint.includes("luka") ||
-   history.includes("diabetes") ||
-   history.includes("stroke") ||
-   Number(healthState.age)>=65
- ){
-   risk="MODERATE";
-   recommendation="Home Visit Dokter / Home Care / Wound Care";
- }
+ },1200);
 
-
- healthState.risk_level=risk;
-
-showAssessmentSummary();
 
  },2000);
 
