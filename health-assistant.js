@@ -828,6 +828,55 @@ break;
 
 
 
+
+
+// =====================================
+// HA-4.0.2 HealthState Synchronization Layer
+// =====================================
+
+function syncHealthData(){
+
+ if(typeof extractedHealthData==="undefined") return;
+
+
+ if(extractedHealthData.patient_relation){
+   healthState.patient_relation =
+   extractedHealthData.patient_relation;
+ }
+
+
+ if(extractedHealthData.age){
+   healthState.age =
+   extractedHealthData.age;
+ }
+
+
+ if(extractedHealthData.chief_complaint){
+   healthState.chief_complaint =
+   extractedHealthData.chief_complaint;
+ }
+
+
+ if(extractedHealthData.duration){
+   healthState.duration =
+   extractedHealthData.duration;
+ }
+
+
+ if(
+ extractedHealthData.medical_history &&
+ extractedHealthData.medical_history.length
+ ){
+   healthState.medical_history =
+   extractedHealthData.medical_history.join(", ");
+ }
+
+
+}
+
+window.syncHealthData=syncHealthData;
+
+
 // =====================================
 // HA-3.6 Confirmation Memory Layer
 // =====================================
@@ -897,6 +946,8 @@ function confirmHealthData(value){
 if(value){
 
 healthState.confirmation=true;
+
+syncHealthData();
 
 assistantReply(`
 
