@@ -334,54 +334,7 @@ function generateRisk(){
 
  healthState.risk_level=risk;
 
- addHealthMessage(`
-
- <b>📋 Ringkasan Awal Kesehatan</b>
-
- <br><br>
-
- 👤 Pasien: ${healthState.patient_relation}
-
- <br>
- 🎂 Usia: ${healthState.age}
-
- <br>
- 🩺 Keluhan: ${healthState.chief_complaint}
-
- <br>
- 📝 Detail: ${healthState.complaint_detail}
-
- <br>
- 📌 Riwayat: ${healthState.medical_history}
-
- <br>
- 💊 Obat: ${healthState.medication}
-
- <br><br>
-
- <b>Risk Level:</b>
-
- <br>
-
- ${risk==="HIGH"?"🔴 HIGH RISK":risk==="MODERATE"?"🟡 MODERATE RISK":"🟢 LOW RISK"}
-
- <br><br>
-
- <b>Rekomendasi Familia Medika:</b>
-
- <br>
-
- ${recommendation}
-
- <br><br>
-
- <div class="health-choice">
- <button onclick="location.href='/asesmen/'">
- 🩺 Lanjutkan Health Assessment
- </button>
- </div>
-
- `);
+showAssessmentSummary();
 
  },2000);
 
