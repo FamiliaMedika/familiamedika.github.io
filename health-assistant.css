@@ -88,7 +88,11 @@ Compact + Hover Floating Medical Choice Button
 }
 
 
-/* Choice button */
+/* =========================================
+   Health Assistant Choice Button
+   Hover Floating Only
+========================================= */
+
 .health-choice{
   display:flex;
   flex-direction:column;
@@ -96,7 +100,9 @@ Compact + Hover Floating Medical Choice Button
   margin-top:15px;
 }
 
+
 .health-choice button{
+
   position:relative;
   overflow:hidden;
 
@@ -109,50 +115,62 @@ Compact + Hover Floating Medical Choice Button
   font-size:.85rem;
 
   color:#fff;
+
   cursor:pointer;
 
-  background:linear-gradient(
+
+  background:
+  linear-gradient(
     135deg,
     #25d366,
     #16a34a
   );
 
+
   box-shadow:
   0 10px 25px rgba(37,211,102,.35);
+
 
   transition:
   transform .35s ease,
   box-shadow .35s ease;
 
-  /* hanya animasi muncul, bukan floating terus */
-  animation:
-  buttonAppear .45s ease both;
 }
 
 
-/* Hover floating hanya tombol yang dipilih */
+/* hanya tombol yang diarahkan cursor */
+
 .health-choice button:hover{
+
   transform:
-  translateY(-8px)
-  scale(1.04);
+  translateY(-10px)
+  scale(1.05);
+
 
   box-shadow:
-  0 18px 40px rgba(37,211,102,.55);
+
+  0 20px 45px rgba(37,211,102,.55);
+
 }
 
 
-/* Shine effect */
+/* efek cahaya */
+
 .health-choice button::before{
+
   content:"";
 
   position:absolute;
+
   top:0;
   left:-120%;
 
   width:70%;
   height:100%;
 
+
   background:
+
   linear-gradient(
     90deg,
     transparent,
@@ -160,15 +178,25 @@ Compact + Hover Floating Medical Choice Button
     transparent
   );
 
-  transition:.7s;
+
+  transition:.7s ease;
+
 }
+
 
 .health-choice button:hover::before{
+
   left:130%;
+
 }
 
+
+/* efek klik */
+
 .health-choice button:active{
+
   transform:scale(.96);
+
 }
 
 
