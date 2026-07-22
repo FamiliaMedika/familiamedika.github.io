@@ -189,6 +189,18 @@ function setStep(step){
  healthState.step=step;
  updateProgress(step);
 
+ const contextMap={
+  2:{lastQuestion:"age",expectedType:"number"},
+  3:{lastQuestion:"complaint",expectedType:"text"},
+  4:{lastQuestion:"duration",expectedType:"text"},
+  5:{lastQuestion:"complaint_detail",expectedType:"text"},
+  6:{lastQuestion:"medical_history",expectedType:"text"},
+  7:{lastQuestion:"medication",expectedType:"text"},
+  8:{lastQuestion:"danger_sign",expectedType:"text"}
+ };
+
+ healthState.conversation=contextMap[step]||{};
+
 }
 
 
@@ -199,7 +211,7 @@ function selectRelation(value){
  addHealthMessage(value,"user");
 
  assistantReply(`
- Terima kasih sudah memberikan informasi.
+ ${randomEmpathy()}
 
  <br><br>
 
@@ -314,15 +326,6 @@ Sekarang, apa keluhan utama pasien?
 
 break;
 
- assistantReply(`
- Baik.
-
- <br><br>
-
- Apa keluhan utama pasien?
- `,()=>setStep(3));
- break;
-
 
  case 3:
 
@@ -355,7 +358,9 @@ healthState.chief_complaint=text;
 
 assistantReply(`
 
-Baik, saya catat.
+${randomEmpathy()}
+
+<br><br>
 
 Keluhan utama:
 <b>${text}</b>
@@ -372,16 +377,40 @@ break;
 
 
  case 4:
- healthState.duration=text;
 
- assistantReply(`
- Baik.
+if(!validateAnswer(text,"duration")){
 
- <br><br>
+assistantReply(`
 
- Sekarang boleh ceritakan keluhan pasien secara lebih lengkap.
- `,()=>setStep(5));
- break;
+Boleh diinformasikan sudah berapa lama keluhan terjadi?
+
+Contoh:
+<br>
+• Hari ini
+<br>
+• 3 hari
+<br>
+• 2 minggu
+
+`);
+
+return;
+
+}
+
+healthState.duration=text;
+
+assistantReply(`
+
+${randomEmpathy()}
+
+<br><br>
+
+Sekarang boleh ceritakan keluhan pasien secara lebih lengkap.
+
+`,()=>setStep(5));
+
+break;
 
 
  case 5:
@@ -462,6 +491,8 @@ generateRisk();
 
 
 break;
+
+}
 
 }
 
@@ -564,3 +595,8 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 
 });
+
+
+// HA-3.5 compatibility export
+window.openHealthAssistant=openHealthAssistant;
+window.submitAssessment=window.submitAssessment || function(){};
