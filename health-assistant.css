@@ -1,238 +1,104 @@
 
 /* =====================================================
-   Familia Medika Health Assistant - Compact UI Patch
-   Version: HA-2.1
-   ===================================================== */
+ Familia Medika Health Assistant
+ HA-3 FINAL UI CSS
+ Compact + Floating Medical Choice Button
+ ===================================================== */
 
-
-/* Floating Button */
-
+/* Floating button */
 .ai-toggle.health-assistant{
-
   width:64px;
   height:64px;
-
   background:linear-gradient(135deg,#25d366,#1f9fc0);
-
   border-radius:50%;
-
-  box-shadow:
-  0 15px 35px rgba(31,159,192,.35);
-
+  box-shadow:0 15px 35px rgba(31,159,192,.35);
   transition:.3s ease;
-
 }
-
 
 .ai-toggle.health-assistant:hover{
-
   transform:scale(1.08);
-
 }
-
-
-
-/* Label Health Assistant */
 
 .ai-toggle.health-assistant::after{
-
   content:"Health Assistant";
-
   position:absolute;
-
   right:75px;
-
   bottom:10px;
-
   background:#173a78;
-
   color:#fff;
-
   padding:8px 15px;
-
   border-radius:20px;
-
   font-size:12px;
-
   font-weight:700;
-
   white-space:nowrap;
-
-  box-shadow:0 8px 20px rgba(0,0,0,.15);
-
 }
-
-
-
-/* Badge */
 
 .ai-toggle.health-assistant .badge{
-
   background:#ef4444;
-
   font-size:10px;
-
 }
 
 
-
-/* =========================
-   CHAT PANEL COMPACT
-   ========================= */
-
-
+/* Chat panel */
 .ai-panel{
-
   width:340px;
-
   max-height:520px;
-
   border-radius:22px;
-
 }
-
-
-
-/* Header */
 
 .ai-header{
-
   padding:14px 16px;
-
 }
-
 
 .ai-header .ai-av{
-
   width:34px;
-
   height:34px;
-
 }
-
 
 .ai-header .ai-info b{
-
   font-size:.9rem;
-
 }
-
 
 .ai-header .ai-info small{
-
   font-size:.7rem;
-
 }
-
-
-
-/* Messages */
 
 .ai-messages{
-
   padding:14px;
-
   gap:10px;
-
 }
-
 
 .ai-msg{
-
   max-width:88%;
-
   padding:10px 13px;
-
   font-size:.84rem;
-
   line-height:1.45;
-
   border-radius:14px;
-
 }
-
-
-
-/* Disclaimer */
-
-.ai-msg.disclaimer{
-
-  font-size:.72rem;
-
-  padding:8px 12px;
-
-}
-
-
-
-/* Input */
 
 .ai-input-bar{
-
   padding:10px 12px;
-
 }
-
 
 .ai-input-bar input{
-
   font-size:.82rem;
-
   padding:10px 14px;
-
 }
-
 
 .ai-input-bar button{
-
   width:38px;
-
   height:38px;
-
 }
 
 
-
-/* Quick Action */
-
+/* Health Assistant choice button */
 .health-choice{
-
   display:flex;
-
   flex-direction:column;
-
   gap:10px;
-
-  margin-top:14px;
-
+  margin-top:15px;
 }
 
-
-.health-choice button{
-
-  border:none;
-
-  padding:11px 14px;
-
-  border-radius:30px;
-
-  background:linear-gradient(135deg,#1f9fc0,#173a78);
-
-  color:#fff;
-
-  font-size:.82rem;
-
-  font-weight:700;
-
-  cursor:pointer;
-
-}
-
-
-/* ===================================
-   Health Assistant Choice Button
-   Unified Style
-=================================== */
 
 .health-choice button{
 
@@ -242,327 +108,75 @@ overflow:hidden;
 padding:14px 18px;
 
 border:none;
-
 border-radius:30px;
 
 font-weight:700;
-
 font-size:.85rem;
 
 color:#fff;
 
 cursor:pointer;
 
-
-background:
-linear-gradient(
+background:linear-gradient(
 135deg,
 #25d366,
 #16a34a
 );
-
-
-box-shadow:
-0 8px 22px rgba(37,211,102,.35);
-
-
-transition:.3s ease;
-
-
-animation:
-buttonAppear .45s ease both,
-pulseHealth 2.5s infinite;
-
-}
-
-
-/* Hover */
-
-.health-choice button:hover{
-
-transform:
-translateY(-3px)
-scale(1.03);
-
-
-box-shadow:
-0 14px 30px rgba(37,211,102,.45);
-
-}
-
-
-
-/* efek cahaya */
-
-.health-choice button::before{
-
-content:"";
-
-position:absolute;
-
-top:0;
-
-left:-120%;
-
-width:60%;
-
-height:100%;
-
-
-background:
-linear-gradient(
-90deg,
-transparent,
-rgba(255,255,255,.4),
-transparent
-);
-
-
-transition:.6s;
-
-}
-
-
-
-.health-choice button:hover::before{
-
-left:140%;
-
-}
-
-
-
-/* animasi masuk */
-
-@keyframes buttonAppear{
-
-from{
-
-opacity:0;
-
-transform:
-translateY(12px);
-
-}
-
-
-to{
-
-opacity:1;
-
-transform:
-translateY(0);
-
-}
-
-}
-
-
-
-/* pulse */
-
-@keyframes pulseHealth{
-
-
-0%{
-
-box-shadow:
-0 0 0 0 rgba(37,211,102,.45);
-
-}
-
-
-70%{
-
-box-shadow:
-0 0 0 12px rgba(37,211,102,0);
-
-}
-
-
-100%{
-
-box-shadow:
-0 0 0 0 rgba(37,211,102,0);
-
-}
-
-
-}
-
-
-
-/* Mobile */
-
-@media(max-width:640px){
-
-
-.ai-panel{
-
-  width:calc(100vw - 40px);
-
-  right:20px;
-
-  bottom:85px;
-
-  max-height:65vh;
-
-}
-
-
-
-.ai-toggle.health-assistant{
-
-  width:58px;
-
-  height:58px;
-
-  right:16px;
-
-  bottom:18px;
-
-}
-
-
-
-.ai-toggle.health-assistant::after{
-
-  right:65px;
-
-  bottom:8px;
-
-  font-size:11px;
-
-  padding:7px 12px;
-
-}
-
-
-
-.ai-msg{
-
-  font-size:.82rem;
-
-}
-
-
-
-}
-
-/* =========================================
-   Health Assistant Floating Choice Button
-   ========================================= */
-
-
-.health-choice button{
-
-position:relative;
-overflow:hidden;
-
-padding:14px 18px;
-
-border:none;
-
-border-radius:30px;
-
-font-weight:700;
-font-size:.85rem;
-
-color:white;
-
-cursor:pointer;
-
-
-background:
-linear-gradient(
-135deg,
-#25d366,
-#16a34a
-);
-
 
 box-shadow:
 0 10px 25px rgba(37,211,102,.35);
-
 
 transition:
 transform .35s ease,
 box-shadow .35s ease;
 
-
 animation:
+buttonAppear .45s ease both,
 floatButton 3s ease-in-out infinite;
 
-
 }
 
 
-/* floating motion */
-
+/* Floating animation */
 @keyframes floatButton{
 
-
 0%,100%{
-
-transform:
-translateY(0);
-
+transform:translateY(0);
 }
-
 
 50%{
-
-transform:
-translateY(-5px);
+transform:translateY(-5px);
+}
 
 }
 
 
-}
-
-
-
-/* hover / cursor */
-
+/* Hover animation */
 .health-choice button:hover{
-
 
 transform:
 translateY(-10px)
 scale(1.04);
 
-
 box-shadow:
-
 0 18px 40px rgba(37,211,102,.55);
-
 
 }
 
 
-
-/* efek cahaya bergerak */
-
+/* Shine effect */
 .health-choice button::before{
-
 
 content:"";
 
-
 position:absolute;
-
 top:0;
-
 left:-120%;
 
-
 width:70%;
-
 height:100%;
 
-
 background:
-
 linear-gradient(
 90deg,
 transparent,
@@ -570,32 +184,72 @@ rgba(255,255,255,.45),
 transparent
 );
 
-
 transition:.7s;
 
-
 }
-
-
 
 .health-choice button:hover::before{
-
-
 left:130%;
+}
 
+
+.health-choice button:active{
+transform:scale(.96);
+}
+
+
+@keyframes buttonAppear{
+
+from{
+opacity:0;
+transform:translateY(12px);
+}
+
+to{
+opacity:1;
+transform:none;
+}
 
 }
 
 
+/* Navbar cleanup */
+.mobile-assessment{
+display:none !important;
+}
 
-/* efek klik */
 
-.health-choice button:active{
+/* Mobile */
+@media(max-width:640px){
 
+.ai-panel{
+width:calc(100vw - 40px);
+right:20px;
+bottom:85px;
+max-height:65vh;
+}
 
-transform:
+.ai-toggle.health-assistant{
+width:58px;
+height:58px;
+right:16px;
+bottom:18px;
+}
 
-scale(.96);
+.ai-toggle.health-assistant::after{
+right:65px;
+bottom:8px;
+font-size:11px;
+padding:7px 12px;
+}
 
+.ai-msg{
+font-size:.82rem;
+}
+
+.health-choice button{
+padding:13px 15px;
+font-size:.82rem;
+}
 
 }
