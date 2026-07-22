@@ -1437,6 +1437,207 @@ ${result.reasons.map(x=>"✓ "+x).join("<br>")}
 }
 
 
+// =====================================
+// HA-3.9.1 Clinical Output Experience Layer
+// =====================================
+
+let patientJourney = {
+ route:"",
+ priority:"",
+ steps:[],
+ nextAction:""
+};
+
+
+function generatePatientJourney(){
+
+patientJourney={
+ route:"",
+ priority:"",
+ steps:[],
+ nextAction:""
+};
+
+
+let risk =
+(typeof healthRisk !== "undefined")
+? healthRisk.level
+: healthState.risk_level;
+
+
+let services =
+(typeof clinicalRecommendation !== "undefined")
+? clinicalRecommendation.services.join(" ").toLowerCase()
+: "";
+
+
+if(risk==="HIGH"){
+
+patientJourney.route="Emergency Pathway";
+patientJourney.priority="Segera";
+patientJourney.steps=[
+"Hubungi tenaga kesehatan",
+"Evaluasi kondisi pasien",
+"Rujukan bila diperlukan"
+];
+patientJourney.nextAction="Segera mendapatkan pertolongan medis";
+
+}
+
+else if(
+services.includes("wound") ||
+services.includes("luka")
+){
+
+patientJourney.route="Wound Care Journey";
+patientJourney.priority="Dalam 1-3 hari";
+patientJourney.steps=[
+"Assessment dokter",
+"Home Visit",
+"Perawatan luka",
+"Monitoring berkala"
+];
+patientJourney.nextAction="Menjadwalkan kunjungan Wound Care";
+
+}
+
+else if(Number(healthState.age)>=65){
+
+patientJourney.route="Elderly Care Journey";
+patientJourney.priority="Terjadwal";
+patientJourney.steps=[
+"Assessment lansia",
+"Monitoring rutin",
+"Edukasi keluarga"
+];
+patientJourney.nextAction="Melanjutkan evaluasi kesehatan lansia";
+
+}
+
+else{
+
+patientJourney.route="Wellness Journey";
+patientJourney.priority="Terjadwal";
+patientJourney.steps=[
+"Health Assessment",
+"Edukasi kesehatan",
+"Monitoring"
+];
+patientJourney.nextAction="Melanjutkan assessment Familia Medika";
+
+}
+
+return patientJourney;
+
+}
+
+
+function showPatientJourney(){
+
+let journey=generatePatientJourney();
+
+addHealthMessage(`
+
+<div class="assessment-summary-card">
+
+<b>🧭 Jalur Pelayanan Familia Medika</b>
+
+<br><br>
+
+<b>${journey.route}</b>
+
+<br><br>
+
+<b>Prioritas:</b>
+<br>
+${journey.priority}
+
+<br><br>
+
+<b>Tahapan:</b>
+
+<br>
+
+${journey.steps.map(x=>"✓ "+x).join("<br>")}
+
+<br><br>
+
+<b>Langkah berikutnya:</b>
+
+<br>
+${journey.nextAction}
+
+</div>
+
+`);
+
+}
+
+
+function showAssessmentSummary(){
+
+addHealthMessage(`
+
+<div class="assessment-summary-card">
+
+<b>📋 Ringkasan Awal Kesehatan</b>
+
+<br><br>
+
+👤 Pasien:
+${healthState.patient_relation}
+
+<br>
+🎂 Usia:
+${healthState.age} tahun
+
+<br>
+🩺 Keluhan:
+${healthState.chief_complaint}
+
+<br>
+⏱ Durasi:
+${healthState.duration}
+
+<br>
+📝 Detail:
+${healthState.complaint_detail || "Belum dijelaskan"}
+
+<br>
+📌 Riwayat:
+${healthState.medical_history || "Tidak ada"}
+
+<br>
+💊 Obat:
+${healthState.medication || "Tidak ada"}
+
+<br>
+🚨 Tanda Bahaya:
+${healthState.danger_sign || "Tidak ada"}
+
+<br><br>
+
+<button onclick="submitAssessment()">
+📤 Kirim ke Familia Medika
+</button>
+
+<br><br>
+
+<button onclick="location.href='/asesmen/'">
+🩺 Lanjutkan Health Assessment
+</button>
+
+</div>
+
+`);
+
+}
+
+window.showPatientJourney=showPatientJourney;
+window.showAssessmentSummary=showAssessmentSummary;
+
+
+
 function generateRisk(){
 
  showTyping();
@@ -1556,3 +1757,105 @@ updateProgress(healthState.step);
 }
 
 window.editHealthField=editHealthField;
+
+
+// =====================================
+// HA-3.9.2 Conversational Polish Layer
+// =====================================
+
+function generateClinicalNarrative(){
+
+let history = healthState.medical_history || "";
+
+return `
+
+Terima kasih, informasi sudah saya terima.
+
+<br><br>
+
+Saya memahami bahwa pasien:
+
+<br><br>
+
+👤 ${healthState.patient_relation}
+
+<br>
+🎂 Usia ${healthState.age} tahun
+
+<br>
+🩺 Keluhan:
+<b>${healthState.chief_complaint}</b>
+
+<br><br>
+
+${history ? `📌 Riwayat:
+<b>${history}</b>` : ""}
+
+<br><br>
+
+Saya akan membantu menentukan kebutuhan pelayanan yang paling sesuai.
+
+`;
+
+}
+
+
+function showConversationalClinicalSummary(){
+
+let riskText =
+healthState.risk_level || "Belum ditentukan";
+
+
+addHealthMessage(`
+
+<div class="assessment-summary-card">
+
+<b>🩺 Gambaran Awal Kondisi Pasien</b>
+
+<br><br>
+
+${generateClinicalNarrative()}
+
+
+<b>🧠 Kategori Risiko Awal:</b>
+
+<br>
+
+${riskText}
+
+
+<br><br>
+
+<b>🏥 Rekomendasi Familia Medika</b>
+
+<br><br>
+
+Berdasarkan informasi yang diberikan,
+kami menyarankan evaluasi tenaga kesehatan
+sesuai kebutuhan pasien.
+
+
+<br><br>
+
+<b>🧭 Langkah Pelayanan Berikutnya</b>
+
+<br>
+
+✓ Assessment tenaga kesehatan
+
+<br>
+✓ Penentuan layanan yang sesuai
+
+<br>
+✓ Monitoring dan tindak lanjut
+
+
+</div>
+
+`);
+
+}
+
+window.generateClinicalNarrative=generateClinicalNarrative;
+window.showConversationalClinicalSummary=showConversationalClinicalSummary;
+
