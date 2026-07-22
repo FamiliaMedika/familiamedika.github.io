@@ -1,3 +1,5 @@
+const SUPABASE_ASSESSMENT_URL =
+"https://tegsvhbhdyeqqlhbbjpz.supabase.co/functions/v1/create-assessment-request";
 
 function showAssessmentSummary(){
 
@@ -10,7 +12,96 @@ if(healthState.risk_level==="MODERATE"){
 riskClass="risk-moderate";
 riskText="🟡 MODERATE RISK";
 }
+async function submitAssessment(){
 
+const payload = {
+
+session_id:
+"FM-" + Date.now(),
+
+patient_relation:
+healthState.patient_relation,
+
+age:
+Number(healthState.age),
+
+chief_complaint:
+healthState.chief_complaint,
+
+duration:
+healthState.duration,
+
+complaint_detail:
+healthState.complaint_detail,
+
+medical_history:
+healthState.medical_history,
+
+medication:
+healthState.medication,
+
+danger_sign:
+healthState.danger_sign,
+
+risk_level:
+healthState.risk_level,
+
+recommended_service:
+"Home Visit Dokter / Home Care / Wound Care"
+
+};
+
+
+try{
+
+const response = await fetch(
+SUPABASE_ASSESSMENT_URL,
+{
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:
+JSON.stringify(payload)
+
+}
+);
+
+
+const result = await response.json();
+
+
+if(result.success){
+
+addHealthMessage(`
+<div class="assessment-summary-card">
+
+<b>✅ Data berhasil dikirim ke Familia Medika</b>
+
+<br><br>
+
+Tim kami akan meninjau informasi kesehatan Anda.
+
+</div>
+`);
+
+}
+
+
+}catch(error){
+
+console.error(error);
+
+addHealthMessage(`
+⚠️ Data belum berhasil dikirim.
+Silakan coba kembali.
+`);
+
+}
+
+}
 if(healthState.risk_level==="HIGH"){
 riskClass="risk-high";
 riskText="🔴 HIGH RISK";
@@ -53,9 +144,22 @@ ${healthState.risk_level==="HIGH"?"🚑 Pemeriksaan segera / IGD":"👨‍⚕️
 </div>
 
 <div class="summary-actions">
-<button onclick="location.href='/asesmen/'">
-🩺 Lanjutkan Health Assessment
+<div class="summary-actions">
+
+<button onclick="submitAssessment()">
+
+📤 Kirim ke Familia Medika
+
 </button>
+
+
+<button onclick="location.href='/asesmen/'">
+
+🩺 Lanjutkan Health Assessment
+
+</button>
+
+</div>
 </div>
 
 </div>
