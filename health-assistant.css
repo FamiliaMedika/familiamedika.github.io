@@ -229,9 +229,164 @@
 }
 
 
-.health-choice button:first-child{
+/* ===================================
+   Health Assistant Choice Button
+   Unified Style
+=================================== */
 
-  background:linear-gradient(135deg,#25d366,#16a34a);
+.health-choice button{
+
+position:relative;
+overflow:hidden;
+
+padding:14px 18px;
+
+border:none;
+
+border-radius:30px;
+
+font-weight:700;
+
+font-size:.85rem;
+
+color:#fff;
+
+cursor:pointer;
+
+
+background:
+linear-gradient(
+135deg,
+#25d366,
+#16a34a
+);
+
+
+box-shadow:
+0 8px 22px rgba(37,211,102,.35);
+
+
+transition:.3s ease;
+
+
+animation:
+buttonAppear .45s ease both,
+pulseHealth 2.5s infinite;
+
+}
+
+
+/* Hover */
+
+.health-choice button:hover{
+
+transform:
+translateY(-3px)
+scale(1.03);
+
+
+box-shadow:
+0 14px 30px rgba(37,211,102,.45);
+
+}
+
+
+
+/* efek cahaya */
+
+.health-choice button::before{
+
+content:"";
+
+position:absolute;
+
+top:0;
+
+left:-120%;
+
+width:60%;
+
+height:100%;
+
+
+background:
+linear-gradient(
+90deg,
+transparent,
+rgba(255,255,255,.4),
+transparent
+);
+
+
+transition:.6s;
+
+}
+
+
+
+.health-choice button:hover::before{
+
+left:140%;
+
+}
+
+
+
+/* animasi masuk */
+
+@keyframes buttonAppear{
+
+from{
+
+opacity:0;
+
+transform:
+translateY(12px);
+
+}
+
+
+to{
+
+opacity:1;
+
+transform:
+translateY(0);
+
+}
+
+}
+
+
+
+/* pulse */
+
+@keyframes pulseHealth{
+
+
+0%{
+
+box-shadow:
+0 0 0 0 rgba(37,211,102,.45);
+
+}
+
+
+70%{
+
+box-shadow:
+0 0 0 12px rgba(37,211,102,0);
+
+}
+
+
+100%{
+
+box-shadow:
+0 0 0 0 rgba(37,211,102,0);
+
+}
+
 
 }
 
