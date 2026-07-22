@@ -1312,6 +1312,131 @@ window.generatePatientJourney=generatePatientJourney;
 window.showPatientJourney=showPatientJourney;
 
 
+
+// =====================================
+// HA-3.7 Intelligent Risk Engine FIX
+// =====================================
+
+let healthRisk = {
+score:0,
+level:"",
+reasons:[],
+recommendations:[]
+};
+
+
+function calculateRisk(){
+
+healthRisk={
+score:0,
+level:"",
+reasons:[],
+recommendations:[]
+};
+
+let complaint=(healthState.chief_complaint+" "+healthState.complaint_detail).toLowerCase();
+let history=(healthState.medical_history||"").toLowerCase();
+let danger=(healthState.danger_sign||"").toLowerCase();
+let age=Number(healthState.age);
+
+
+if(
+danger.includes("ada") ||
+complaint.includes("sesak berat") ||
+complaint.includes("nyeri dada") ||
+complaint.includes("kejang") ||
+complaint.includes("tidak sadar")
+){
+
+healthRisk.score=10;
+healthRisk.level="HIGH";
+healthRisk.reasons.push("Terdapat tanda bahaya");
+healthRisk.recommendations=["Pemeriksaan segera","IGD"];
+
+return healthRisk;
+
+}
+
+
+if(age>=65){
+healthRisk.score+=2;
+healthRisk.reasons.push("Usia pasien ≥65 tahun");
+}
+
+if(history.includes("diabetes")){
+healthRisk.score+=2;
+healthRisk.reasons.push("Riwayat diabetes");
+}
+
+if(history.includes("stroke")){
+healthRisk.score+=2;
+healthRisk.reasons.push("Riwayat stroke");
+}
+
+if(complaint.includes("luka")){
+healthRisk.score+=3;
+healthRisk.reasons.push("Keluhan luka membutuhkan pemantauan");
+}
+
+
+if(healthRisk.score>=9){
+healthRisk.level="HIGH";
+healthRisk.recommendations=["Pemeriksaan segera","IGD"];
+}
+else if(healthRisk.score>=6){
+healthRisk.level="HIGH MODERATE";
+healthRisk.recommendations=["Home Visit Dokter","Wound Care","Monitoring"];
+}
+else if(healthRisk.score>=3){
+healthRisk.level="MODERATE";
+healthRisk.recommendations=["Health Assessment","Home Visit Dokter"];
+}
+else{
+healthRisk.level="LOW";
+healthRisk.recommendations=["Wellness Program"];
+}
+
+return healthRisk;
+
+}
+
+
+
+function showIntelligentRisk(){
+
+let result=calculateRisk();
+
+addHealthMessage(`
+
+<div class="assessment-summary-card">
+
+<b>🧠 Analisis Risiko Kesehatan Awal</b>
+
+<br><br>
+
+Risk Level:
+<br>
+${result.level}
+
+<br><br>
+
+Skor Risiko:
+${result.score}
+
+<br><br>
+
+<b>Faktor:</b>
+
+<br>
+${result.reasons.map(x=>"✓ "+x).join("<br>")}
+
+</div>
+
+`);
+
+}
+
+
 function generateRisk(){
 
  showTyping();
@@ -1324,9 +1449,15 @@ function generateRisk(){
 
  setTimeout(()=>{
 
+ showClinicalRecommendation();
+
+ },1000);
+
+ setTimeout(()=>{
+
  showAssessmentSummary();
 
- },1200);
+ },2500);
 
 
  },2000);
