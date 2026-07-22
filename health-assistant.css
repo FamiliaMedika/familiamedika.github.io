@@ -448,3 +448,154 @@ box-shadow:
 
 
 }
+
+/* =========================================
+   Health Assistant Floating Choice Button
+   ========================================= */
+
+
+.health-choice button{
+
+position:relative;
+overflow:hidden;
+
+padding:14px 18px;
+
+border:none;
+
+border-radius:30px;
+
+font-weight:700;
+font-size:.85rem;
+
+color:white;
+
+cursor:pointer;
+
+
+background:
+linear-gradient(
+135deg,
+#25d366,
+#16a34a
+);
+
+
+box-shadow:
+0 10px 25px rgba(37,211,102,.35);
+
+
+transition:
+transform .35s ease,
+box-shadow .35s ease;
+
+
+animation:
+floatButton 3s ease-in-out infinite;
+
+
+}
+
+
+/* floating motion */
+
+@keyframes floatButton{
+
+
+0%,100%{
+
+transform:
+translateY(0);
+
+}
+
+
+50%{
+
+transform:
+translateY(-5px);
+
+}
+
+
+}
+
+
+
+/* hover / cursor */
+
+.health-choice button:hover{
+
+
+transform:
+translateY(-10px)
+scale(1.04);
+
+
+box-shadow:
+
+0 18px 40px rgba(37,211,102,.55);
+
+
+}
+
+
+
+/* efek cahaya bergerak */
+
+.health-choice button::before{
+
+
+content:"";
+
+
+position:absolute;
+
+top:0;
+
+left:-120%;
+
+
+width:70%;
+
+height:100%;
+
+
+background:
+
+linear-gradient(
+90deg,
+transparent,
+rgba(255,255,255,.45),
+transparent
+);
+
+
+transition:.7s;
+
+
+}
+
+
+
+.health-choice button:hover::before{
+
+
+left:130%;
+
+
+}
+
+
+
+/* efek klik */
+
+.health-choice button:active{
+
+
+transform:
+
+scale(.96);
+
+
+}
