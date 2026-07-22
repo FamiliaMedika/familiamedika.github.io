@@ -47,6 +47,62 @@ Math.random()*empathyMessages.length
 
 }
 
+
+function setConversation(question,type){
+
+healthState.conversation={
+lastQuestion:question,
+expectedType:type
+};
+
+}
+
+
+function requestClarification(type){
+
+if(type==="age"){
+return `
+Maaf, saya belum mendapatkan usia pasien.
+
+Boleh masukkan usia pasien dalam tahun?
+
+Contoh:
+70 tahun
+`;
+}
+
+if(type==="duration"){
+return `
+Maaf, saya belum mendapatkan lama keluhan.
+
+Boleh diinformasikan sudah berapa lama keluhan terjadi?
+
+Contoh:
+• 3 hari
+• 2 minggu
+• 1 bulan
+`;
+}
+
+if(type==="complaint"){
+return `
+Saya ingin memahami keluhan pasien terlebih dahulu.
+
+Boleh ceritakan keluhan utama pasien?
+
+Contoh:
+• Demam
+• Luka sulit sembuh
+• Batuk atau sesak
+`;
+}
+
+return `
+Mohon berikan informasi yang sesuai agar saya dapat membantu.
+`;
+
+}
+
 function updateProgress(step){
 
  const container=document.getElementById("healthProgress");
@@ -190,9 +246,9 @@ function setStep(step){
  updateProgress(step);
 
  const contextMap={
-  2:{lastQuestion:"age",expectedType:"number"},
-  3:{lastQuestion:"complaint",expectedType:"text"},
-  4:{lastQuestion:"duration",expectedType:"text"},
+  2:{lastQuestion:"age",expectedType:"age"},
+  3:{lastQuestion:"complaint",expectedType:"complaint"},
+  4:{lastQuestion:"duration",expectedType:"duration"},
   5:{lastQuestion:"complaint_detail",expectedType:"text"},
   6:{lastQuestion:"medical_history",expectedType:"text"},
   7:{lastQuestion:"medication",expectedType:"text"},
@@ -226,47 +282,45 @@ function selectRelation(value){
 
 function validateAnswer(text,type){
 
-text=text.trim();
+text=(text||"").trim().toLowerCase();
 
 
 if(type==="age"){
 
 let age=parseInt(text);
 
-if(
-isNaN(age) ||
-age<0 ||
-age>120
-){
-
-return false;
-
-}
+return !isNaN(age) && age>=0 && age<=120;
 
 }
 
 
 if(type==="complaint"){
 
-if(
-text.length<3 ||
-/^\d+$/.test(text)
-){
-
-return false;
-
-}
+return (
+text.length>=3 &&
+!/^\d+$/.test(text)
+);
 
 }
 
 
 if(type==="duration"){
 
-if(text.length<2){
+const durationPattern =
+/(hari|minggu|bulan|tahun|jam|kemarin|tadi|sejak|baru|lama|\d)/i;
 
-return false;
+
+return (
+text.length>=2 &&
+durationPattern.test(text)
+);
 
 }
+
+
+if(type==="text"){
+
+return text.length>=3;
 
 }
 
@@ -380,19 +434,7 @@ break;
 
 if(!validateAnswer(text,"duration")){
 
-assistantReply(`
-
-Boleh diinformasikan sudah berapa lama keluhan terjadi?
-
-Contoh:
-<br>
-• Hari ini
-<br>
-• 3 hari
-<br>
-• 2 minggu
-
-`);
+assistantReply(requestClarification("duration"));
 
 return;
 
@@ -403,6 +445,11 @@ healthState.duration=text;
 assistantReply(`
 
 ${randomEmpathy()}
+
+<br><br>
+
+Keluhan sudah berlangsung selama:
+<b>${text}</b>
 
 <br><br>
 
@@ -600,3 +647,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 // HA-3.5 compatibility export
 window.openHealthAssistant=openHealthAssistant;
 window.submitAssessment=window.submitAssessment || function(){};
+
+
+window.healthState=healthState;
+window.validateAnswer=validateAnswer;
