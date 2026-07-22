@@ -28,6 +28,13 @@ conversation:{
 
 };
 
+let assessmentResult = {
+ risk:{},
+ recommendation:{},
+ journey:{},
+ summary:{}
+};
+
 // =====================================
 // HA-4.0 Conversation Manager
 // Natural Language Understanding Layer
@@ -1441,12 +1448,8 @@ ${result.reasons.map(x=>"✓ "+x).join("<br>")}
 // HA-3.9.1 Clinical Output Experience Layer
 // =====================================
 
-let patientJourney = {
- route:"",
- priority:"",
- steps:[],
- nextAction:""
-};
+/* Duplicate patientJourney declaration removed (HA-4.0 FIX) */
+
 
 
 function generatePatientJourney(){
