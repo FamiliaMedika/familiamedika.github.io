@@ -37,7 +37,7 @@
     const payload={consent:true,consent_version:'2026-07-01',guardian_confirmed:form.elements.guardian_confirmed.checked,patient_name:v.patient_name.trim(),age:Number(v.age),gender:v.gender,pregnancy:v.pregnancy,phone:v.phone.trim(),area:v.area.trim(),chief_complaint:v.chief_complaint.trim(),onset:v.onset.trim(),course:v.course.trim(),associated_symptoms:v.associated_symptoms.trim(),medical_history:v.medical_history.trim(),current_medication:v.current_medication.trim(),allergies:v.allergies.trim(),red_flags:selectedFlags(),vitals:{temperature:v.temperature.trim(),spo2:v.spo2.trim(),respiratory_rate:v.respiratory_rate.trim(),blood_pressure:v.blood_pressure.trim()}};
     $('#submitBtn').disabled=true;$('#submitBtn').textContent='Mengirim...';
     const response = await fetch(
-      "https://tegsvhbhdyeqqlhbbjpz.supabase.co/functions/v1/create-assessment-request",
+      "https://cvfuuflnfexaqnncgjmw.supabase.co/functions/v1/create-assessment-request",
       {
         method:"POST",
         headers:{
