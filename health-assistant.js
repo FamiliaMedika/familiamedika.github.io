@@ -166,12 +166,13 @@ const input=document.getElementById("aiInput");
 
 if(input){
 
-input.disabled=true;
+input.disabled=false;
 
 input.placeholder=
-"Gunakan tombol Health Assessment untuk memulai";
+"Gunakan tombol di atas untuk memulai Health Assessment";
 
 }
+
 
 });
 
