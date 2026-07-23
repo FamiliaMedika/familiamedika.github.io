@@ -65,12 +65,6 @@ Silakan mulai Health Assessment untuk melanjutkan.
 </button>
 
 
-<button onclick="showServiceHelp()">
-
-💬 Tanya Layanan Familia Medika
-
-</button>
-
 </div>
 
 `;
@@ -178,4 +172,3 @@ input.placeholder=
 
 window.openHealthAssistant=openHealthAssistant;
 window.startHealthAssessment=startHealthAssessment;
-window.showServiceHelp=showServiceHelp;
