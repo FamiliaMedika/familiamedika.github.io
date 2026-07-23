@@ -1,0 +1,135 @@
+
+.assessment-summary-card{
+background:#fff;
+border:1px solid #dce8f2;
+border-radius:22px;
+padding:22px;
+box-shadow:0 15px 35px rgba(23,58,120,.12);
+margin-top:12px;
+animation:summaryAppear .4s ease;
+}
+.summary-title{font-weight:700;color:#173a78;font-size:1.05rem;margin-bottom:16px}
+.summary-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid #eef3f8}
+.summary-label{color:#5a6b86;font-size:.8rem;min-width:95px}
+.summary-value{color:#14294d;font-weight:600;font-size:.85rem}
+.risk-badge{margin:16px 0;padding:12px;border-radius:14px;font-weight:700;text-align:center}
+.risk-low{background:#dcfce7;color:#166534}
+.risk-moderate{background:#fef3c7;color:#92400e}
+.risk-high{background:#fee2e2;color:#991b1b}
+.summary-recommendation{background:#f2f8fc;padding:14px;border-radius:14px;color:#173a78;font-weight:600}
+.summary-actions{margin-top:18px}
+.summary-actions button{width:100%;border:0;border-radius:30px;padding:13px;background:#25d366;color:white;font-weight:700;cursor:pointer}
+@keyframes summaryAppear{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
+
+/* =========================================
+   HA-3.4 Assessment Summary Button
+   Hover Floating Only
+========================================= */
+
+
+.summary-actions button{
+
+position:relative;
+overflow:hidden;
+
+width:100%;
+
+border:none;
+
+border-radius:30px;
+
+padding:14px 18px;
+
+font-weight:700;
+
+font-size:.85rem;
+
+color:#fff;
+
+cursor:pointer;
+
+
+background:
+linear-gradient(
+135deg,
+#25d366,
+#16a34a
+);
+
+
+box-shadow:
+0 10px 25px rgba(37,211,102,.35);
+
+
+transition:
+transform .35s ease,
+box-shadow .35s ease;
+
+}
+
+
+/* Floating hanya saat cursor diarahkan */
+
+.summary-actions button:hover{
+
+transform:
+
+translateY(-8px)
+scale(1.04);
+
+
+box-shadow:
+
+0 18px 40px rgba(37,211,102,.55);
+
+}
+
+
+
+/* Efek cahaya */
+
+.summary-actions button::before{
+
+content:"";
+
+position:absolute;
+
+top:0;
+
+left:-120%;
+
+
+width:70%;
+
+height:100%;
+
+
+background:
+
+linear-gradient(
+90deg,
+transparent,
+rgba(255,255,255,.45),
+transparent
+);
+
+
+transition:.7s ease;
+
+}
+
+
+.summary-actions button:hover::before{
+
+left:130%;
+
+}
+
+
+/* Klik */
+
+.summary-actions button:active{
+
+transform:scale(.96);
+
+}
