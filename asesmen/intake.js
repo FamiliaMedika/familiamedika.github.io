@@ -159,3 +159,67 @@ loadFamiliaAssessment
 );
 
 })();
+
+
+// ==========================================
+// HA-4.5.1 Assessment Binding Extension
+// ==========================================
+
+(function(){
+
+function loadClinicalOutput(){
+
+const raw=localStorage.getItem("familiaAssessment");
+
+if(!raw) return;
+
+try{
+
+const data=JSON.parse(raw);
+
+const setValue=(selectors,value)=>{
+selectors.forEach(id=>{
+const el=document.getElementById(id);
+if(el && value!==undefined && value!==null){
+el.value=value;
+el.dispatchEvent(new Event("input",{bubbles:true}));
+}
+});
+};
+
+
+setValue(
+["riskLevel","risk_level"],
+data.screening?.riskLevel || ""
+);
+
+
+setValue(
+["riskScore","risk_score"],
+data.screening?.riskScore || ""
+);
+
+
+setValue(
+["recommendedService","service","recommendation"],
+Array.isArray(data.recommendation?.service)
+? data.recommendation.service.join(", ")
+: ""
+);
+
+
+setValue(
+["patientJourney","journey"],
+data.recommendation?.journey || ""
+);
+
+
+}catch(e){
+console.error("HA-4.5.1 Binding Error",e);
+}
+
+}
+
+document.addEventListener("DOMContentLoaded",loadClinicalOutput);
+
+})();
