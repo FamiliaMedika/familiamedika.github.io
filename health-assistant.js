@@ -167,23 +167,53 @@ return result;
 
 function extractDuration(text){
 
-const match=text.match(
-/(\d+)\s*(hari|minggu|bulan|tahun)/i
+text=text.toLowerCase();
+
+
+// Prioritas cari durasi keluhan
+// setelah kata sejak / selama
+
+let match=text.match(
+/(sejak|selama|sudah)\s*(\d+)\s*(hari|minggu|bulan|tahun)/i
 );
+
 
 if(match){
 
-return match[0];
+return match[2]+" "+match[3];
 
 }
 
-if(text.includes("seminggu"))
+
+// khusus kata seminggu, dua minggu, dll
+
+if(text.includes("seminggu")){
+
 return "1 minggu";
+
+}
+
+
+if(text.includes("dua minggu")){
+
+return "2 minggu";
+
+}
+
+
+if(text.includes("sebulan")){
+
+return "1 bulan";
+
+}
+
+
+// jika hanya ada angka tahun,
+// jangan anggap sebagai durasi
 
 return "";
 
 }
-
 
 
 function extractComplaint(text){
