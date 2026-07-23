@@ -52,3 +52,110 @@
   form.addEventListener('submit',e=>{e.preventDefault();clearErrors();if(!validate(4)||hasRedFlag())return;submit().catch(err=>setError('submitError',err.message||'Gagal mengirim asesmen.'));});
   show(1);updateGuardian();updateEmergency();
 })();
+
+
+// ==========================================
+// HA-4.5 Auto Fill Assessment Page
+// ==========================================
+(function(){
+
+function loadFamiliaAssessment(){
+
+const raw=localStorage.getItem("familiaAssessment");
+
+if(!raw) return;
+
+try{
+
+const data=JSON.parse(raw);
+
+
+// Mapping selector fleksibel
+const setValue=(selectors,value)=>{
+
+selectors.forEach(id=>{
+
+const el=document.getElementById(id);
+
+if(el && value!==undefined && value!==null){
+
+el.value=value;
+el.dispatchEvent(new Event("input",{bubbles:true}));
+
+}
+
+});
+
+};
+
+
+// Basic patient data
+
+setValue(
+["patientRelation","relation","guardian"],
+data.patient?.relation || ""
+);
+
+
+setValue(
+["patientAge","age"],
+data.patient?.age || ""
+);
+
+
+// Complaint
+
+setValue(
+["chiefComplaint","complaint"],
+data.complaint?.main || ""
+);
+
+
+setValue(
+["duration","complaintDuration"],
+data.complaint?.duration || ""
+);
+
+
+setValue(
+["complaintDetail","detail"],
+data.complaint?.detail || ""
+);
+
+
+// History
+
+setValue(
+["medicalHistory","history"],
+Array.isArray(data.history?.disease)
+?
+data.history.disease.join(", ")
+:
+(data.history?.disease || "")
+);
+
+
+console.log(
+"Familia Medika HA-4.5 Assessment Loaded",
+data
+);
+
+
+}catch(e){
+
+console.error(
+"HA-4.5 Auto Fill Error",
+e
+);
+
+}
+
+}
+
+
+document.addEventListener(
+"DOMContentLoaded",
+loadFamiliaAssessment
+);
+
+})();
