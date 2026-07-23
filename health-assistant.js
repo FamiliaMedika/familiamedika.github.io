@@ -167,53 +167,23 @@ return result;
 
 function extractDuration(text){
 
-text=text.toLowerCase();
-
-
-// Prioritas cari durasi keluhan
-// setelah kata sejak / selama
-
-let match=text.match(
-/(sejak|selama|sudah)\s*(\d+)\s*(hari|minggu|bulan|tahun)/i
+const match=text.match(
+/(\d+)\s*(hari|minggu|bulan|tahun)/i
 );
-
 
 if(match){
 
-return match[2]+" "+match[3];
+return match[0];
 
 }
 
-
-// khusus kata seminggu, dua minggu, dll
-
-if(text.includes("seminggu")){
-
+if(text.includes("seminggu"))
 return "1 minggu";
-
-}
-
-
-if(text.includes("dua minggu")){
-
-return "2 minggu";
-
-}
-
-
-if(text.includes("sebulan")){
-
-return "1 bulan";
-
-}
-
-
-// jika hanya ada angka tahun,
-// jangan anggap sebagai durasi
 
 return "";
 
 }
+
 
 
 function extractComplaint(text){
@@ -2003,3 +1973,179 @@ window.showConversationalClinicalSummary=showConversationalClinicalSummary;
 
 
 window.normalizeClinicalData=normalizeClinicalData;
+
+
+// =====================================
+// HA-4.4 Assessment Mapping Engine
+// =====================================
+
+let assessmentForm = {
+
+patient:{
+relation:"",
+age:"",
+gender:"",
+name:""
+},
+
+complaint:{
+main:"",
+duration:"",
+detail:""
+},
+
+history:{
+disease:[],
+medication:[]
+},
+
+screening:{
+dangerSign:"",
+riskLevel:"",
+riskScore:0
+},
+
+recommendation:{
+service:[],
+priority:"",
+journey:""
+}
+
+};
+
+
+
+function mapHealthStateToAssessment(){
+
+assessmentForm={
+
+patient:{
+
+relation:
+healthState.patient_relation || "",
+
+age:
+healthState.age || "",
+
+gender:
+healthState.gender || "",
+
+name:
+healthState.name || ""
+
+},
+
+
+complaint:{
+
+main:
+healthState.chief_complaint || "",
+
+duration:
+healthState.duration || "",
+
+detail:
+healthState.complaint_detail || ""
+
+},
+
+
+history:{
+
+disease:
+healthState.medical_history
+?
+healthState.medical_history.split(",")
+:
+[],
+
+medication:
+healthState.medication
+?
+healthState.medication.split(",")
+:
+[]
+
+},
+
+
+screening:{
+
+dangerSign:
+healthState.danger_sign || "",
+
+riskLevel:
+healthState.risk_level || "",
+
+riskScore:
+(typeof healthRisk !== "undefined")
+?
+healthRisk.score
+:
+0
+
+},
+
+
+recommendation:{
+
+service:
+(typeof clinicalRecommendation !== "undefined")
+?
+clinicalRecommendation.services
+:
+[],
+
+priority:
+(typeof clinicalRecommendation !== "undefined")
+?
+clinicalRecommendation.priority
+:
+"",
+
+journey:
+(typeof patientJourney !== "undefined")
+?
+patientJourney.route
+:
+""
+
+}
+
+};
+
+
+return assessmentForm;
+
+}
+
+
+
+function saveAssessmentSession(){
+
+const data = mapHealthStateToAssessment();
+
+localStorage.setItem(
+"familiaAssessment",
+JSON.stringify(data)
+);
+
+return data;
+
+}
+
+
+
+function continueAssessment(){
+
+saveAssessmentSession();
+
+location.href="/asesmen/";
+
+}
+
+
+window.mapHealthStateToAssessment=mapHealthStateToAssessment;
+window.saveAssessmentSession=saveAssessmentSession;
+window.continueAssessment=continueAssessment;
+
