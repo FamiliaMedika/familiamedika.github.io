@@ -153,7 +153,7 @@ ${healthState.risk_level==="HIGH"?"🚑 Pemeriksaan segera / IGD":"👨‍⚕️
 </button>
 
 
-<button onclick="location.href='/asesmen/'">
+<button onclick="continueAssessment()">
 
 🩺 Lanjutkan Health Assessment
 
