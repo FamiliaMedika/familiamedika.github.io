@@ -227,16 +227,8 @@
     <h2><span class="n">2</span>Detail Pemeriksaan</h2>
     <p class="hint">Kapan pemeriksaan dilakukan, dan lama istirahat yang dibutuhkan.</p>
 
-    <div class="row2">
-      <div>
-        <label for="tglPeriksa">Tanggal Periksa</label>
-        <input id="tglPeriksa" type="date" required>
-      </div>
-      <div>
-        <label for="waktuPeriksa">Waktu Periksa</label>
-        <input id="waktuPeriksa" type="time" required>
-      </div>
-    </div>
+    <label for="tglPeriksa">Tanggal Periksa</label>
+    <input id="tglPeriksa" type="date" required>
 
     <label>Lama Istirahat (hari)</label>
     <div class="rest-picker" id="restPicker">
@@ -291,13 +283,14 @@ const tglMulaiEl = document.getElementById('tglMulai');
 tglPeriksaEl.addEventListener('change', () => {
   const v = tglPeriksaEl.value;
   if (!v) { tglMulaiEl.disabled = true; tglMulaiEl.value = ''; return; }
-  const base = new Date(v + 'T00:00:00');
-  const besok = new Date(base);
-  besok.setDate(besok.getDate() + 1);
-  const toISO = (d) => d.toISOString().slice(0, 10);
-  tglMulaiEl.min = toISO(base);
-  tglMulaiEl.max = toISO(besok);
-  tglMulaiEl.value = toISO(base);
+  const [y, m, d] = v.split('-').map(Number);
+  const toISO = (yy, mm, dd) => {
+    const dt = new Date(Date.UTC(yy, mm - 1, dd));
+    return dt.toISOString().slice(0, 10);
+  };
+  tglMulaiEl.min = toISO(y, m, d);
+  tglMulaiEl.max = toISO(y, m, d + 1);
+  tglMulaiEl.value = toISO(y, m, d);
   tglMulaiEl.disabled = false;
 });
 
@@ -308,6 +301,12 @@ function fmtDate(iso){
 }
 function fmtTime(t){
   return t ? t.replace(':', '.') : '';
+}
+function nowHHMM(){
+  const d = new Date();
+  const hh = String(d.getHours()).padStart(2, '0');
+  const mm = String(d.getMinutes()).padStart(2, '0');
+  return `${hh}:${mm}`;
 }
 
 document.getElementById('intakeForm').addEventListener('submit', function(e){
@@ -320,11 +319,10 @@ document.getElementById('intakeForm').addEventListener('submit', function(e){
   const alamat = document.getElementById('alamat').value.trim();
   const pekerjaan = document.getElementById('pekerjaan').value.trim();
   const tglPeriksa = document.getElementById('tglPeriksa').value;
-  const waktuPeriksa = document.getElementById('waktuPeriksa').value;
   const tglMulai = document.getElementById('tglMulai').value;
   const consent = document.getElementById('consent').checked;
 
-  if(!nama || !tglLahir || !kelamin || !alamat || !pekerjaan || !tglPeriksa || !waktuPeriksa || !restValue || !tglMulai || !consent){
+  if(!nama || !tglLahir || !kelamin || !alamat || !pekerjaan || !tglPeriksa || !restValue || !tglMulai || !consent){
     errEl.style.display = 'block';
     return;
   }
@@ -343,7 +341,7 @@ document.getElementById('intakeForm').addEventListener('submit', function(e){
       alamat: alamat,
       pekerjaan: pekerjaan,
       tanggalPeriksa: fmtDate(tglPeriksa),
-      waktuPemeriksaan: fmtTime(waktuPeriksa) + ' WIB',
+      waktuPemeriksaan: fmtTime(nowHHMM()) + ' WIB',
       lamaIstirahat: restValue,
       tanggalMulaiIzin: fmtDate(tglMulai),
     }
