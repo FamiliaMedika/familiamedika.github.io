@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surat Keterangan Sakit — Familia Medika</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0b2e4f;
+    --navy-deep:#071c33;
+    --teal:#0e8a86;
+    --teal-light:#e3f4f2;
+    --paper:#f7f9fb;
+    --card:#ffffff;
+    --ink:#16222e;
+    --muted:#5b6b7a;
+    --line:#e3e8ee;
+    --danger:#b3261e;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .topband{
+    height:6px;
+    background:linear-gradient(90deg,var(--navy) 0%,var(--teal) 100%);
+  }
+  header.hero{
+    background:linear-gradient(160deg,var(--navy) 0%,var(--navy-deep) 100%);
+    color:#fff;
+    padding:36px 20px 64px;
+    text-align:center;
+    position:relative;
+  }
+  .brand{
+    display:flex;align-items:center;justify-content:center;
+  }
+  .brand .logo-plate{
+    background:#fff;
+    border-radius:14px;
+    padding:10px 16px;
+    box-shadow:0 8px 20px -8px rgba(0,0,0,.35);
+    display:flex;align-items:center;gap:9px;
+  }
+  .brand img{height:30px;width:auto;display:block}
+  .brand .wordmark{font-family:'Manrope',sans-serif;font-weight:800;font-size:17px;color:var(--navy)}
+  header.hero h1{
+    font-family:'Manrope',sans-serif;
+    font-weight:800;
+    font-size:clamp(24px,5vw,32px);
+    margin:22px auto 10px;
+    max-width:520px;
+    line-height:1.25;
+  }
+  header.hero p{
+    color:#cfe0ea;
+    max-width:440px;
+    margin:0 auto;
+    font-size:15px;
+    line-height:1.6;
+  }
+
+  .steps{
+    max-width:640px;
+    margin:-40px auto 0;
+    padding:0 20px;
+    position:relative;
+    z-index:2;
+  }
+  .steps ol{
+    list-style:none;margin:0;padding:18px 10px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+    background:var(--card);
+    border-radius:16px;
+    box-shadow:0 12px 30px -12px rgba(11,46,79,.25);
+    border:1px solid var(--line);
+  }
+  .steps li{
+    text-align:center;font-size:12.5px;color:var(--muted);padding:6px 4px;
+  }
+  .steps li b{
+    display:flex;align-items:center;justify-content:center;
+    width:26px;height:26px;margin:0 auto 6px;border-radius:50%;
+    background:var(--teal-light);color:var(--teal);font-family:'Manrope',sans-serif;font-weight:800;
+    font-size:13px;
+  }
+  .steps li.now{color:var(--navy);font-weight:600}
+  .steps li.now b{background:var(--navy);color:#fff}
+
+  main{max-width:640px;margin:28px auto 60px;padding:0 20px}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:28px 24px 26px;
+    box-shadow:0 1px 2px rgba(16,24,32,.04);
+  }
+  .card + .card{margin-top:16px}
+  .card h2{
+    font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;
+    color:var(--navy);margin:0 0 4px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .card h2 span.n{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:22px;height:22px;border-radius:7px;background:var(--teal-light);
+    color:var(--teal);font-size:12px;
+  }
+  .card .hint{font-size:12.5px;color:var(--muted);margin:0 0 18px}
+
+  label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin:14px 0 6px}
+  label:first-of-type{margin-top:2px}
+  input,select{
+    width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;
+    font-size:15px;font-family:'Inter',sans-serif;color:var(--ink);background:#fff;
+    transition:border-color .15s;
+  }
+  input:focus,select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-light)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:480px){.row2{grid-template-columns:1fr}}
+
+  .rest-picker{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+  .rest-picker button{
+    flex:1 1 56px;padding:10px 0;border-radius:10px;border:1.5px solid var(--line);
+    background:#fff;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;color:var(--ink);
+    cursor:pointer;transition:.15s;
+  }
+  .rest-picker button.active{background:var(--navy);border-color:var(--navy);color:#fff}
+
+  .consent{
+    display:flex;gap:10px;align-items:flex-start;background:var(--teal-light);
+    border-radius:12px;padding:14px;margin-top:18px;font-size:13px;color:#0a4341;line-height:1.55;
+  }
+  .consent input{width:18px;height:18px;margin-top:2px;accent-color:var(--teal)}
+
+  .submit-bar{margin-top:22px}
+  button.submit{
+    width:100%;padding:15px;border:none;border-radius:12px;
+    background:var(--navy);color:#fff;font-family:'Manrope',sans-serif;font-weight:800;font-size:15.5px;
+    cursor:pointer;transition:.15s;letter-spacing:.2px;
+  }
+  button.submit:hover{background:var(--navy-deep)}
+  button.submit:disabled{opacity:.55;cursor:not-allowed}
+  .err{color:var(--danger);font-size:12.5px;margin-top:8px;display:none}
+
+  footer{
+    text-align:center;color:var(--muted);font-size:12.5px;padding:0 20px 40px;
+  }
+
+  /* success state */
+  .success{
+    max-width:640px;margin:60px auto;padding:0 20px;text-align:center;display:none;
+  }
+  .success .icon{
+    width:64px;height:64px;border-radius:50%;background:var(--teal-light);color:var(--teal);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:30px;
+  }
+  .success h2{font-family:'Manrope',sans-serif;color:var(--navy);font-size:22px;margin:0 0 8px}
+  .success p{color:var(--muted);font-size:14.5px;max-width:400px;margin:0 auto;line-height:1.6}
+
+  .hidden{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="topband"></div>
+
+<header class="hero">
+  <div class="brand">
+    <div class="logo-plate">
+      <img src="logo-familia-medika.png" alt="Familia Medika">
+      <span class="wordmark">Familia Medika</span>
+    </div>
+  </div>
+  <h1>Surat Keterangan Sakit</h1>
+  <p>Isi data di bawah ini. Dokter akan meninjau dan menerbitkan surat setelah data diperiksa.</p>
+</header>
+
+<div class="steps">
+  <ol>
+    <li class="now"><b>1</b>Isi data</li>
+    <li><b>2</b>Ditinjau dokter</li>
+    <li><b>3</b>Surat terbit</li>
+  </ol>
+</div>
+
+<main>
+<form id="intakeForm">
+
+  <div class="card">
+    <h2><span class="n">1</span>Identitas Pasien</h2>
+    <p class="hint">Sesuai KTP / identitas resmi.</p>
+
+    <label for="nama">Nama Lengkap</label>
+    <input id="nama" required autocomplete="name" placeholder="Nama sesuai KTP">
+
+    <div class="row2">
+      <div>
+        <label for="tglLahir">Tanggal Lahir</label>
+        <input id="tglLahir" type="date" required>
+      </div>
+      <div>
+        <label for="kelamin">Jenis Kelamin</label>
+        <select id="kelamin" required>
+          <option value="" disabled selected>Pilih</option>
+          <option>Laki-Laki</option>
+          <option>Perempuan</option>
+        </select>
+      </div>
+    </div>
+
+    <label for="alamat">Alamat</label>
+    <input id="alamat" required placeholder="Alamat domisili saat ini">
+
+    <label for="pekerjaan">Pekerjaan</label>
+    <input id="pekerjaan" required placeholder="Contoh: Karyawan Swasta">
+  </div>
+
+  <div class="card">
+    <h2><span class="n">2</span>Detail Pemeriksaan</h2>
+    <p class="hint">Kapan pemeriksaan dilakukan, dan lama istirahat yang dibutuhkan.</p>
+
+    <div class="row2">
+      <div>
+        <label for="tglPeriksa">Tanggal Periksa</label>
+        <input id="tglPeriksa" type="date" required>
+      </div>
+      <div>
+        <label for="waktuPeriksa">Waktu Periksa</label>
+        <input id="waktuPeriksa" type="time" required>
+      </div>
+    </div>
+
+    <label>Lama Istirahat (hari)</label>
+    <div class="rest-picker" id="restPicker">
+      <button type="button" data-v="1">1</button>
+      <button type="button" data-v="2">2</button>
+      <button type="button" data-v="3">3</button>
+    </div>
+
+    <label for="tglMulai">Tanggal Mulai Izin</label>
+    <input id="tglMulai" type="date" required disabled>
+    <div class="hint" style="margin-top:6px">Hanya bisa tanggal periksa atau maksimal 1 hari sesudahnya.</div>
+
+    <div class="consent">
+      <input type="checkbox" id="consent" required>
+      <label for="consent" style="margin:0;font-weight:500">
+        Saya menyatakan data di atas benar dan memahami bahwa surat akan diterbitkan setelah diperiksa oleh dokter.
+      </label>
+    </div>
+
+    <div class="submit-bar">
+      <button type="submit" class="submit" id="submitBtn">Kirim Pengajuan</button>
+      <div class="err" id="errMsg">Mohon lengkapi semua kolom yang wajib diisi.</div>
+    </div>
+  </div>
+
+</form>
+</main>
+
+<div class="success" id="successView">
+  <div class="icon">✓</div>
+  <h2>Pengajuan terkirim</h2>
+  <p>Dokter akan meninjau data kamu. Kamu akan dihubungi kembali oleh Familia Medika begitu surat sudah terbit.</p>
+</div>
+
+<footer>Familia Medika — Sahabat Sehat Keluarga di Rumah · Mangunan, Yogyakarta</footer>
+
+<script>
+const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwJ1ss-gy4rk4mL1o4kRDlWi7bIwBk8iFQeLhdjutt1Ae265KPFtIa3BDOOPfz--csMGA/exec';
+
+const restPicker = document.getElementById('restPicker');
+let restValue = null;
+restPicker.addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  [...restPicker.children].forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  restValue = btn.dataset.v;
+});
+
+const tglPeriksaEl = document.getElementById('tglPeriksa');
+const tglMulaiEl = document.getElementById('tglMulai');
+tglPeriksaEl.addEventListener('change', () => {
+  const v = tglPeriksaEl.value;
+  if (!v) { tglMulaiEl.disabled = true; tglMulaiEl.value = ''; return; }
+  const base = new Date(v + 'T00:00:00');
+  const besok = new Date(base);
+  besok.setDate(besok.getDate() + 1);
+  const toISO = (d) => d.toISOString().slice(0, 10);
+  tglMulaiEl.min = toISO(base);
+  tglMulaiEl.max = toISO(besok);
+  tglMulaiEl.value = toISO(base);
+  tglMulaiEl.disabled = false;
+});
+
+function fmtDate(iso){
+  if(!iso) return '';
+  const [y,m,d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+function fmtTime(t){
+  return t ? t.replace(':', '.') : '';
+}
+
+document.getElementById('intakeForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const errEl = document.getElementById('errMsg');
+
+  const nama = document.getElementById('nama').value.trim();
+  const tglLahir = document.getElementById('tglLahir').value;
+  const kelamin = document.getElementById('kelamin').value;
+  const alamat = document.getElementById('alamat').value.trim();
+  const pekerjaan = document.getElementById('pekerjaan').value.trim();
+  const tglPeriksa = document.getElementById('tglPeriksa').value;
+  const waktuPeriksa = document.getElementById('waktuPeriksa').value;
+  const tglMulai = document.getElementById('tglMulai').value;
+  const consent = document.getElementById('consent').checked;
+
+  if(!nama || !tglLahir || !kelamin || !alamat || !pekerjaan || !tglPeriksa || !waktuPeriksa || !restValue || !tglMulai || !consent){
+    errEl.style.display = 'block';
+    return;
+  }
+  errEl.style.display = 'none';
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Mengirim...';
+
+  const payload = {
+    action: 'submit_intake',
+    data: {
+      namaLengkap: nama,
+      tanggalLahir: fmtDate(tglLahir),
+      jenisKelamin: kelamin,
+      alamat: alamat,
+      pekerjaan: pekerjaan,
+      tanggalPeriksa: fmtDate(tglPeriksa),
+      waktuPemeriksaan: fmtTime(waktuPeriksa) + ' WIB',
+      lamaIstirahat: restValue,
+      tanggalMulaiIzin: fmtDate(tglMulai),
+    }
+  };
+
+  fetch(WEBHOOK_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload),
+  }).then(() => {
+    document.getElementById('intakeForm').parentElement.classList.add('hidden');
+    document.querySelector('.steps').classList.add('hidden');
+    document.getElementById('successView').style.display = 'block';
+  }).catch(() => {
+    btn.disabled = false;
+    btn.textContent = 'Kirim Pengajuan';
+    errEl.textContent = 'Gagal mengirim, cek koneksi internet lalu coba lagi.';
+    errEl.style.display = 'block';
+  });
+});
+</script>
+
+</body>
+</html>
