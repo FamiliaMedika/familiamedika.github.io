@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pemeriksaan Fisik - Surat Sehat | Familia Medika</title>
+  <style>
+    :root {
+      --navy: #17457b;
+      --teal: #04a7bd;
+      --ink: #172033;
+      --muted: #677386;
+      --line: #dce4ec;
+      --bg: #f4f7fa;
+      --success: #22c55e;
+      --error: #ef4444;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 24px; }
+    .header {
+      background: linear-gradient(135deg, var(--navy), #226e9b);
+      color: white;
+      padding: 32px 28px;
+      border-radius: 16px 16px 0 0;
+      text-align: center;
+      margin-bottom: 0;
+    }
+    .header .logo {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.3;
+      font-weight: 700;
+    }
+    .header p {
+      margin: 12px 0 0;
+      font-size: 14px;
+      opacity: 0.95;
+      line-height: 1.5;
+    }
+    .form-container {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 0 0 16px 16px;
+      padding: 32px;
+      box-shadow: 0 2px 8px rgba(23, 69, 123, 0.06);
+    }
+    .patient-info {
+      background: var(--bg);
+      border-left: 4px solid var(--teal);
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 32px;
+    }
+    .patient-info h3 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .patient-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .patient-item {
+      font-size: 13px;
+    }
+    .patient-item .label {
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .patient-item .value {
+      color: var(--ink);
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .form-section { margin-bottom: 32px; }
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 0 0 8px 0;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--line);
+    }
+    .section-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 20px 0;
+      line-height: 1.5;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--ink);
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(4, 167, 189, 0.1);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .form-group .unit {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+    .button-group button {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--navy);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #0f3659;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(23, 69, 123, 0.2);
+    }
+    .btn-primary:disabled {
+      background: var(--muted);
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--navy);
+      border: 2px solid var(--navy);
+    }
+    .btn-secondary:hover {
+      background: var(--bg);
+    }
+    .success-message {
+      background: #e5f6eb;
+      border: 1px solid var(--success);
+      border-radius: 8px;
+      padding: 16px 14px;
+      margin-bottom: 20px;
+      color: #116533;
+      font-size: 14px;
+      line-height: 1.5;
+      display: none;
+    }
+    .success-message.show {
+      display: block;
+    }
+    .error-message {
+      background: #fdeaea;
+      border: 1px solid var(--error);
+      border-radius: 8px;
+      padding: 16px 14px;
+      margin-bottom: 20px;
+      color: #991b1b;
+      font-size: 14px;
+      line-height: 1.5;
+      display: none;
+    }
+    .error-message.show {
+      display: block;
+    }
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+    .loading.show {
+      display: block;
+    }
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid var(--line);
+      border-top-color: var(--navy);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .footer {
+      text-align: center;
+      padding: 20px 28px;
+      background: var(--bg);
+      border-top: 1px solid var(--line);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .required-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .loading-screen {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .loading-screen.show {
+      display: block;
+    }
+    @media (max-width: 640px) {
+      .container { padding: 16px; }
+      .form-container { padding: 20px; }
+      .header { padding: 24px 20px; }
+      .header h1 { font-size: 22px; }
+      .form-row { grid-template-columns: 1fr; }
+      .patient-grid { grid-template-columns: 1fr; }
+      .button-group { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">Familia Medika</div>
+      <h1>Data Pemeriksaan Fisik</h1>
+      <p>Lengkapi hasil pemeriksaan fisik pasien untuk menerbitkan Surat Keterangan Sehat</p>
+    </div>
+
+    <div class="form-container">
+      <div class="loading-screen" id="loadingScreen">
+        <div class="spinner"></div>
+        <p style="color: var(--muted); margin-top: 12px;">Memuat data pasien...</p>
+      </div>
+
+      <div id="formSection" style="display: none;">
+        <div class="success-message" id="successMessage">
+          ✅ Data pemeriksaan berhasil disimpan! Silakan approve di Telegram untuk generate PDF.
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="patient-info" id="patientInfo">
+          <h3>Informasi Pasien</h3>
+          <div class="patient-grid">
+            <div class="patient-item">
+              <div class="label">Nama Lengkap</div>
+              <div class="value" id="infoNama">-</div>
+            </div>
+            <div class="patient-item">
+              <div class="label">Tanggal Lahir</div>
+              <div class="value" id="infoTglLahir">-</div>
+            </div>
+            <div class="patient-item">
+              <div class="label">Jenis Kelamin</div>
+              <div class="value" id="infoKelamin">-</div>
+            </div>
+            <div class="patient-item">
+              <div class="label">Pekerjaan</div>
+              <div class="value" id="infoPekerjaan">-</div>
+            </div>
+            <div class="patient-item">
+              <div class="label">Keperluan</div>
+              <div class="value" id="infoKeperluan">-</div>
+            </div>
+            <div class="patient-item">
+              <div class="label">Tanggal Periksa</div>
+              <div class="value" id="infoTglPeriksa">-</div>
+            </div>
+          </div>
+        </div>
+
+        <form id="pemeriksaanForm">
+          <div class="required-note">
+            * Semua field yang ditandai wajib diisi
+          </div>
+
+          <div class="form-section">
+            <h2 class="section-title">Tanda Vital</h2>
+            <p class="section-desc">Hasil pengukuran tekanan darah, denyut nadi, suhu, dan pernapasan.</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="tensiSistol">Tensi Sistol (mmHg) *</label>
+                <input type="number" id="tensiSistol" name="tensiSistol" min="0" max="300" placeholder="Contoh: 120" required>
+                <div class="unit">Tekanan darah sistolik</div>
+              </div>
+
+              <div class="form-group">
+                <label for="tensiDiastol">Tensi Diastol (mmHg) *</label>
+                <input type="number" id="tensiDiastol" name="tensiDiastol" min="0" max="200" placeholder="Contoh: 80" required>
+                <div class="unit">Tekanan darah diastolik</div>
+              </div>
+
+              <div class="form-group">
+                <label for="nadi">Nadi (beat/min) *</label>
+                <input type="number" id="nadi" name="nadi" min="0" max="200" placeholder="Contoh: 75" required>
+                <div class="unit">Denyut jantung per menit</div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="suhu">Suhu Badan (°C) *</label>
+                <input type="number" id="suhu" name="suhu" min="30" max="42" step="0.1" placeholder="Contoh: 36.5" required>
+                <div class="unit">Suhu tubuh normal: 36.5-37.5°C</div>
+              </div>
+
+              <div class="form-group">
+                <label for="respirasi">Respirasi (breath/min) *</label>
+                <input type="number" id="respirasi" name="respirasi" min="0" max="60" placeholder="Contoh: 20" required>
+                <div class="unit">Frekuensi pernapasan per menit</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h2 class="section-title">Pengukuran Tubuh</h2>
+            <p class="section-desc">Data tinggi badan, berat badan, dan indeks massa tubuh.</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="beratBadan">Berat Badan (kg) *</label>
+                <input type="number" id="beratBadan" name="beratBadan" min="0" max="300" step="0.1" placeholder="Contoh: 65.5" required>
+                <div class="unit">Berat tubuh dalam kilogram</div>
+              </div>
+
+              <div class="form-group">
+                <label for="tinggiBadan">Tinggi Badan (cm) *</label>
+                <input type="number" id="tinggiBadan" name="tinggiBadan" min="0" max="250" placeholder="Contoh: 170" required>
+                <div class="unit">Tinggi tubuh dalam sentimeter</div>
+              </div>
+
+              <div class="form-group">
+                <label for="imt">Indeks Massa Tubuh (IMT)</label>
+                <input type="number" id="imt" name="imt" step="0.1" placeholder="Auto-calculate" readonly>
+                <div class="unit">Dihitung otomatis dari BB dan TB</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h2 class="section-title">Data Tambahan</h2>
+            <p class="section-desc">Golongan darah, catatan khusus, dan temuan lainnya.</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="golDarah">Golongan Darah *</label>
+                <select id="golDarah" name="golDarah" required>
+                  <option value="">-- Pilih --</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="AB">AB</option>
+                  <option value="O">O</option>
+                  <option value="Tidak Diketahui">Tidak Diketahui</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="catatan">Catatan / Temuan Klinis</label>
+              <textarea id="catatan" name="catatan" placeholder="Tulis catatan pemeriksaan, keluhan, atau temuan khusus (opsional)"></textarea>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button type="button" class="btn-secondary" onclick="window.history.back()">Batal</button>
+            <button type="submit" class="btn-primary" id="submitBtn">Simpan Data Pemeriksaan</button>
+          </div>
+        </form>
+
+        <div class="loading" id="loadingIndicator">
+          <div class="spinner"></div>
+          <p style="margin-top: 12px; color: var(--muted);">Sedang menyimpan data...</p>
+        </div>
+      </div>
+
+      <div id="errorSection" style="display: none; text-align: center; padding: 40px 20px;">
+        <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+        <h2 style="color: var(--navy); margin-bottom: 8px;">Pasien Tidak Ditemukan</h2>
+        <p style="color: var(--muted); line-height: 1.6;">
+          Halaman ini diakses dari link di Telegram yang berisi ID pasien.<br>
+          Pastikan Anda membuka link dari notifikasi Telegram yang benar.
+        </p>
+      </div>
+    </div>
+
+    <div class="footer">
+      Familia Medika - Sahabat Sehat Keluarga di Rumah<br>
+      © 2026 Semua hak cipta dilindungi.
+    </div>
+  </div>
+
+  <script>
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby8sXAKEzzKkK8HaEK6LE3N3ntciH2Ih5nsnQhc2g44amhAeaBxiSlX3qbLlc_d-Uz2LQ/exec';
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const rowParam = urlParams.get('row');
+
+    if (!rowParam) {
+      showError('Akses tidak valid. Silakan gunakan link dari notifikasi Telegram.');
+    }
+
+    window.addEventListener('DOMContentLoaded', function() {
+      if (rowParam) {
+        loadPatientData(rowParam);
+      }
+    });
+
+    function showError(message) {
+      document.getElementById('loadingScreen').classList.remove('show');
+      document.getElementById('formSection').style.display = 'none';
+      document.getElementById('errorSection').style.display = 'block';
+    }
+
+    function loadPatientData(row) {
+      fetch(WEB_APP_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'get_pasien_sehat',
+          row: parseInt(row)
+        })
+      })
+      .then(resp => resp.json())
+      .then(data => {
+        if (data.success && data.pasien) {
+          populatePatientInfo(data.pasien);
+          populateExistingData(data.pasien);
+          document.getElementById('loadingScreen').classList.remove('show');
+          document.getElementById('formSection').style.display = 'block';
+        } else {
+          showError(data.error || 'Gagal memuat data pasien.');
+        }
+      })
+      .catch(err => {
+        console.error('Error:', err);
+        showError('Gagal terhubung ke server. Cek koneksi internet Anda.');
+      });
+    }
+
+    function populatePatientInfo(pasien) {
+      document.getElementById('infoNama').textContent = pasien.namaLengkap || '-';
+      document.getElementById('infoTglLahir').textContent = pasien.tanggalLahir || '-';
+      document.getElementById('infoKelamin').textContent = pasien.jenisKelamin || '-';
+      document.getElementById('infoPekerjaan').textContent = pasien.pekerjaan || '-';
+      document.getElementById('infoKeperluan').textContent = pasien.keperluan || '-';
+      document.getElementById('infoTglPeriksa').textContent = pasien.tanggalPeriksa || '-';
+    }
+
+    function populateExistingData(pasien) {
+      if (pasien.tensiSistol) document.getElementById('tensiSistol').value = pasien.tensiSistol;
+      if (pasien.tensiDiastol) document.getElementById('tensiDiastol').value = pasien.tensiDiastol;
+      if (pasien.nadi) document.getElementById('nadi').value = pasien.nadi;
+      if (pasien.suhu) document.getElementById('suhu').value = pasien.suhu;
+      if (pasien.respirasi) document.getElementById('respirasi').value = pasien.respirasi;
+      if (pasien.beratBadan) document.getElementById('beratBadan').value = pasien.beratBadan;
+      if (pasien.tinggiBadan) document.getElementById('tinggiBadan').value = pasien.tinggiBadan;
+      if (pasien.golDarah) document.getElementById('golDarah').value = pasien.golDarah;
+      if (pasien.catatan) document.getElementById('catatan').value = pasien.catatan;
+      
+      calculateIMT();
+    }
+
+    document.getElementById('beratBadan').addEventListener('input', calculateIMT);
+    document.getElementById('tinggiBadan').addEventListener('input', calculateIMT);
+
+    function calculateIMT() {
+      const bb = parseFloat(document.getElementById('beratBadan').value) || 0;
+      const tb = parseFloat(document.getElementById('tinggiBadan').value) || 0;
+      
+      if (bb > 0 && tb > 0) {
+        const tbMeter = tb / 100;
+        const imt = (bb / (tbMeter * tbMeter)).toFixed(1);
+        document.getElementById('imt').value = imt;
+      } else {
+        document.getElementById('imt').value = '';
+      }
+    }
+
+    document.getElementById('pemeriksaanForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = {
+        tensiSistol: document.getElementById('tensiSistol').value,
+        tensiDiastol: document.getElementById('tensiDiastol').value,
+        nadi: document.getElementById('nadi').value,
+        suhu: document.getElementById('suhu').value,
+        respirasi: document.getElementById('respirasi').value,
+        beratBadan: document.getElementById('beratBadan').value,
+        tinggiBadan: document.getElementById('tinggiBadan').value,
+        golDarah: document.getElementById('golDarah').value,
+        catatan: document.getElementById('catatan').value.trim(),
+      };
+
+      setLoading(true);
+
+      try {
+        const response = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'submit_pemeriksaan_sehat',
+            row: parseInt(rowParam),
+            data: formData
+          })
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+          showSuccess();
+        } else {
+          showErrorMsg(result.error || 'Gagal menyimpan data.');
+        }
+      } catch (error) {
+        showErrorMsg('Terjadi kesalahan: ' + error.message);
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    function setLoading(isLoading) {
+      document.getElementById('loadingIndicator').classList.toggle('show', isLoading);
+      document.getElementById('submitBtn').disabled = isLoading;
+    }
+
+    function showSuccess() {
+      document.getElementById('successMessage').classList.add('show');
+      document.getElementById('pemeriksaanForm').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showErrorMsg(message) {
+      const errorEl = document.getElementById('errorMessage');
+      errorEl.textContent = '❌ ' + message;
+      errorEl.classList.add('show');
+      setTimeout(() => errorEl.classList.remove('show'), 5000);
+    }
+  </script>
+</body>
+</html>
