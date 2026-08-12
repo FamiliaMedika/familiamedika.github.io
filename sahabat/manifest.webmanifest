@@ -13,8 +13,14 @@
   "categories": ["medical", "health", "lifestyle"],
   "icons": [
     {
-      "src": "/assets/logo-icon.png",
+      "src": "/sahabat/app-icon.svg",
       "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/logo-icon.png",
+      "sizes": "240x258",
       "type": "image/png",
       "purpose": "any"
     }
@@ -24,13 +30,13 @@
       "name": "Pesan Layanan",
       "short_name": "Pesan",
       "url": "/sahabat/?view=services",
-      "icons": [{"src": "/assets/logo-icon.png", "sizes": "any", "type": "image/png"}]
+      "icons": [{"src": "/sahabat/app-icon.svg", "sizes": "any", "type": "image/svg+xml"}]
     },
     {
       "name": "Jadwal Saya",
       "short_name": "Jadwal",
       "url": "/sahabat/?view=bookings",
-      "icons": [{"src": "/assets/logo-icon.png", "sizes": "any", "type": "image/png"}]
+      "icons": [{"src": "/sahabat/app-icon.svg", "sizes": "any", "type": "image/svg+xml"}]
     }
   ]
 }
