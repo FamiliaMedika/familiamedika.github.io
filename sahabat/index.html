@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#173a78">
+  <meta name="description" content="Sahabat Familia — pesan layanan Familia Medika untuk Anda dan keluarga.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Sahabat Familia">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Sahabat Familia — Familia Medika</title>
+  <link rel="icon" href="/assets/logo-icon.png">
+  <link rel="apple-touch-icon" href="/assets/logo-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="configAlert" class="hidden danger-box" style="margin:16px">Konfigurasi aplikasi belum tersedia. Hubungi pengelola Familia Medika.</div>
+
+  <section id="authScreen" class="auth-screen">
+    <div class="auth-layout">
+      <div class="auth-brand-panel">
+        <img class="auth-logo" src="/assets/logo.png" alt="Familia Medika">
+        <div>
+          <p class="eyebrow" style="color:#9ce6f4">APLIKASI PASIEN & KELUARGA</p>
+          <h1>Sahabat<br>Familia</h1>
+          <p>Kesehatan keluarga, lebih dekat. Pesan layanan klinik, konsultasi, home visit, wound care, dan monitoring lansia dalam satu tempat.</p>
+          <div class="auth-benefits" aria-label="Keunggulan">
+            <span>✓ Profil keluarga</span>
+            <span>✓ Jadwal layanan</span>
+            <span>✓ Status pelayanan</span>
+            <span>✓ Dokumen & tagihan</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-card-head">
+          <p class="eyebrow">SAHABAT FAMILIA</p>
+          <h2 id="authTitle">Masuk ke akun</h2>
+          <p class="muted small" id="authDescription">Gunakan email dan kata sandi akun pasien.</p>
+        </div>
+
+        <div class="auth-tabs" role="tablist" aria-label="Masuk atau daftar">
+          <button class="auth-tab active" type="button" data-auth-tab="login" role="tab" aria-selected="true">Masuk</button>
+          <button class="auth-tab" type="button" data-auth-tab="register" role="tab" aria-selected="false">Daftar</button>
+        </div>
+
+        <form id="loginForm" class="stack" autocomplete="on">
+          <label class="field">
+            <span>Email</span>
+            <input id="loginEmail" name="email" type="email" autocomplete="email" placeholder="nama@email.com" required>
+          </label>
+          <label class="field">
+            <span>Kata sandi</span>
+            <div class="password-wrap">
+              <input id="loginPassword" name="password" type="password" autocomplete="current-password" minlength="8" placeholder="Masukkan kata sandi" required>
+              <button class="password-toggle" type="button" data-password-toggle="loginPassword">Lihat</button>
+            </div>
+          </label>
+          <div class="auth-links">
+            <label class="check-row"><input id="rememberMe" type="checkbox" checked> Tetap masuk di perangkat ini</label>
+            <button id="forgotPasswordBtn" class="link-button" type="button">Lupa kata sandi?</button>
+          </div>
+          <button id="loginSubmit" class="btn btn-primary btn-block" type="submit">Masuk</button>
+        </form>
+
+        <form id="registerForm" class="stack hidden" autocomplete="on">
+          <label class="field">
+            <span>Email aktif</span>
+            <input id="registerEmail" name="email" type="email" autocomplete="email" placeholder="nama@email.com" required>
+            <small>Tautan verifikasi akan dikirim ke email ini.</small>
+          </label>
+          <label class="field">
+            <span>Kata sandi</span>
+            <div class="password-wrap">
+              <input id="registerPassword" name="password" type="password" autocomplete="new-password" minlength="12" placeholder="Minimal 12 karakter" required>
+              <button class="password-toggle" type="button" data-password-toggle="registerPassword">Lihat</button>
+            </div>
+          </label>
+          <label class="field">
+            <span>Ulangi kata sandi</span>
+            <input id="registerPasswordConfirm" name="password_confirmation" type="password" autocomplete="new-password" minlength="12" required>
+          </label>
+          <label class="check-row">
+            <input id="registerConsent" type="checkbox" required>
+            <span>Saya menyetujui <a href="terms.html" target="_blank" rel="noopener">Ketentuan Penggunaan</a> dan telah membaca <a href="privacy.html" target="_blank" rel="noopener">Pemberitahuan Privasi</a>.</span>
+          </label>
+          <button id="registerSubmit" class="btn btn-primary btn-block" type="submit">Buat akun</button>
+        </form>
+
+        <div id="authMessage" class="form-error" role="status" aria-live="polite"></div>
+        <p class="auth-legal">Sahabat Familia bukan layanan kegawatdaruratan. Dalam kondisi darurat, segera hubungi layanan darurat atau IGD terdekat.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="onboardingScreen" class="onboarding-screen hidden">
+    <div class="onboarding-shell">
+      <div class="onboarding-head">
+        <img src="/assets/logo.png" alt="Familia Medika">
+        <div>
+          <p class="eyebrow">LANGKAH PERTAMA</p>
+          <b>Sahabat Familia</b>
+        </div>
+        <button class="btn btn-ghost btn-sm spacer" id="onboardingLogout" type="button">Keluar</button>
+      </div>
+      <div class="onboarding-card">
+        <p class="eyebrow">PROFIL UTAMA</p>
+        <h1>Lengkapi data Anda</h1>
+        <p class="muted small">Profil utama digunakan untuk pemesanan layanan. Data dapat diperbarui kemudian.</p>
+        <div class="onboarding-progress"><span></span></div>
+        <form id="onboardingForm" class="form-grid">
+          <label class="field span-2"><span>Nama lengkap</span><input name="full_name" autocomplete="name" required></label>
+          <label class="field"><span>Tanggal lahir</span><input name="birth_date" type="date" required></label>
+          <label class="field"><span>Jenis kelamin</span>
+            <select name="gender" required>
+              <option value="">Pilih</option>
+              <option>Laki-laki</option>
+              <option>Perempuan</option>
+              <option>Lainnya</option>
+              <option>Tidak diketahui</option>
+            </select>
+          </label>
+          <label class="field"><span>Nomor WhatsApp</span><input name="phone" inputmode="tel" autocomplete="tel" placeholder="08xxxxxxxxxx" required></label>
+          <label class="field"><span>Kota/Kabupaten</span><input name="city" autocomplete="address-level2"></label>
+          <label class="field span-2"><span>Alamat</span><textarea name="address" rows="2" autocomplete="street-address"></textarea></label>
+          <label class="field"><span>Alergi yang diketahui</span><textarea name="allergies" rows="2"></textarea></label>
+          <label class="field"><span>Riwayat penyakit</span><textarea name="medical_history" rows="2"></textarea></label>
+          <label class="field"><span>Kontak darurat</span><input name="emergency_contact" placeholder="Nama — nomor telepon"></label>
+          <label class="field"><span>4 digit terakhir NIK (opsional)</span><input name="national_id_last4" maxlength="4" inputmode="numeric" pattern="[0-9]{4}"></label>
+          <label class="check-row span-2">
+            <input name="consent" type="checkbox" required>
+            <span>Saya menyatakan data benar dan menyetujui pemrosesan untuk pelayanan Familia Medika.</span>
+          </label>
+          <div id="onboardingError" class="form-error span-2"></div>
+          <button class="btn btn-primary btn-block span-2" type="submit">Simpan dan lanjutkan</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div id="appShell" class="app-shell hidden">
+    <header class="app-header">
+      <img class="app-header-logo" src="/assets/logo.png" alt="Familia Medika">
+      <span class="app-header-title">Sahabat Familia</span>
+      <span class="spacer"></span>
+      <button id="installBtn" class="btn btn-secondary btn-sm hidden" type="button">＋ Pasang</button>
+      <button id="notificationBtn" class="icon-btn" type="button" aria-label="Notifikasi">
+        🔔 <span id="notificationBadge" class="icon-badge hidden">0</span>
+      </button>
+      <button id="accountMenuBtn" class="icon-btn" type="button" aria-label="Akun">☺</button>
+    </header>
+
+    <main class="app-content">
+      <div id="installBanner" class="install-banner hidden">
+        <span style="font-size:1.45rem">📱</span>
+        <p><b>Pasang Sahabat Familia</b>Buka lebih cepat seperti aplikasi di HP.</p>
+        <button id="installBannerBtn" class="btn btn-secondary btn-sm" type="button">Pasang</button>
+      </div>
+
+      <section id="view-home" class="app-view active" data-view="home">
+        <div class="hero">
+          <div class="hero-content">
+            <p class="eyebrow" style="color:#a9eaf5">SELAMAT DATANG</p>
+            <h1 id="homeGreeting">Halo, Sahabat Familia</h1>
+            <p>Temukan layanan kesehatan Familia Medika untuk Anda dan seluruh keluarga.</p>
+            <div class="hero-actions">
+              <button class="btn btn-primary" type="button" data-go-view="services">Pesan layanan</button>
+              <button class="btn btn-secondary" type="button" data-go-view="bookings">Lihat jadwal</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="homeMetrics" class="metric-grid">
+          <article class="metric-card"><strong>0</strong><span>Jadwal aktif</span></article>
+          <article class="metric-card"><strong>0</strong><span>Anggota keluarga</span></article>
+          <article class="metric-card"><strong>0</strong><span>Dokumen</span></article>
+          <article class="metric-card"><strong>0</strong><span>Notifikasi baru</span></article>
+        </div>
+
+        <section class="section">
+          <div class="section-head">
+            <div><h2>Layanan untuk keluarga</h2><p>Pilih layanan yang Anda perlukan.</p></div>
+            <button class="section-link" type="button" data-go-view="services">Lihat semua</button>
+          </div>
+          <div id="homeServiceGrid" class="service-grid"></div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div><h2>Jadwal terdekat</h2><p>Status layanan Anda berikutnya.</p></div>
+            <button class="section-link" type="button" data-go-view="bookings">Semua jadwal</button>
+          </div>
+          <div id="nextBooking"></div>
+        </section>
+
+        <section class="section">
+          <div class="section-head"><div><h2>Informasi penting</h2></div></div>
+          <div class="danger-box"><b>Keadaan darurat?</b><br>Segera hubungi layanan darurat atau datang ke IGD terdekat. Jangan menunggu respons aplikasi.</div>
+        </section>
+      </section>
+
+      <section id="view-services" class="app-view" data-view="services">
+        <div class="page-head">
+          <div><p class="eyebrow">LAYANAN</p><h1>Pesan layanan</h1><p>Pilih layanan, pasien, dan waktu yang diinginkan.</p></div>
+        </div>
+        <div id="serviceGrid" class="service-grid"></div>
+      </section>
+
+      <section id="view-bookings" class="app-view" data-view="bookings">
+        <div class="page-head">
+          <div><p class="eyebrow">JADWAL SAYA</p><h1>Pemesanan & layanan</h1><p>Pantau konfirmasi, jadwal, dan progres pelayanan.</p></div>
+          <button class="btn btn-primary btn-sm spacer" type="button" data-go-view="services">+ Pesan</button>
+        </div>
+        <div class="inline" style="margin-bottom:14px">
+          <button class="btn btn-secondary btn-sm booking-filter active" type="button" data-booking-filter="active">Aktif</button>
+          <button class="btn btn-outline btn-sm booking-filter" type="button" data-booking-filter="history">Riwayat</button>
+          <button class="btn btn-outline btn-sm booking-filter" type="button" data-booking-filter="all">Semua</button>
+        </div>
+        <div id="bookingList" class="stack"></div>
+      </section>
+
+      <section id="view-documents" class="app-view" data-view="documents">
+        <div class="page-head"><div><p class="eyebrow">DOKUMEN & PEMBAYARAN</p><h1>Hasil pelayanan</h1><p>Dokumen final dan tagihan yang telah diterbitkan.</p></div></div>
+        <section class="section">
+          <div class="section-head"><div><h2>Dokumen kesehatan</h2><p>Resume, resep, dan dokumen final.</p></div></div>
+          <div id="documentList" class="stack"></div>
+        </section>
+        <section class="section">
+          <div class="section-head"><div><h2>Tagihan</h2><p>Rincian pembayaran pelayanan.</p></div></div>
+          <div id="invoiceList" class="stack"></div>
+        </section>
+      </section>
+
+      <section id="view-family" class="app-view" data-view="family">
+        <div class="page-head">
+          <div><p class="eyebrow">PROFIL & KELUARGA</p><h1>Keluarga saya</h1><p>Kelola profil yang dapat menerima layanan.</p></div>
+          <button id="addMemberBtn" class="btn btn-primary btn-sm spacer" type="button">+ Tambah</button>
+        </div>
+        <div id="accountSummary" class="card" style="margin-bottom:14px"></div>
+        <div id="memberGrid" class="member-grid"></div>
+        <div class="card" style="margin-top:18px">
+          <div class="card-head"><div><h3>Keamanan akun</h3><p>Keluar dari perangkat ini atau ubah kata sandi.</p></div></div>
+          <div class="card-actions">
+            <button id="changePasswordBtn" class="btn btn-outline btn-sm" type="button">Ubah kata sandi</button>
+            <button id="logoutBtn" class="btn btn-danger btn-sm" type="button">Keluar</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navigasi utama">
+      <button class="nav-btn active" type="button" data-nav-view="home"><span class="nav-icon">⌂</span><span>Beranda</span></button>
+      <button class="nav-btn" type="button" data-nav-view="services"><span class="nav-icon">✚</span><span>Layanan</span></button>
+      <button class="nav-btn" type="button" data-nav-view="bookings"><span class="nav-icon">◷</span><span>Jadwal</span></button>
+      <button class="nav-btn" type="button" data-nav-view="documents"><span class="nav-icon">▤</span><span>Dokumen</span></button>
+      <button class="nav-btn" type="button" data-nav-view="family"><span class="nav-icon">♙</span><span>Keluarga</span></button>
+    </nav>
+  </div>
+
+  <div id="bookingModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="bookingModalTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <div><p class="eyebrow" id="bookingModalEyebrow">PESAN LAYANAN</p><h2 id="bookingModalTitle">Layanan Familia Medika</h2></div>
+        <button class="modal-close" type="button" data-close-modal="bookingModal" aria-label="Tutup">×</button>
+      </div>
+      <form id="bookingForm">
+        <input id="bookingServiceId" name="service_id" type="hidden">
+        <div class="modal-body">
+          <div class="stepper" aria-label="Langkah pemesanan"><span class="active"></span><span></span><span></span><span></span></div>
+
+          <section class="booking-step active" data-booking-step="1">
+            <p class="eyebrow">LANGKAH 1 DARI 4</p>
+            <h3>Pasien dan jadwal</h3>
+            <div class="form-grid">
+              <label class="field span-2"><span>Untuk siapa?</span><select id="bookingMember" name="member_id" required></select></label>
+              <label class="field"><span>Tanggal & waktu pilihan</span><input id="bookingRequestedStart" name="requested_start" type="datetime-local" required></label>
+              <label class="field"><span>Alternatif waktu (opsional)</span><input name="alternative_start" type="datetime-local"></label>
+              <label class="field span-2"><span>Keluhan atau kebutuhan utama</span><textarea name="chief_complaint" rows="3" placeholder="Contoh: kontrol tekanan darah, perawatan luka kaki, demam sejak kemarin" required></textarea></label>
+            </div>
+          </section>
+
+          <section class="booking-step" data-booking-step="2">
+            <p class="eyebrow">LANGKAH 2 DARI 4</p>
+            <h3>Lokasi pelayanan</h3>
+            <div id="bookingModeInfo" class="warning-box" style="margin-bottom:14px"></div>
+            <div class="form-grid">
+              <label class="field span-2 home-visit-field"><span>Alamat lengkap</span><textarea id="bookingAddress" name="address" rows="3"></textarea></label>
+              <label class="field home-visit-field"><span>Kota/Kabupaten</span><input id="bookingCity" name="city"></label>
+              <label class="field home-visit-field"><span>Catatan lokasi</span><input name="notes" placeholder="Patokan rumah, akses, lantai, dan lain-lain"></label>
+            </div>
+          </section>
+
+          <section class="booking-step" data-booking-step="3">
+            <p class="eyebrow">LANGKAH 3 DARI 4</p>
+            <h3>Asesmen awal</h3>
+            <p class="muted small">Informasi ini membantu tim melakukan triase. Bukan diagnosis.</p>
+            <div class="form-grid">
+              <label class="field"><span>Mulai sejak kapan?</span><input name="onset" placeholder="Contoh: 2 hari"></label>
+              <label class="field"><span>Perjalanan keluhan</span><input name="course" placeholder="Membaik, menetap, atau memburuk"></label>
+              <label class="field span-2"><span>Gejala penyerta</span><textarea name="associated_symptoms" rows="2"></textarea></label>
+              <label class="field"><span>Riwayat penyakit</span><textarea name="medical_history" rows="2"></textarea></label>
+              <label class="field"><span>Obat yang sedang digunakan</span><textarea name="medication" rows="2"></textarea></label>
+              <label class="field"><span>Alergi</span><textarea name="allergies" rows="2"></textarea></label>
+              <label class="field"><span>Status kehamilan (bila relevan)</span><select name="pregnancy"><option value="">Tidak diketahui/tidak relevan</option><option>Tidak hamil</option><option>Hamil</option><option>Menyusui</option></select></label>
+            </div>
+            <h4 style="margin:20px 0 9px">Tanda bahaya</h4>
+            <div id="redFlagGrid" class="red-flag-grid"></div>
+            <div id="redFlagWarning" class="danger-box hidden" style="margin-top:12px"><b>Terdapat tanda bahaya.</b><br>Jangan menunggu jadwal aplikasi bila kondisi berat atau memburuk. Segera cari pertolongan darurat/IGD.</div>
+          </section>
+
+          <section class="booking-step" data-booking-step="4">
+            <p class="eyebrow">LANGKAH 4 DARI 4</p>
+            <h3>Periksa kembali</h3>
+            <div id="bookingSummary" class="summary-list"></div>
+            <label class="check-row" style="margin-top:16px"><input name="consent" type="checkbox" required><span>Saya menyetujui data ini dikirim untuk penjadwalan dan tinjauan klinis Familia Medika.</span></label>
+          </section>
+
+          <div id="bookingError" class="form-error"></div>
+        </div>
+        <div class="modal-actions">
+          <button id="bookingPrevBtn" class="btn btn-outline hidden" type="button">Kembali</button>
+          <button id="bookingNextBtn" class="btn btn-primary" type="button">Lanjutkan</button>
+          <button id="bookingSubmitBtn" class="btn btn-primary hidden" type="submit">Kirim permintaan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="memberModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="memberModalTitle">
+    <div class="modal">
+      <div class="modal-head"><h2 id="memberModalTitle">Tambah anggota keluarga</h2><button class="modal-close" type="button" data-close-modal="memberModal">×</button></div>
+      <form id="memberForm">
+        <input id="memberId" name="id" type="hidden">
+        <div class="modal-body form-grid">
+          <label class="field span-2"><span>Nama lengkap</span><input name="full_name" required></label>
+          <label class="field"><span>Hubungan</span><select name="relationship" required><option>Pasangan</option><option>Anak</option><option>Orang tua</option><option>Saudara</option><option>Keluarga</option><option>Lainnya</option></select></label>
+          <label class="field"><span>Tanggal lahir</span><input name="birth_date" type="date" required></label>
+          <label class="field"><span>Jenis kelamin</span><select name="gender" required><option>Laki-laki</option><option>Perempuan</option><option>Lainnya</option><option>Tidak diketahui</option></select></label>
+          <label class="field"><span>Nomor telepon</span><input name="phone" inputmode="tel"></label>
+          <label class="field span-2"><span>Alamat</span><textarea name="address" rows="2"></textarea></label>
+          <label class="field"><span>Kota/Kabupaten</span><input name="city"></label>
+          <label class="field"><span>Kontak darurat</span><input name="emergency_contact"></label>
+          <label class="field"><span>Alergi</span><textarea name="allergies" rows="2"></textarea></label>
+          <label class="field"><span>Riwayat penyakit</span><textarea name="medical_history" rows="2"></textarea></label>
+          <label class="field"><span>4 digit terakhir NIK (opsional)</span><input name="national_id_last4" maxlength="4" inputmode="numeric" pattern="[0-9]{4}"></label>
+          <div id="memberError" class="form-error span-2"></div>
+        </div>
+        <div class="modal-actions"><button class="btn btn-outline" type="button" data-close-modal="memberModal">Batal</button><button class="btn btn-primary" type="submit">Simpan</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="bookingDetailModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="bookingDetailTitle">
+    <div class="modal">
+      <div class="modal-head"><h2 id="bookingDetailTitle">Detail layanan</h2><button class="modal-close" type="button" data-close-modal="bookingDetailModal">×</button></div>
+      <div id="bookingDetailBody" class="modal-body"></div>
+      <div id="bookingDetailActions" class="modal-actions"></div>
+    </div>
+  </div>
+
+  <div id="notificationModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="notificationTitle">
+    <div class="modal">
+      <div class="modal-head"><h2 id="notificationTitle">Notifikasi</h2><button class="modal-close" type="button" data-close-modal="notificationModal">×</button></div>
+      <div id="notificationList" class="modal-body notification-list"></div>
+    </div>
+  </div>
+
+  <div id="accountModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="accountTitle">
+    <div class="modal">
+      <div class="modal-head"><h2 id="accountTitle">Akun</h2><button class="modal-close" type="button" data-close-modal="accountModal">×</button></div>
+      <div class="modal-body stack">
+        <div id="accountModalSummary" class="card"></div>
+        <button id="accountModalFamily" class="btn btn-outline btn-block" type="button">Kelola profil keluarga</button>
+        <button id="accountModalLogout" class="btn btn-danger btn-block" type="button">Keluar dari akun</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="passwordModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="passwordTitle">
+    <div class="modal">
+      <div class="modal-head"><h2 id="passwordTitle">Ubah kata sandi</h2><button class="modal-close" type="button" data-close-modal="passwordModal">×</button></div>
+      <form id="passwordForm">
+        <div class="modal-body stack">
+          <label class="field"><span>Kata sandi baru</span><input name="password" type="password" minlength="12" autocomplete="new-password" required></label>
+          <label class="field"><span>Ulangi kata sandi baru</span><input name="confirmation" type="password" minlength="12" autocomplete="new-password" required></label>
+          <div id="passwordError" class="form-error"></div>
+        </div>
+        <div class="modal-actions"><button class="btn btn-outline" type="button" data-close-modal="passwordModal">Batal</button><button class="btn btn-primary" type="submit">Simpan</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toastWrap" class="toast-wrap" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

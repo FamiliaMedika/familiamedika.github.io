@@ -1,0 +1,36 @@
+{
+  "id": "/sahabat/",
+  "name": "Sahabat Familia — Familia Medika",
+  "short_name": "Sahabat Familia",
+  "description": "Pesan layanan Familia Medika untuk Anda dan keluarga.",
+  "lang": "id-ID",
+  "start_url": "/sahabat/",
+  "scope": "/sahabat/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f4f8fb",
+  "theme_color": "#173a78",
+  "categories": ["medical", "health", "lifestyle"],
+  "icons": [
+    {
+      "src": "/assets/logo-icon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Pesan Layanan",
+      "short_name": "Pesan",
+      "url": "/sahabat/?view=services",
+      "icons": [{"src": "/assets/logo-icon.png", "sizes": "any", "type": "image/png"}]
+    },
+    {
+      "name": "Jadwal Saya",
+      "short_name": "Jadwal",
+      "url": "/sahabat/?view=bookings",
+      "icons": [{"src": "/assets/logo-icon.png", "sizes": "any", "type": "image/png"}]
+    }
+  ]
+}
