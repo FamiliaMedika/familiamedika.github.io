@@ -36,12 +36,15 @@ function Get-ManagementToken {
     return $env:SUPABASE_ACCESS_TOKEN.Trim()
   }
 
-  $candidatePaths = @(
-    (Join-Path $HOME ".supabase/access-token"),
-    (Join-Path $env:USERPROFILE ".supabase/access-token")
-  ) | Select-Object -Unique
+  $candidatePaths = New-Object System.Collections.Generic.List[string]
+  if (-not [string]::IsNullOrWhiteSpace([string]$HOME)) {
+    $candidatePaths.Add((Join-Path $HOME ".supabase/access-token"))
+  }
+  if (-not [string]::IsNullOrWhiteSpace([string]$env:USERPROFILE)) {
+    $candidatePaths.Add((Join-Path $env:USERPROFILE ".supabase/access-token"))
+  }
 
-  foreach ($path in $candidatePaths) {
+  foreach ($path in ($candidatePaths | Select-Object -Unique)) {
     if (Test-Path -LiteralPath $path) {
       $value = (Get-Content -LiteralPath $path -Raw).Trim()
       if (-not [string]::IsNullOrWhiteSpace($value)) {
@@ -78,15 +81,24 @@ function Get-ErrorDetails($ErrorRecord) {
       if (-not [string]::IsNullOrWhiteSpace($content)) { return $content }
     }
 
-    $stream = $response.GetResponseStream()
-    if ($null -ne $stream) {
-      $reader = New-Object IO.StreamReader($stream)
-      try { return $reader.ReadToEnd() }
-      finally { $reader.Dispose() }
+    if ($response.PSObject.Methods.Name -contains "GetResponseStream") {
+      $stream = $response.GetResponseStream()
+      if ($null -ne $stream) {
+        $reader = New-Object IO.StreamReader($stream)
+        try { return $reader.ReadToEnd() }
+        finally { $reader.Dispose() }
+      }
     }
   }
   catch { }
   return $ErrorRecord.Exception.Message
+}
+
+function Get-PropertyValue($Object, [string]$Name) {
+  if ($null -eq $Object) { return $null }
+  $property = $Object.PSObject.Properties[$Name]
+  if ($null -eq $property) { return $null }
+  return $property.Value
 }
 
 Write-Host ""
@@ -101,7 +113,7 @@ if ($ConfigureSmtp -and $SkipSmtp) {
 $useSmtp = [bool]$ConfigureSmtp
 if (-not $ConfigureSmtp -and -not $SkipSmtp) {
   $answer = (Read-Host "Aktifkan email resmi melalui Resend SMTP sekarang? (Y/N)").Trim()
-  $useSmtp = $answer -match '^(?i:y|ya|yes)$'
+  $useSmtp = $answer -match '(?i)^(y|ya|yes)$'
 }
 
 Write-Section "Memuat template resmi"
@@ -152,12 +164,12 @@ if ($useSmtp) {
     throw "Resend API key belum diisi. Jalankan ulang tanpa SMTP atau masukkan API key yang valid."
   }
 
-  $payload.smtp_host = "smtp.resend.com"
-  $payload.smtp_port = "465"
-  $payload.smtp_user = "resend"
-  $payload.smtp_pass = $resendApiKey
-  $payload.smtp_admin_email = $SenderEmail
-  $payload.smtp_sender_name = $SenderName
+  $payload["smtp_host"] = "smtp.resend.com"
+  $payload["smtp_port"] = "465"
+  $payload["smtp_user"] = "resend"
+  $payload["smtp_pass"] = $resendApiKey
+  $payload["smtp_admin_email"] = $SenderEmail
+  $payload["smtp_sender_name"] = $SenderName
 }
 
 Write-Section "Otorisasi Supabase"
@@ -174,12 +186,14 @@ $headers = @{
 Write-Section "Menerapkan konfigurasi"
 try {
   $body = $payload | ConvertTo-Json -Depth 12 -Compress
-  $null = Invoke-RestMethod \
-    -Uri $ManagementEndpoint \
-    -Method Patch \
-    -Headers $headers \
-    -ContentType "application/json; charset=utf-8" \
-    -Body $body
+  $request = @{
+    Uri = $ManagementEndpoint
+    Method = "Patch"
+    Headers = $headers
+    ContentType = "application/json; charset=utf-8"
+    Body = $body
+  }
+  $null = Invoke-RestMethod @request
 }
 catch {
   $details = Get-ErrorDetails $_
@@ -187,6 +201,7 @@ catch {
 }
 finally {
   $body = $null
+  $request = $null
   $resendApiKey = $null
 }
 
@@ -203,19 +218,23 @@ finally {
   $headers = $null
 }
 
-$expectedRedirects = $payload.uri_allow_list
+$remoteRedirects = [string](Get-PropertyValue $verified "uri_allow_list")
+$redirectItems = $remoteRedirects.Split(',') | ForEach-Object { $_.Trim() }
+$expectedRedirectItems = $payload.uri_allow_list.Split(',') | ForEach-Object { $_.Trim() }
+$redirectsComplete = @($expectedRedirectItems | Where-Object { $_ -notin $redirectItems }).Count -eq 0
+
 $checks = [ordered]@{
-  "Site URL produksi" = ($verified.site_url -eq $ProductionUrl)
-  "Redirect Sahabat Familia" = ($verified.uri_allow_list -eq $expectedRedirects)
-  "Konfirmasi email wajib" = ($verified.mailer_autoconfirm -eq $false)
-  "Subject verifikasi resmi" = ($verified.mailer_subjects_confirmation -eq "Verifikasi Akun Sahabat Familia")
-  "Subject reset password resmi" = ($verified.mailer_subjects_recovery -eq "Atur Ulang Kata Sandi Sahabat Familia")
-  "Nama pengirim resmi" = ($verified.smtp_sender_name -eq $SenderName)
+  "Site URL produksi" = ((Get-PropertyValue $verified "site_url") -eq $ProductionUrl)
+  "Redirect Sahabat Familia" = $redirectsComplete
+  "Konfirmasi email wajib" = ((Get-PropertyValue $verified "mailer_autoconfirm") -eq $false)
+  "Subject verifikasi resmi" = ((Get-PropertyValue $verified "mailer_subjects_confirmation") -eq "Verifikasi Akun Sahabat Familia")
+  "Subject reset password resmi" = ((Get-PropertyValue $verified "mailer_subjects_recovery") -eq "Atur Ulang Kata Sandi Sahabat Familia")
+  "Nama pengirim resmi" = ((Get-PropertyValue $verified "smtp_sender_name") -eq $SenderName)
 }
 
 if ($useSmtp) {
-  $checks["Resend SMTP aktif"] = ($verified.smtp_host -eq "smtp.resend.com")
-  $checks["Email pengirim resmi"] = ($verified.smtp_admin_email -eq $SenderEmail)
+  $checks["Resend SMTP aktif"] = ((Get-PropertyValue $verified "smtp_host") -eq "smtp.resend.com")
+  $checks["Email pengirim resmi"] = ((Get-PropertyValue $verified "smtp_admin_email") -eq $SenderEmail)
 }
 
 $failed = @()
