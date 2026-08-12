@@ -1,11 +1,13 @@
-const CACHE_NAME = 'sahabat-familia-shell-v1';
+const CACHE_NAME = 'sahabat-familia-shell-v2';
 const SHELL_ASSETS = [
   '/sahabat/',
   '/sahabat/index.html',
   '/sahabat/styles.css',
   '/sahabat/app.js',
   '/sahabat/config.js',
+  '/sahabat/auth-feedback.js',
   '/sahabat/manifest.webmanifest',
+  '/sahabat/app-icon.svg',
   '/assets/logo.png',
   '/assets/logo-icon.png'
 ];
