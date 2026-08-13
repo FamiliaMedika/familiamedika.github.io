@@ -5,6 +5,7 @@ window.SF_CONFIG = Object.freeze({
   APP_TAGLINE: "Kesehatan Keluarga, Lebih Dekat",
   APP_PATH: "/sahabat/",
   AUTH_REDIRECT_URL: "https://www.familiamedika.id/sahabat/",
+  PASSWORD_MIN_LENGTH: 8,
   SUPPORT_WHATSAPP: "",
   TERMS_VERSION: "2026-08-12"
 });
@@ -69,7 +70,7 @@ window.SF_CONFIG = Object.freeze({
 document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector("script[data-sahabat-auth-feedback]")) return;
   const script = document.createElement("script");
-  script.src = "auth-feedback.js?v=20260812b";
+  script.src = "auth-feedback.js?v=20260813a";
   script.dataset.sahabatAuthFeedback = "true";
   document.body.appendChild(script);
 }, { once: true });
