@@ -1,6 +1,7 @@
 (()=>{
   'use strict';
 
+  const passwordMinLength=Math.max(8,Number(window.SF_CONFIG?.PASSWORD_MIN_LENGTH)||8);
   let registrationPending=false;
   let authBound=false;
 
@@ -42,6 +43,14 @@
     return true;
   }
 
+  function setPasswordMessage(message,type='error'){
+    const box=document.querySelector('#passwordError');
+    if(!box)return false;
+    box.className=type==='success'?'form-success':'form-error';
+    box.textContent=message;
+    return true;
+  }
+
   function showNotice(message,type='success'){
     if(setAuthMessage(message,type)){
       const authScreen=document.querySelector('#authScreen');
@@ -67,8 +76,136 @@
     setTimeout(()=>notice.remove(),6500);
   }
 
+  function setButtonBusy(button,busy,text='Memproses...'){
+    if(!button)return;
+    if(!button.dataset.defaultText)button.dataset.defaultText=button.textContent||'';
+    button.disabled=Boolean(busy);
+    button.textContent=busy?text:button.dataset.defaultText;
+  }
+
+  function applyPasswordPolicy(){
+    const inputs=[
+      document.querySelector('#registerPassword'),
+      document.querySelector('#registerPasswordConfirm'),
+      document.querySelector('#passwordForm input[name="password"]'),
+      document.querySelector('#passwordForm input[name="confirmation"]')
+    ].filter(Boolean);
+
+    for(const input of inputs){
+      input.minLength=passwordMinLength;
+      input.setAttribute('minlength',String(passwordMinLength));
+    }
+
+    const registerPassword=document.querySelector('#registerPassword');
+    if(registerPassword)registerPassword.placeholder=`Minimal ${passwordMinLength} karakter`;
+
+    const registerLabel=registerPassword?.closest('.field');
+    if(registerLabel){
+      let helper=registerLabel.querySelector('[data-password-policy-help]');
+      if(!helper){
+        helper=document.createElement('small');
+        helper.dataset.passwordPolicyHelp='true';
+        registerLabel.appendChild(helper);
+      }
+      helper.textContent=`Minimal ${passwordMinLength} karakter. Gunakan kata sandi yang tidak mudah ditebak.`;
+    }
+  }
+
+  async function handleRegistration(form,button){
+    registrationPending=true;
+    setAuthMessage('','error');
+    setButtonBusy(button,true,'Membuat akun...');
+
+    try{
+      const email=form.elements.email.value.trim().toLowerCase();
+      const password=form.elements.password.value;
+      const confirmation=form.elements.password_confirmation.value;
+      const consent=document.querySelector('#registerConsent')?.checked;
+
+      if(password.length<passwordMinLength){
+        throw new Error(`Kata sandi minimal ${passwordMinLength} karakter.`);
+      }
+      if(password!==confirmation)throw new Error('Konfirmasi kata sandi tidak sama.');
+      if(!consent)throw new Error('Persetujuan penggunaan wajib dicentang.');
+      if(!window.sfSupabase?.auth)throw new Error('Layanan pendaftaran belum siap. Muat ulang halaman.');
+
+      localStorage.setItem('sf_auth_storage','local');
+      const redirect=window.SF_CONFIG?.AUTH_REDIRECT_URL||`${location.origin}/sahabat/`;
+      const {data,error}=await window.sfSupabase.auth.signUp({
+        email,
+        password,
+        options:{
+          emailRedirectTo:redirect,
+          data:{app_name:'Sahabat Familia'}
+        }
+      });
+      if(error)throw error;
+
+      registrationPending=false;
+      if(data?.session){
+        showNotice('Akun berhasil dibuat. Lengkapi profil Anda.','success');
+        return;
+      }
+
+      document.querySelector('[data-auth-tab="login"]')?.click();
+      const loginEmail=document.querySelector('#loginEmail');
+      if(loginEmail)loginEmail.value=email;
+      setAuthMessage('Akun dibuat. Buka email verifikasi resmi Sahabat Familia, lalu kembali untuk masuk.','success');
+    }catch(error){
+      registrationPending=false;
+      setAuthMessage(error?.message||'Pendaftaran gagal.','error');
+    }finally{
+      setButtonBusy(button,false);
+    }
+  }
+
+  async function handlePasswordUpdate(form,button){
+    setPasswordMessage('','error');
+    setButtonBusy(button,true,'Menyimpan...');
+
+    try{
+      const password=form.elements.password.value;
+      const confirmation=form.elements.confirmation.value;
+      if(password.length<passwordMinLength){
+        throw new Error(`Kata sandi minimal ${passwordMinLength} karakter.`);
+      }
+      if(password!==confirmation)throw new Error('Konfirmasi kata sandi tidak sama.');
+      if(!window.sfSupabase?.auth)throw new Error('Layanan perubahan kata sandi belum siap.');
+
+      const {error}=await window.sfSupabase.auth.updateUser({password});
+      if(error)throw error;
+
+      form.reset();
+      cleanAuthUrl();
+      sessionStorage.setItem('sf_auth_notice','Kata sandi berhasil diperbarui.');
+      const modal=document.querySelector('#passwordModal');
+      modal?.classList.add('hidden');
+      document.body.style.overflow='';
+      setTimeout(()=>location.reload(),250);
+    }catch(error){
+      setPasswordMessage(error?.message||'Kata sandi gagal diperbarui.','error');
+      setButtonBusy(button,false);
+    }
+  }
+
   document.addEventListener('submit',event=>{
-    if(event.target?.id==='registerForm')registrationPending=true;
+    const form=event.target;
+    if(!(form instanceof HTMLFormElement))return;
+
+    if(form.id==='registerForm'){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const button=event.submitter||form.querySelector('button[type="submit"]');
+      handleRegistration(form,button);
+      return;
+    }
+
+    if(form.id==='passwordForm'){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const button=event.submitter||form.querySelector('button[type="submit"]');
+      handlePasswordUpdate(form,button);
+    }
   },true);
 
   const restoreRegistrationMessage=()=>{
@@ -126,6 +263,8 @@
   }
 
   async function initialize(){
+    applyPasswordPolicy();
+
     const observer=new MutationObserver(restoreRegistrationMessage);
     const registerForm=document.querySelector('#registerForm');
     const loginForm=document.querySelector('#loginForm');
