@@ -132,7 +132,7 @@ $payload = [ordered]@{
   external_email_enabled = $true
   mailer_autoconfirm = $false
   mailer_secure_email_change_enabled = $true
-  password_min_length = 12
+  password_min_length = 8
   smtp_sender_name = $SenderName
   mailer_subjects_confirmation = "Verifikasi Akun Sahabat Familia"
   mailer_templates_confirmation_content = $confirmationTemplate
@@ -230,6 +230,7 @@ $checks = [ordered]@{
   "Subject verifikasi resmi" = ((Get-PropertyValue $verified "mailer_subjects_confirmation") -eq "Verifikasi Akun Sahabat Familia")
   "Subject reset password resmi" = ((Get-PropertyValue $verified "mailer_subjects_recovery") -eq "Atur Ulang Kata Sandi Sahabat Familia")
   "Nama pengirim resmi" = ((Get-PropertyValue $verified "smtp_sender_name") -eq $SenderName)
+  "Minimum password 8 karakter" = ([int](Get-PropertyValue $verified "password_min_length") -eq 8)
 }
 
 if ($useSmtp) {
@@ -256,6 +257,7 @@ if ($failed.Count -gt 0) {
 }
 
 Write-Host "Selesai. Email baru akan memakai callback Sahabat Familia dan template berbahasa Indonesia." -ForegroundColor Green
+Write-Host "Password baru dan reset password memakai minimum 8 karakter." -ForegroundColor Green
 if ($useSmtp) {
   Write-Host "Pengirim resmi aktif: $SenderName <$SenderEmail>" -ForegroundColor Green
 }
