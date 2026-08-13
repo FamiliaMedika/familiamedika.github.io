@@ -8,7 +8,7 @@ Folder ini berisi alat satu kali untuk menerapkan konfigurasi produksi Supabase 
 - Redirect verifikasi email, reset password, dan callback tidak lagi menuju `localhost:3000`.
 - Email konfirmasi, reset password, magic link, dan perubahan email memakai template resmi Sahabat Familia dalam Bahasa Indonesia.
 - Subject email memakai identitas Sahabat Familia.
-- Password minimum ditetapkan 12 karakter.
+- Password minimum ditetapkan **8 karakter**.
 - Opsional: Resend SMTP dengan identitas pengirim:
   - `Sahabat Familia by Familia Medika`
   - `noreply@auth.familiamedika.id`
@@ -17,17 +17,17 @@ Folder ini berisi alat satu kali untuk menerapkan konfigurasi produksi Supabase 
 
 1. Unduh repository ini sebagai ZIP atau ambil folder `sahabat/tools` bersama folder `sahabat/email-templates`.
 2. Klik dua kali `TERAPKAN-AUTH-SAHABAT-FAMILIA.cmd`.
-3. Pilih `Y` ketika ditanya tentang Resend SMTP bila domain dan API key Resend sudah tersedia.
+3. Pilih `Y` ketika ditanya tentang Resend SMTP bila domain dan API key Resend sudah tersedia. Bila SMTP sudah aktif dan hanya ingin memperbarui kebijakan password, pilih `N`.
 4. Saat diminta:
    - masukkan Supabase Personal Access Token;
-   - masukkan Resend API key untuk mengaktifkan pengirim resmi.
+   - masukkan Resend API key hanya apabila SMTP sedang diaktifkan.
 5. Token dan API key dimasukkan sebagai input tersembunyi, hanya digunakan di memori selama proses, dan tidak disimpan oleh skrip.
 
 Skrip mencoba membaca sesi Supabase CLI dari `~/.supabase/access-token`. Bila token tersebut tidak tersedia, skrip meminta Personal Access Token secara aman.
 
 ## Menjalankan dari PowerShell
 
-Tanpa SMTP:
+Tanpa mengubah SMTP:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\Apply-SahabatAuth.ps1 -SkipSmtp
@@ -75,6 +75,7 @@ Sesudah PATCH berhasil, skrip membaca kembali konfigurasi non-sensitif dari Supa
 - kewajiban konfirmasi email;
 - subject verifikasi dan reset password;
 - nama pengirim;
+- minimum password 8 karakter;
 - host SMTP dan email pengirim bila SMTP diaktifkan.
 
 Proses selesai hanya bila seluruh pemeriksaan yang relevan menampilkan `[OK]`.
