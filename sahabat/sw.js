@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sahabat-familia-shell-v2';
+const CACHE_NAME = 'sahabat-familia-shell-v3';
 const SHELL_ASSETS = [
   '/sahabat/',
   '/sahabat/index.html',
