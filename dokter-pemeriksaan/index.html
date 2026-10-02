@@ -361,19 +361,19 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="tensiSistol">Tensi Sistol (mmHg) *</label>
-                <input type="number" id="tensiSistol" name="tensiSistol" min="0" max="300" placeholder="Contoh: 120" required>
+                <input type="number" id="tensiSistol" name="tensiSistol" min="50" max="300" placeholder="Contoh: 120" required>
                 <div class="unit">Tekanan darah sistolik</div>
               </div>
 
               <div class="form-group">
                 <label for="tensiDiastol">Tensi Diastol (mmHg) *</label>
-                <input type="number" id="tensiDiastol" name="tensiDiastol" min="0" max="200" placeholder="Contoh: 80" required>
+                <input type="number" id="tensiDiastol" name="tensiDiastol" min="30" max="200" placeholder="Contoh: 80" required>
                 <div class="unit">Tekanan darah diastolik</div>
               </div>
 
               <div class="form-group">
                 <label for="nadi">Nadi (beat/min) *</label>
-                <input type="number" id="nadi" name="nadi" min="0" max="200" placeholder="Contoh: 75" required>
+                <input type="number" id="nadi" name="nadi" min="30" max="250" placeholder="Contoh: 75" required>
                 <div class="unit">Denyut jantung per menit</div>
               </div>
             </div>
@@ -387,7 +387,7 @@
 
               <div class="form-group">
                 <label for="respirasi">Respirasi (breath/min) *</label>
-                <input type="number" id="respirasi" name="respirasi" min="0" max="60" placeholder="Contoh: 20" required>
+                <input type="number" id="respirasi" name="respirasi" min="5" max="60" placeholder="Contoh: 20" required>
                 <div class="unit">Frekuensi pernapasan per menit</div>
               </div>
             </div>
@@ -400,13 +400,13 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="beratBadan">Berat Badan (kg) *</label>
-                <input type="number" id="beratBadan" name="beratBadan" min="0" max="300" step="0.1" placeholder="Contoh: 65.5" required>
+                <input type="number" id="beratBadan" name="beratBadan" min="1" max="300" step="0.1" placeholder="Contoh: 65.5" required>
                 <div class="unit">Berat tubuh dalam kilogram</div>
               </div>
 
               <div class="form-group">
                 <label for="tinggiBadan">Tinggi Badan (cm) *</label>
-                <input type="number" id="tinggiBadan" name="tinggiBadan" min="0" max="250" placeholder="Contoh: 170" required>
+                <input type="number" id="tinggiBadan" name="tinggiBadan" min="30" max="250" placeholder="Contoh: 170" required>
                 <div class="unit">Tinggi tubuh dalam sentimeter</div>
               </div>
 
@@ -443,7 +443,7 @@
           </div>
 
           <div class="button-group">
-            <button type="button" class="btn-secondary" onclick="window.history.back()">Batal</button>
+            <button type="button" class="btn-secondary" onclick="batalPengisian()">Batal</button>
             <button type="submit" class="btn-primary" id="submitBtn">Simpan Data Pemeriksaan</button>
           </div>
         </form>
@@ -456,11 +456,12 @@
 
       <div id="errorSection" style="display: none; text-align: center; padding: 40px 20px;">
         <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
-        <h2 style="color: var(--navy); margin-bottom: 8px;">Pasien Tidak Ditemukan</h2>
-        <p style="color: var(--muted); line-height: 1.6;">
+        <h2 id="errorTitle" style="color: var(--navy); margin-bottom: 8px;">Pasien Tidak Ditemukan</h2>
+        <p id="errorText" style="color: var(--muted); line-height: 1.6;">
           Halaman ini diakses dari link di Telegram yang berisi ID pasien.<br>
           Pastikan Anda membuka link dari notifikasi Telegram yang benar.
         </p>
+        <button type="button" id="retryBtn" class="btn-primary" style="display:none; margin-top:16px; padding:12px 24px; border:none; border-radius:8px; font-weight:600; cursor:pointer;" onclick="location.reload()">Coba Lagi</button>
       </div>
     </div>
 
@@ -476,19 +477,22 @@
     const urlParams = new URLSearchParams(window.location.search);
     const rowParam = urlParams.get('row');
 
-    if (!rowParam) {
-      showError('Akses tidak valid. Silakan gunakan link dari notifikasi Telegram.');
+    if (!rowParam || isNaN(parseInt(rowParam))) {
+      showError('Link Tidak Valid', 'Halaman ini harus dibuka dari link di notifikasi Telegram yang berisi ID pasien. Pastikan Anda membuka link yang benar.', false);
     }
 
     window.addEventListener('DOMContentLoaded', function() {
-      if (rowParam) {
+      if (rowParam && !isNaN(parseInt(rowParam))) {
         loadPatientData(rowParam);
       }
     });
 
-    function showError(message) {
+    function showError(title, message, canRetry) {
       document.getElementById('loadingScreen').classList.remove('show');
       document.getElementById('formSection').style.display = 'none';
+      document.getElementById('errorTitle').textContent = title;
+      document.getElementById('errorText').textContent = message;
+      document.getElementById('retryBtn').style.display = canRetry ? 'inline-block' : 'none';
       document.getElementById('errorSection').style.display = 'block';
     }
 
@@ -508,12 +512,12 @@
           document.getElementById('loadingScreen').classList.remove('show');
           document.getElementById('formSection').style.display = 'block';
         } else {
-          showError(data.error || 'Gagal memuat data pasien.');
+          showError('Pasien Tidak Ditemukan', data.error || 'Data pasien untuk link ini tidak ditemukan. Pastikan Anda membuka link dari notifikasi Telegram yang benar.', false);
         }
       })
       .catch(err => {
         console.error('Error:', err);
-        showError('Gagal terhubung ke server. Cek koneksi internet Anda.');
+        showError('Gagal Terhubung ke Server', 'Data pasien belum bisa dimuat. Periksa koneksi internet Anda, lalu tekan Coba Lagi.', true);
       });
     }
 
@@ -558,7 +562,20 @@
 
     document.getElementById('pemeriksaanForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-
+      hideErrorMsg();
+      const sistol = parseFloat(document.getElementById('tensiSistol').value);
+      const diastol = parseFloat(document.getElementById('tensiDiastol').value);
+      const masalah = [];
+      if (diastol >= sistol) {
+        masalah.push('Tensi diastol (' + diastol + ') tidak boleh sama dengan atau lebih tinggi dari sistol (' + sistol + ').');
+      } else if (sistol - diastol < 10) {
+        masalah.push('Selisih sistol dan diastol terlalu kecil (' + sistol + '/' + diastol + '). Mohon cek ulang tensi.');
+      }
+      const imtVal = parseFloat(document.getElementById('imt').value);
+      if (imtVal && (imtVal < 10 || imtVal > 70)) {
+        masalah.push('IMT ' + imtVal + ' tidak wajar. Mohon cek ulang berat dan tinggi badan.');
+      }
+      if (masalah.length) { showErrorMsg(masalah.join(' ')); return; }
       const formData = {
         tensiSistol: document.getElementById('tensiSistol').value,
         tensiDiastol: document.getElementById('tensiDiastol').value,
@@ -567,6 +584,7 @@
         respirasi: document.getElementById('respirasi').value,
         beratBadan: document.getElementById('beratBadan').value,
         tinggiBadan: document.getElementById('tinggiBadan').value,
+        imt: document.getElementById('imt').value,
         golDarah: document.getElementById('golDarah').value,
         catatan: document.getElementById('catatan').value.trim(),
       };
@@ -612,7 +630,22 @@
       const errorEl = document.getElementById('errorMessage');
       errorEl.textContent = '❌ ' + message;
       errorEl.classList.add('show');
-      setTimeout(() => errorEl.classList.remove('show'), 5000);
+      errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    function hideErrorMsg() {
+      document.getElementById('errorMessage').classList.remove('show');
+    }
+    function batalPengisian() {
+      if (!confirm('Batalkan pengisian? Data yang belum disimpan akan hilang.')) return;
+      if (window.history.length > 1) { window.history.back(); return; }
+      window.close();
+      // Jika tab tidak bisa ditutup (mis. dibuka dari Telegram), kosongkan form saja
+      setTimeout(() => {
+        document.getElementById('pemeriksaanForm').reset();
+        document.getElementById('imt').value = '';
+        hideErrorMsg();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 300);
     }
   </script>
 </body>
