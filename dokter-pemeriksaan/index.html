@@ -284,6 +284,16 @@
     .loading-screen.show {
       display: block;
     }
+    .flag { display:none; margin-top:6px; padding:4px 9px; border-radius:6px; font-size:12px; font-weight:700; width:fit-content; }
+    .flag.ok { display:block; color:#116533; background:#e5f6eb; }
+    .flag.warn { display:block; color:#8a5a00; background:#fff4d6; }
+    .flag.bad { display:block; color:#991b1b; background:#fdeaea; }
+    .form-group.is-warn input { border-color:#e0a800; background:#fffbeb; }
+    .form-group.is-bad input { border-color:var(--error); background:#fff5f5; }
+    .abnormal-summary { display:none; margin-top:8px; padding:14px 16px; border-radius:8px; background:#fff4d6; border:1px solid #e0a800; color:#5c3d00; font-size:13px; line-height:1.6; }
+    .abnormal-summary.show { display:block; }
+    .abnormal-summary strong { display:block; margin-bottom:4px; }
+    .abnormal-summary ul { margin:0; padding-left:18px; }
     @media (max-width: 640px) {
       .container { padding: 16px; }
       .form-container { padding: 20px; }
@@ -369,12 +379,14 @@
                 <label for="tensiDiastol">Tensi Diastol (mmHg) *</label>
                 <input type="number" id="tensiDiastol" name="tensiDiastol" min="30" max="200" placeholder="Contoh: 80" required>
                 <div class="unit">Tekanan darah diastolik</div>
+                <div class="flag" id="flag-tensiDiastol"></div>
               </div>
 
               <div class="form-group">
                 <label for="nadi">Nadi (beat/min) *</label>
                 <input type="number" id="nadi" name="nadi" min="30" max="250" placeholder="Contoh: 75" required>
                 <div class="unit">Denyut jantung per menit</div>
+                <div class="flag" id="flag-nadi"></div>
               </div>
             </div>
 
@@ -383,12 +395,14 @@
                 <label for="suhu">Suhu Badan (°C) *</label>
                 <input type="number" id="suhu" name="suhu" min="30" max="42" step="0.1" placeholder="Contoh: 36.5" required>
                 <div class="unit">Suhu tubuh normal: 36.5-37.5°C</div>
+                <div class="flag" id="flag-suhu"></div>
               </div>
 
               <div class="form-group">
                 <label for="respirasi">Respirasi (breath/min) *</label>
                 <input type="number" id="respirasi" name="respirasi" min="5" max="60" placeholder="Contoh: 20" required>
                 <div class="unit">Frekuensi pernapasan per menit</div>
+                <div class="flag" id="flag-respirasi"></div>
               </div>
             </div>
           </div>
@@ -414,6 +428,7 @@
                 <label for="imt">Indeks Massa Tubuh (IMT)</label>
                 <input type="number" id="imt" name="imt" step="0.1" placeholder="Auto-calculate" readonly>
                 <div class="unit">Dihitung otomatis dari BB dan TB</div>
+                <div class="flag" id="flag-imt"></div>
               </div>
             </div>
           </div>
@@ -442,6 +457,7 @@
             </div>
           </div>
 
+          <div class="abnormal-summary" id="abnormalSummary"></div>
           <div class="button-group">
             <button type="button" class="btn-secondary" onclick="batalPengisian()">Batal</button>
             <button type="submit" class="btn-primary" id="submitBtn">Simpan Data Pemeriksaan</button>
@@ -542,7 +558,69 @@
       if (pasien.catatan) document.getElementById('catatan').value = pasien.catatan;
       
       calculateIMT();
+      tampilkanPenanda();
     }
+
+    // ===== Penanda nilai abnormal =====
+    function nilai(id) { const v = parseFloat(document.getElementById(id).value); return isNaN(v) ? null : v; }
+    function kategoriImt(imt) {
+      if (imt === null) return null;
+      if (imt < 18.5) return ['warn', 'Berat badan kurang (<18,5)'];
+      if (imt < 23) return ['ok', 'Normal (18,5–22,9)'];
+      if (imt < 25) return ['warn', 'Berat badan lebih (23–24,9)'];
+      if (imt < 30) return ['bad', 'Obesitas I (25–29,9)'];
+      return ['bad', 'Obesitas II (≥30)'];
+    }
+    function klasifikasiPemeriksaan() {
+      const sis = nilai('tensiSistol'), dia = nilai('tensiDiastol'), nadi = nilai('nadi'),
+            suhu = nilai('suhu'), rr = nilai('respirasi'), imt = nilai('imt');
+      const f = {};
+      if (sis !== null && dia !== null) {
+        if (sis >= 160 || dia >= 100) f.tensiDiastol = ['bad', 'Hipertensi derajat 2 (≥160/100)'];
+        else if (sis >= 140 || dia >= 90) f.tensiDiastol = ['bad', 'Hipertensi derajat 1 (≥140/90)'];
+        else if (sis >= 120 || dia >= 80) f.tensiDiastol = ['warn', 'Prahipertensi (120–139/80–89)'];
+        else if (sis < 90 || dia < 60) f.tensiDiastol = ['warn', 'Hipotensi (<90/60)'];
+        else f.tensiDiastol = ['ok', 'Tensi normal'];
+      }
+      if (nadi !== null) f.nadi = nadi < 60 ? ['warn', 'Bradikardia (<60)'] : nadi > 100 ? ['warn', 'Takikardia (>100)'] : ['ok', 'Normal (60–100)'];
+      if (suhu !== null) f.suhu = suhu >= 38 ? ['bad', 'Demam (≥38°C)'] : suhu > 37.5 ? ['warn', 'Subfebris (37,6–37,9°C)'] : suhu < 36 ? ['warn', 'Suhu rendah (<36°C)'] : ['ok', 'Normal'];
+      if (rr !== null) f.respirasi = rr > 20 ? ['warn', 'Takipnea (>20)'] : rr < 12 ? ['warn', 'Bradipnea (<12)'] : ['ok', 'Normal (12–20)'];
+      const ki = kategoriImt(imt); if (ki) f.imt = ki;
+      return f;
+    }
+    const LABEL_FIELD = { tensiDiastol: 'Tensi', nadi: 'Nadi', suhu: 'Suhu', respirasi: 'Respirasi', imt: 'IMT' };
+    function tampilkanPenanda() {
+      const f = klasifikasiPemeriksaan();
+      const abnormal = [];
+      Object.keys(LABEL_FIELD).forEach((id) => {
+        const el = document.getElementById('flag-' + id);
+        const group = el.closest('.form-group');
+        group.classList.remove('is-warn', 'is-bad');
+        if (id === 'tensiDiastol') document.getElementById('tensiSistol').closest('.form-group').classList.remove('is-warn', 'is-bad');
+        if (!f[id]) { el.className = 'flag'; el.textContent = ''; return; }
+        const [lvl, teks] = f[id];
+        el.className = 'flag ' + lvl;
+        el.textContent = (lvl === 'ok' ? '✓ ' : '⚠️ ') + teks;
+        if (lvl !== 'ok') {
+          group.classList.add('is-' + lvl);
+          if (id === 'tensiDiastol') document.getElementById('tensiSistol').closest('.form-group').classList.add('is-' + lvl);
+          abnormal.push(LABEL_FIELD[id] + ': ' + teks);
+        }
+      });
+      const box = document.getElementById('abnormalSummary');
+      if (abnormal.length) {
+        box.innerHTML = '<strong>⚠️ Ada ' + abnormal.length + ' nilai di luar batas normal</strong><ul>' +
+          abnormal.map((a) => '<li>' + a.replace(/</g, '&lt;') + '</li>').join('') + '</ul>';
+        box.classList.add('show');
+      } else {
+        box.classList.remove('show');
+        box.innerHTML = '';
+      }
+      return abnormal;
+    }
+    ['tensiSistol', 'tensiDiastol', 'nadi', 'suhu', 'respirasi', 'beratBadan', 'tinggiBadan'].forEach((id) => {
+      document.getElementById(id).addEventListener('input', () => { calculateIMT(); tampilkanPenanda(); });
+    });
 
     document.getElementById('beratBadan').addEventListener('input', calculateIMT);
     document.getElementById('tinggiBadan').addEventListener('input', calculateIMT);
@@ -576,6 +654,8 @@
         masalah.push('IMT ' + imtVal + ' tidak wajar. Mohon cek ulang berat dan tinggi badan.');
       }
       if (masalah.length) { showErrorMsg(masalah.join(' ')); return; }
+      const abnormal = tampilkanPenanda();
+      if (abnormal.length && !confirm('Ada nilai di luar batas normal:\n\n• ' + abnormal.join('\n• ') + '\n\nData sudah benar dan tetap disimpan?')) return;
       const formData = {
         tensiSistol: document.getElementById('tensiSistol').value,
         tensiDiastol: document.getElementById('tensiDiastol').value,
@@ -643,6 +723,7 @@
       setTimeout(() => {
         document.getElementById('pemeriksaanForm').reset();
         document.getElementById('imt').value = '';
+        tampilkanPenanda();
         hideErrorMsg();
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 300);
