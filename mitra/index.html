@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Kerja Sama Hotel dan Villa | Familia Medika</title>
+  <meta name="description" content="Mitra layanan kesehatan untuk hotel, villa, dan homestay di Yogyakarta: dokter on-call, telekonsultasi, dan kesiapsiagaan darurat untuk tamu.">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --navy:#13365f; --navy2:#1d4f86; --teal:#04a7bd; --tealD:#04788a; --cyan:#5fd3e3; --ink:#23324a; --muted:#5b6b7d; --line:#dce4ec; --bg:#f4f7fa; --card:#fff; }
+    * { box-sizing:border-box; } html, body { margin:0; }
+    :root { padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); }
+    body { font-family:'Plus Jakarta Sans', -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; }
+    .wrap { max-width:960px; margin:0 auto; padding:20px 16px 48px; }
+    h1, h2, h3 { font-family:'Poppins', sans-serif; line-height:1.25; }
+    .hero { background:var(--navy); color:#fff; border-radius:20px; padding:28px 22px 30px; position:relative; overflow:hidden; }
+    .hero::after { content:""; position:absolute; right:-70px; top:-70px; width:220px; height:220px; border-radius:50%; background:var(--navy2); }
+    .brand { display:inline-flex; align-items:center; gap:10px; background:#fff; border-radius:12px; padding:8px 14px; text-decoration:none; position:relative; z-index:1; }
+    .brand img { height:28px; width:auto; display:block; } .brand span { font-family:'Poppins',sans-serif; font-weight:800; font-size:16px; color:var(--navy); }
+    .kicker { margin:20px 0 6px; font-size:12px; font-weight:700; letter-spacing:.12em; color:var(--cyan); position:relative; z-index:1; }
+    .hero h1 { font-size:clamp(24px,6vw,36px); margin:0 0 10px; position:relative; z-index:1; }
+    .hero p { margin:0; max-width:600px; opacity:.93; position:relative; z-index:1; }
+    .cta { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; position:relative; z-index:1; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:12px 18px; border-radius:12px; font-weight:700; text-decoration:none; font-size:15px; }
+    .btn.wa { background:#1fa855; color:#fff; } .btn.ghost { background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.3); }
+    section { margin-top:34px; }
+    .label { font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--tealD); margin:0 0 6px; }
+    section h2 { font-size:clamp(20px,4.6vw,26px); color:var(--navy); margin:0 0 14px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); gap:12px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; }
+    .card h3 { font-size:17px; color:var(--navy); margin:6px 0 6px; } .card p { margin:0; font-size:14.5px; color:var(--muted); }
+    .num { font-family:'Poppins',sans-serif; font-weight:800; font-size:26px; color:var(--teal); }
+    .tag { display:inline-block; margin-top:10px; font-size:12.5px; font-weight:700; color:var(--tealD); background:#e3f4f6; padding:5px 10px; border-radius:8px; }
+    .flow { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); gap:10px; counter-reset:step; }
+    .step { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; }
+    .step b { display:block; color:var(--navy); } .step span { font-size:14px; color:var(--muted); }
+    .step::before { counter-increment:step; content:counter(step); display:inline-grid; place-items:center; width:28px; height:28px; border-radius:50%; background:var(--teal); color:#fff; font-weight:700; font-size:14px; margin-bottom:8px; }
+    .why { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:10px; }
+    .why div { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; font-weight:600; color:var(--navy); font-size:15px; }
+    .why small { display:block; font-weight:500; color:var(--muted); font-size:13.5px; margin-top:4px; }
+    .final { margin-top:34px; background:var(--navy2); color:#fff; border-radius:18px; padding:24px 22px; }
+    .final h2 { color:#fff; margin:0 0 8px; } .final p { margin:0; opacity:.92; }
+    .note { font-size:13px; color:var(--muted); margin-top:10px; }
+    .foot { text-align:center; margin-top:28px; font-size:12.5px; color:var(--muted); }
+    .foot a { color:var(--navy); font-weight:700; text-decoration:none; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) { --ink:#e6edf5; --muted:#9fb0c3; --line:#2a3646; --bg:#0f1722; --card:#162131; }
+      :root:not([data-theme="light"]) section h2, :root:not([data-theme="light"]) .card h3, :root:not([data-theme="light"]) .step b, :root:not([data-theme="light"]) .why div, :root:not([data-theme="light"]) .foot a { color:#8cc4ff; }
+      :root:not([data-theme="light"]) .tag { background:#123a45; color:#7fe0ee; }
+    }
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <header class="hero">
+    <a class="brand" href="/"><img src="/assets/logo-icon.png" alt=""><span>Familia Medika</span></a>
+    <div class="kicker">KERJA SAMA HOTEL DAN VILLA</div>
+    <h1>Mitra kesehatan untuk tamu Anda</h1>
+    <p>Saat tamu sakit di tengah liburan, Familia Medika siap membantu: dokter dan perawat datang ke kamar, konsultasi cepat lewat telekonsultasi, dan staf Anda siap menghadapi kondisi darurat.</p>
+    <div class="cta">
+      <a class="btn wa" href="https://wa.me/6282147267448?text=Halo%20Familia%20Medika%2C%20saya%20dari%20%5Bnama%20hotel%2Fvilla%5D%20ingin%20diskusi%20kerja%20sama%20layanan%20kesehatan%20untuk%20tamu." target="_blank" rel="noopener">💬 Ajukan kerja sama</a>
+      <a class="btn ghost" href="/assets/company-profile-familia-medika.pdf" target="_blank" rel="noopener">📄 Company profile (PDF)</a>
+    </div>
+  </header>
+
+  <section>
+    <p class="label">Paket kerja sama</p>
+    <h2>Tiga layanan inti untuk properti Anda</h2>
+    <div class="grid">
+      <div class="card"><div class="num">01</div><h3>On-call untuk tamu</h3><p>Satu nomor khusus. Dokter atau perawat datang ke unit sesuai asesmen.</p><span class="tag">Tamu bayar sesuai harga mitra</span></div>
+      <div class="card"><div class="num">02</div><h3>Kartu QR telekonsultasi</h3><p>Kartu di setiap kamar. Keluhan ringan bisa selesai tanpa kunjungan.</p><span class="tag">Termasuk dalam kerja sama</span></div>
+      <div class="card"><div class="num">03</div><h3>Kesiapsiagaan darurat</h3><p>Pelatihan BHD/P3K untuk staf, standar kotak P3K, dan peta IGD terdekat.</p><span class="tag">Biaya sekali bayar</span></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Alur layanan</p>
+    <h2>Saat tamu membutuhkan bantuan</h2>
+    <div class="flow">
+      <div class="step"><b>Tamu ada keluhan</b><span>Tamu atau staf menghubungi kami</span></div>
+      <div class="step"><b>Telekonsultasi dan triase</b><span>Dokter menilai kondisi tamu</span></div>
+      <div class="step"><b>Kunjungan ke unit</b><span>Bila perlu, tim terdekat datang</span></div>
+      <div class="step"><b>Gawat darurat</b><span>Segera diarahkan ke IGD terdekat</span></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Layanan tambahan</p>
+    <h2>Bisa dikembangkan sesuai kebutuhan</h2>
+    <div class="grid">
+      <div class="card"><h3>Surat keterangan tamu</h3><p>Untuk klaim asuransi perjalanan atau refund tiket, dilengkapi QR verifikasi.</p></div>
+      <div class="card"><h3>Tim medis event</h3><p>Siaga saat gathering, wedding, atau retreat di properti Anda.</p></div>
+      <div class="card"><h3>Kesehatan karyawan</h3><p>Pemeriksaan berkala dan surat sehat untuk karyawan baru.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Kenapa Familia Medika</p>
+    <h2>Aman untuk tamu, praktis untuk Anda</h2>
+    <div class="why">
+      <div>Berdasarkan asesmen dokter<small>Tindakan diberikan sesuai indikasi medis</small></div>
+      <div>Jangkauan luas<small>Beberapa layanan home care di bawah satu payung</small></div>
+      <div>Tenaga berizin<small>Dokter dan perawat dengan STR dan SIP</small></div>
+      <div>Sistem digital<small>Rekam medis elektronik dan surat ber-QR</small></div>
+    </div>
+  </section>
+
+  <div class="final">
+    <h2>Diskusikan kebutuhan properti Anda</h2>
+    <p>Kami akan menyusun penawaran sesuai lokasi dan jumlah unit Anda.</p>
+    <div class="cta"><a class="btn wa" href="https://wa.me/6282147267448?text=Halo%20Familia%20Medika%2C%20saya%20dari%20%5Bnama%20hotel%2Fvilla%5D%20ingin%20diskusi%20kerja%20sama%20layanan%20kesehatan%20untuk%20tamu." target="_blank" rel="noopener">💬 Hubungi via WhatsApp</a></div>
+  </div>
+  <p class="note">Layanan home care tidak menggantikan IGD. Pada kondisi gawat darurat, tamu segera diarahkan ke rumah sakit terdekat.</p>
+
+  <footer class="foot">Familia Medika - Sahabat Sehat Keluarga di Rumah<br><a href="/">← Kembali ke beranda</a></footer>
+</main>
+</body>
+</html>
