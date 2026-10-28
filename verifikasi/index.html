@@ -72,7 +72,7 @@
         <input id="kode" name="kode" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="16" placeholder="Contoh: K7QF3MZP9A" required>
         <button id="btn">Cek dokumen</button>
       </form>
-      <p class="hint">Berlaku untuk Resep Dokter, Surat Keterangan Diagnosa, Surat Rujukan, dan Surat Keterangan Sakit dari Familia Medika.</p>
+      <p class="hint">Berlaku untuk Resep Dokter, Surat Keterangan Diagnosa, Surat Rujukan, Nota Pembayaran, dan Surat Keterangan Sakit dari Familia Medika.</p>
     </section>
 
     <section id="out" aria-live="polite"></section>
@@ -120,12 +120,20 @@
       html+=row('Tanggal periksa',tgl(d.exam_date));
       html+=row('Tujuan rujukan',esc(d.to||'-'));
       html+=row('Diagnosis utama',esc(d.dx_primary||'-'));
+    }else if(r.type==='NOTA'){
+      var rp=function(n){return 'Rp '+String(Math.round(Number(n)||0)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')};
+      html+=row('Tanggal nota',esc(d.date_nota||'-'));
+      if(d.service)html+=row('Layanan',esc(d.service));
+      if(d.items&&d.items.length)html+=row('Rincian','<ul>'+d.items.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>');
+      html+=row('Total',rp(d.total));
+      html+=row('Status bayar',r.payment_status==='LUNAS'?'LUNAS':('BELUM LUNAS · sisa '+rp(d.remaining)));
+      if(d.method)html+=row('Metode bayar',esc(d.method));
     }else if(r.type==='SKS'){
       html+=row('Tanggal periksa',tgl(d.exam_date));
       html+=row('Istirahat',esc(d.rest_days)+' hari ('+tgl(d.rest_start)+' s/d '+tgl(d.rest_end)+')');
     }
     if(cancelled)html+=row('Dibatalkan',tgl(r.cancelled_at));
-    html+='</dl><p class="note">Cocokkan data di atas dengan dokumen yang Anda terima. Bila ada perbedaan (nama, nomor, obat, atau diagnosis), dokumen tersebut kemungkinan telah diubah.'+
+    html+='</dl><p class="note">Cocokkan data di atas dengan dokumen yang Anda terima. Bila ada perbedaan (nama, nomor, obat, diagnosis, atau nominal), dokumen tersebut kemungkinan telah diubah.'+
       (r.type==='RESEP'&&cancelled?' <b>Resep yang dibatalkan tidak boleh dilayani.</b>':'')+'</p></div>';
     out.innerHTML=html;
   }
