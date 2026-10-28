@@ -72,7 +72,7 @@
         <input id="kode" name="kode" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="16" placeholder="Contoh: K7QF3MZP9A" required>
         <button id="btn">Cek dokumen</button>
       </form>
-      <p class="hint">Berlaku untuk Resep Dokter, Surat Keterangan Diagnosa, dan Surat Keterangan Sakit dari Familia Medika.</p>
+      <p class="hint">Berlaku untuk Resep Dokter, Surat Keterangan Diagnosa, Surat Rujukan, dan Surat Keterangan Sakit dari Familia Medika.</p>
     </section>
 
     <section id="out" aria-live="polite"></section>
@@ -116,6 +116,10 @@
       html+=row('Tanggal periksa',tgl(d.exam_date));
       html+=row('Diagnosis utama',esc(d.dx_primary||'-'));
       if(d.dx_secondary)html+=row('Diagnosis sekunder',esc(d.dx_secondary));
+    }else if(r.type==='RJK'){
+      html+=row('Tanggal periksa',tgl(d.exam_date));
+      html+=row('Tujuan rujukan',esc(d.to||'-'));
+      html+=row('Diagnosis utama',esc(d.dx_primary||'-'));
     }else if(r.type==='SKS'){
       html+=row('Tanggal periksa',tgl(d.exam_date));
       html+=row('Istirahat',esc(d.rest_days)+' hari ('+tgl(d.rest_start)+' s/d '+tgl(d.rest_end)+')');
