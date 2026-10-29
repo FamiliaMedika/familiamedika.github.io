@@ -130,6 +130,8 @@
       if(d.method)html+=row('Metode bayar',esc(d.method));
     }else if(r.type==='SPW'){
       html+=row('Penerima wewenang',esc(d.nurse||'-'));
+      if(d.visit_date)html+=row('Tanggal kunjungan',tgl(d.visit_date));
+      if(d.service)html+=row('Jenis layanan',esc(d.service));
       if(d.actions&&d.actions.length)html+=row('Tindakan','<ul>'+d.actions.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>');
       html+=row('Masa berlaku',tgl(d.valid_from)+' s/d '+(d.valid_until?tgl(d.valid_until):'dicabut / berakhirnya kerja sama'));
       if(!cancelled&&d.in_period===false)html+=row('Catatan','<span style="color:var(--warn)">Di luar masa berlaku</span>');
