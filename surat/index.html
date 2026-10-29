@@ -28,7 +28,7 @@
     .card { display:flex; gap:14px; align-items:flex-start; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; text-decoration:none; color:inherit; transition:transform .15s, box-shadow .15s, border-color .15s; }
     a.card:hover, a.card:focus-visible { transform:translateY(-2px); box-shadow:0 10px 24px -12px rgba(23,69,123,.35); border-color:var(--teal); outline:none; }
     .icon { flex:0 0 48px; height:48px; border-radius:14px; display:grid; place-items:center; font-size:24px; }
-    .i-sehat { background:#e5f6eb; } .i-sakit { background:#fdeaea; } .i-rujuk { background:#e6f4fb; } .i-diag { background:#f1ecfd; } .i-resep { background:#fff1e0; }
+    .i-sehat { background:#e5f6eb; } .i-sakit { background:#fdeaea; } .i-rujuk { background:#e6f4fb; } .i-diag { background:#f1ecfd; } .i-resep { background:#fff1e0; } .i-spw { background:#e8f0ff; }
     .body { flex:1; min-width:0; }
     .body h2 { font-family:'Poppins',sans-serif; font-size:16px; margin:2px 0 4px; color:var(--navy); }
     .body p { margin:0; font-size:13.5px; line-height:1.55; color:var(--muted); }
@@ -110,6 +110,15 @@
           <h2>Surat Rujukan</h2>
           <p>Rujukan ke dokter spesialis atau rumah sakit untuk penanganan lanjutan, dibuat dokter setelah pemeriksaan.</p>
           <div class="meta"><span class="tag">🔒 Login dokter</span><span class="tag go">Buat rujukan</span></div>
+        </div>
+        <span class="arrow" aria-hidden="true">›</span>
+      </a>
+      <a class="card" href="https://rme.familiamedika.id/#pelimpahan" rel="noopener">
+        <div class="icon i-spw">✍️</div>
+        <div class="body">
+          <h2>Surat Pelimpahan Wewenang</h2>
+          <p>Mandat dokter kepada perawat untuk tindakan (infus, injeksi, perawatan luka) beserta PDF suratnya. Dibuka di RME.</p>
+          <div class="meta"><span class="tag">🔒 Login RME + kode authenticator</span><span class="tag go">Buka</span></div>
         </div>
         <span class="arrow" aria-hidden="true">›</span>
       </a>
