@@ -72,7 +72,7 @@
         <input id="kode" name="kode" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="16" placeholder="Contoh: K7QF3MZP9A" required>
         <button id="btn">Cek dokumen</button>
       </form>
-      <p class="hint">Berlaku untuk Resep Dokter, Surat Keterangan Diagnosa, Surat Rujukan, Nota Pembayaran, dan Surat Keterangan Sakit dari Familia Medika.</p>
+      <p class="hint">Berlaku untuk Resep Dokter, Surat Keterangan Diagnosa, Surat Rujukan, Nota Pembayaran, Surat Pelimpahan Wewenang, dan Surat Keterangan Sakit dari Familia Medika.</p>
     </section>
 
     <section id="out" aria-live="polite"></section>
@@ -107,7 +107,7 @@
       (cancelled?'Dokumen asli, namun sudah DIBATALKAN':'Dokumen asli dan berlaku')+'</b><small>'+esc(r.type_label)+' diterbitkan oleh Familia Medika</small></div></div><dl>';
     html+=row('Jenis dokumen',esc(r.type_label));
     html+=row('Nomor',esc(r.number));
-    html+=row('Nama pasien',esc(r.patient_name_masked));
+    if(r.patient_name_masked)html+=row('Nama pasien',esc(r.patient_name_masked));
     html+=row('Dokter',esc(r.doctor_name));
     if(r.type==='RESEP'){
       html+=row('Tanggal resep',tgl(r.issued_at));
@@ -128,6 +128,11 @@
       html+=row('Total',rp(d.total));
       html+=row('Status bayar',r.payment_status==='LUNAS'?'LUNAS':('BELUM LUNAS · sisa '+rp(d.remaining)));
       if(d.method)html+=row('Metode bayar',esc(d.method));
+    }else if(r.type==='SPW'){
+      html+=row('Penerima wewenang',esc(d.nurse||'-'));
+      if(d.actions&&d.actions.length)html+=row('Tindakan','<ul>'+d.actions.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>');
+      html+=row('Masa berlaku',tgl(d.valid_from)+' s/d '+(d.valid_until?tgl(d.valid_until):'dicabut / berakhirnya kerja sama'));
+      if(!cancelled&&d.in_period===false)html+=row('Catatan','<span style="color:var(--warn)">Di luar masa berlaku</span>');
     }else if(r.type==='SKS'){
       html+=row('Tanggal periksa',tgl(d.exam_date));
       html+=row('Istirahat',esc(d.rest_days)+' hari ('+tgl(d.rest_start)+' s/d '+tgl(d.rest_end)+')');
