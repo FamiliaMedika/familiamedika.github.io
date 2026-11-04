@@ -13,6 +13,9 @@
  * kategori : "Kegawatdaruratan" | "Penyakit Kronis" | "Lansia" |
  *            "Perawatan Luka" | "Ibu & Anak" | "Gaya Hidup" (bebas)
  * ikon     : "darurat" | "jantung" | "luka" | "lansia" | "anak" | "umum"
+ * gambar   : (opsional) sampul, relatif ke folder artikel/, rasio 16:9,
+ *            mis. "slug-artikel/sampul.svg" atau "slug-artikel/sampul.jpg".
+ *            Bila kosong, kartu memakai ikon.
  */
 window.ARTIKEL_FM = [
   {
@@ -21,6 +24,7 @@ window.ARTIKEL_FM = [
     ringkasan: "Kenali tanda bahaya stroke, serangan jantung, dan kondisi gawat darurat lain, kapan cukup ke puskesmas, serta hak Anda sebagai pasien BPJS di IGD.",
     kategori: "Kegawatdaruratan",
     ikon: "darurat",
+    gambar: "kapan-harus-ke-igd/sampul.svg",
     tanggal: "2026-11-04",
     menitBaca: 6,
     penulis: "dr. Nurul Khafidz Subekti, AIFO-K"
@@ -51,9 +55,12 @@ window.ARTIKEL_FM = [
   function kartu(a, base) {
     var href = base + a.slug + "/";
     var ic = ICON[a.ikon] || ICON.umum;
+    var media = a.gambar
+      ? '<img src="' + esc(base + a.gambar) + '" alt="" loading="lazy">'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ic + '</svg>';
     return '<a class="acard" href="' + href + '">' +
-      '<div class="acard-cover ic-' + esc(a.ikon || "umum") + '">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ic + '</svg>' +
+      '<div class="acard-cover ic-' + esc(a.ikon || "umum") + (a.gambar ? ' has-img' : '') + '">' +
+        media +
         '<span class="acard-cat">' + esc(a.kategori) + '</span>' +
       '</div>' +
       '<div class="acard-body">' +
