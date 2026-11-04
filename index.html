@@ -516,6 +516,7 @@
 <link rel="stylesheet" href="health-assistant.css">
 <link rel="stylesheet" href="health-progress.css">
 <link rel="stylesheet" href="assessment-summary.css">
+<link rel="stylesheet" href="artikel/kartu.css">
 </head>
 <body>
 
@@ -539,6 +540,7 @@
         <a class="link" href="#tim">Tim</a>
         <a class="link" href="#kontak">Kontak</a>
         <a class="link" href="#layanan-surat">Layanan Surat</a>
+        <a class="link" href="#artikel">Artikel</a>
         <a class="link" href="/mitra/">Kerja Sama</a>
       </nav>
     <div class="nav-cta">
@@ -897,6 +899,31 @@
   </div>
 </section>
 
+<!-- ARTIKEL -->
+<section id="artikel" data-artikel-wrap>
+  <div class="container">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">Artikel Kesehatan</span>
+      <h2 class="sec-title">Edukasi kesehatan untuk keluarga</h2>
+      <p>Ditulis dan ditinjau oleh dokter Familia Medika, mengacu pada pedoman Kementerian Kesehatan RI dan jurnal ilmiah.</p>
+    </div>
+    <div class="agrid reveal" data-artikel-grid data-base="/artikel/" data-limit="3">
+      <!-- cadangan bila JavaScript tidak aktif -->
+      <a class="acard" href="/artikel/kapan-harus-ke-igd/">
+        <div class="acard-body">
+          <h3>Kapan Harus ke IGD? Kenali Tanda Kegawatdaruratan</h3>
+          <p>Kenali tanda bahaya stroke, serangan jantung, dan kondisi gawat darurat lain.</p>
+        </div>
+      </a>
+    </div>
+    <div class="a-foot reveal">
+      <a class="btn btn-ghost" href="/artikel/">Lihat semua artikel
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section id="faq">
   <div class="container">
@@ -1079,6 +1106,7 @@
         <a href="#event">Medical Event</a>
         <a href="#tim">Tim Kami</a>
         <a href="#kontak">Kontak</a>
+        <a href="/artikel/">Artikel Kesehatan</a>
         <a href="#saran">Kotak Saran</a>
       </div>
       <div class="fcol">
@@ -1235,6 +1263,7 @@ aria-label="Tutup Health Assistant">
 
   // Health Assistant HA-3 loaded externally
 </script>
+<script src="artikel/daftar.js"></script>
 <script src="health-assistant.js"></script>
 <script src="assessment-summary.js"></script>
 </body>
