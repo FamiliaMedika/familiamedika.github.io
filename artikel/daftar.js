@@ -14,7 +14,7 @@
  *            "Perawatan Luka" | "Ibu & Anak" | "Gaya Hidup" (bebas)
  * ikon     : "darurat" | "jantung" | "luka" | "lansia" | "anak" | "umum"
  * gambar   : (opsional) sampul, relatif ke folder artikel/, rasio 16:9,
- *            mis. "slug-artikel/sampul.svg" atau "slug-artikel/sampul.jpg".
+ *            mis. "slug-artikel/sampul.jpg" (svg/png juga bisa).
  *            Bila kosong, kartu memakai ikon.
  */
 window.ARTIKEL_FM = [
@@ -24,7 +24,7 @@ window.ARTIKEL_FM = [
     ringkasan: "Kenali tanda bahaya stroke, serangan jantung, dan kondisi gawat darurat lain, kapan cukup ke puskesmas, serta hak Anda sebagai pasien BPJS di IGD.",
     kategori: "Kegawatdaruratan",
     ikon: "darurat",
-    gambar: "kapan-harus-ke-igd/sampul.svg",
+    gambar: "kapan-harus-ke-igd/sampul.jpg",
     tanggal: "2026-11-04",
     menitBaca: 6,
     penulis: "dr. Nurul Khafidz Subekti, AIFO-K"

@@ -67,8 +67,8 @@ h1,h2,h3,h4{font-family:"Poppins",sans-serif;line-height:1.2;letter-spacing:-.01
 .share a:hover,.share button:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
 .share svg{width:18px;height:18px}
 
-.acover{margin-top:28px;border-radius:26px;overflow:hidden;box-shadow:var(--shadow);background:var(--navy-deep);aspect-ratio:16/9;max-height:460px}
-.acover img{width:100%;height:100%;object-fit:cover;object-position:50% 60%;display:block}
+.acover{margin-top:28px;border-radius:26px;overflow:hidden;box-shadow:var(--shadow);background:var(--navy-deep);aspect-ratio:16/9;max-width:960px}
+.acover img{width:100%;height:100%;object-fit:cover;display:block}
 
 /* layout */
 .alayout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:56px;padding:40px 0 70px;align-items:start}
