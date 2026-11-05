@@ -19,6 +19,17 @@
  */
 window.ARTIKEL_FM = [
   {
+    slug: "waspada-dbd-musim-hujan",
+    judul: "Waspada DBD di Musim Hujan: Kenali Fase Kritis dan Tanda Bahayanya",
+    ringkasan: "Demam turun belum tentu sembuh. Kenali pola pelana kuda, tanda bahaya yang harus segera ke IGD, perawatan di rumah, dan pencegahan 3M Plus.",
+    kategori: "Penyakit Infeksi",
+    ikon: "umum",
+    gambar: "waspada-dbd-musim-hujan/sampul.jpg",
+    tanggal: "2026-11-05",
+    menitBaca: 7,
+    penulis: "dr. Nurul Khafidz Subekti, AIFO-K"
+  },
+  {
     slug: "kapan-harus-ke-igd",
     judul: "Kapan Harus ke IGD? Kenali Tanda Kegawatdaruratan",
     ringkasan: "Kenali tanda bahaya stroke, serangan jantung, dan kondisi gawat darurat lain, kapan cukup ke puskesmas, serta hak Anda sebagai pasien BPJS di IGD.",
@@ -87,6 +98,7 @@ window.ARTIKEL_FM = [
       if (!items.length) { el.closest("[data-artikel-wrap]") && (el.closest("[data-artikel-wrap]").style.display = "none"); return; }
       el.innerHTML = items.map(function (a) { return kartu(a, base); }).join("");
       el.classList.toggle("is-single", items.length === 1);
+      el.classList.toggle("is-double", items.length === 2);
     });
   }
 

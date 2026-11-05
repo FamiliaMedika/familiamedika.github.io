@@ -208,6 +208,46 @@ h1,h2,h3,h4{font-family:"Poppins",sans-serif;line-height:1.2;letter-spacing:-.01
 .afoot nav{display:flex;gap:20px;flex-wrap:wrap}
 .afoot nav a:hover{color:var(--teal2)}
 
+
+/* stats */
+.statrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{background:var(--sky);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.stat b{display:block;font-family:"Poppins",sans-serif;font-size:2.2rem;line-height:1.05;color:var(--navy)}
+.stat span{font-size:.9rem;color:var(--ink-soft)}
+.stat.red{background:var(--red-soft);border-color:#f6cfc6}
+.stat.red b{color:var(--red)}
+
+/* saddle chart */
+.saddle{background:var(--bg);border:1px solid var(--line);border-radius:18px;padding:14px 10px 6px}
+.saddle svg{width:100%;height:auto;display:block}
+.saddle .sz-k{font-family:"Poppins",sans-serif;font-weight:800;font-size:15px;fill:#c8462a;letter-spacing:1px}
+.saddle .sz-s{font-family:"Plus Jakarta Sans",sans-serif;font-size:12px;fill:#5a6b86}
+.saddle .sz-d{font-family:"Plus Jakarta Sans",sans-serif;font-size:13px;font-weight:700;fill:#173a78}
+
+/* phases */
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ph{border:1px solid var(--line);border-top:4px solid var(--navy);border-radius:16px;padding:16px 16px 14px;background:#fff}
+.ph.krit{border-top-color:var(--red);background:var(--red-soft)}
+.ph.ok{border-top-color:var(--teal)}
+.ph .tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft)}
+.ph h4{font-size:1.08rem;margin:4px 0 6px}
+.ph.krit h4{color:#8f2c17}
+.ph p{font-size:.9rem;line-height:1.55;margin:0}
+.ph p.do{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.ph.krit p.do{border-top-color:#f1c2b7}
+
+/* 3M */
+.m3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.m{background:linear-gradient(160deg,#fff,var(--sky));border:1px solid var(--line);border-radius:16px;padding:16px}
+.m span{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:11px;background:var(--navy);color:#fff;font-family:"Poppins",sans-serif;font-weight:800;font-size:.85rem}
+.m h4{font-size:1.06rem;margin:10px 0 4px}
+.m p{font-size:.9rem;line-height:1.5;margin:0}
+
+@media(max-width:760px){
+  .phases,.m3{grid-template-columns:1fr}
+  .stat b{font-size:1.8rem}
+}
+
 @media(max-width:1000px){
   .alayout{grid-template-columns:minmax(0,1fr);gap:0}
   .toc{display:none}

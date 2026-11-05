@@ -2,6 +2,7 @@
    Memakai token warna situs (--navy, --teal, dst.). */
 .agrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .agrid.is-single{grid-template-columns:minmax(0,1fr)}
+.agrid.is-double{grid-template-columns:1fr 1fr}
 .agrid.is-single .acard{flex-direction:row}
 .agrid.is-single .acard-cover{flex:0 0 38%;aspect-ratio:auto;min-height:240px}
 .agrid.is-single .acard-body{padding:30px 32px}
@@ -42,7 +43,7 @@
   .agrid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:640px){
-  .agrid{grid-template-columns:1fr}
+  .agrid,.agrid.is-double{grid-template-columns:1fr}
   .agrid.is-single .acard{flex-direction:column}
   .agrid.is-single .acard-cover{flex:none;aspect-ratio:16/9;min-height:0}
   .agrid.is-single .acard-body{padding:22px 20px 24px}
