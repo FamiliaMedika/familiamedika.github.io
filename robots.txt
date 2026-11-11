@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /dokter-pemeriksaan/
+Disallow: /ttd/
 
 Sitemap: https://www.familiamedika.id/sitemap.xml
